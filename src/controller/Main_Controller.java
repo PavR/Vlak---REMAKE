@@ -1,0 +1,988 @@
+package controller;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
+
+import javax.sound.sampled.Clip;
+
+import code.Gate;
+import code.Level;
+import code.Object;
+import code.Train;
+import code.Tunnel;
+import code.Wagon;
+import code.Wall;
+import javafx.animation.AnimationTimer;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+
+public class Main_Controller implements Initializable{
+
+	@FXML
+	private Canvas c_canvas;
+	@FXML
+	private Label l_score, l_level, l_f4;
+	@FXML
+	private TextField tf_password;
+	
+	private GraphicsContext gc;
+	
+	private int framsePassed = 0;
+	
+	private KeyCode lastKeyPressed = KeyCode.A;
+	
+	private ArrayList<Object> allObjects = new ArrayList<Object>();
+	private ArrayList<Wagon> allWagons = new ArrayList<Wagon>();
+	private ArrayList<Wall> allWalls = new ArrayList<Wall>();
+	private ArrayList<Train> allTrains = new ArrayList<Train>();
+	private ArrayList<Gate> allGates = new ArrayList<Gate>();
+	private ArrayList<Level> allLevels = new ArrayList<Level>();
+	private ArrayList<String> allPasswords = new ArrayList<String>();
+	private ArrayList<Tunnel> allTunnels = new ArrayList<Tunnel>();
+	
+	private boolean alive = true;
+	private boolean won = false;
+
+	private int currentLevel = 1;
+	
+	private int level;
+	private String password;
+	
+	private int score;
+	private int currentLevelScore;
+	
+	private boolean passwordActive = false;
+	
+	private Image wall, train, gate, object, wagon, tunnel;
+	
+	public void initialize(URL location, ResourceBundle resources) {
+		
+		loadResources();
+		
+		setAnimationTimer();
+		setCanvasKeyboardInput();
+		setPasswordKeyboardInput();
+		
+		gc = c_canvas.getGraphicsContext2D();
+		
+		try {
+			
+			loadAllLevels();
+			loadLevel();
+			
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+			
+		}
+		
+	}
+	
+	private void update() {
+		
+		framsePassed++;
+		
+		if(framsePassed == 20) {
+			
+			framsePassed = 0;
+			
+			if(alive) {
+				
+				if(allTrains.size() > 0) {
+				
+					if(lastKeyPressed != KeyCode.A) {
+						
+						allTrains.get(0).getMove().setFramePosition(0);
+						allTrains.get(0).getMove().start();
+						
+						allTrains.get(0).getMove().loop(Clip.LOOP_CONTINUOUSLY);
+						autoMovement();
+						
+						checkCollisionWithWagons();
+						
+						autoMoveWagons();
+						
+						checkCollisionWithGate();
+						checkCollisionWithWalls();
+						checkCollisionWithObjects();
+						checkCollisionWithTunnels();
+						
+					}
+					
+				}
+				
+			}
+			
+		}
+		
+	}
+
+	private void render() {
+		System.out.println("RENDER");
+		
+		if(alive) {
+			
+			gc.clearRect(0, 0, c_canvas.getWidth(), c_canvas.getHeight());
+			
+			for(int x = 0; x < allTrains.size(); x++) {
+				
+				gc.drawImage(allTrains.get(x).getImage(), allTrains.get(x).getX(), allTrains.get(x).getY());
+				
+			}
+			
+			for(int x = 0; x < allObjects.size(); x++) {
+				
+				gc.drawImage(allObjects.get(x).getImage(), allObjects.get(x).getX(), allObjects.get(x).getY());
+				
+			}
+			
+			for(int x = 0; x < allWagons.size(); x++) {
+				
+				gc.drawImage(allWagons.get(x).getImage(), allWagons.get(x).getX(), allWagons.get(x).getY());
+				
+			}
+			
+			for(int x = 0; x < allWalls.size(); x++) {
+				
+				gc.drawImage(allWalls.get(x).getImage(), allWalls.get(x).getX(), allWalls.get(x).getY());
+				
+			}
+			
+			for(int x = 0; x < allGates.size(); x++) {
+				
+				gc.drawImage(allGates.get(x).getImage(), allGates.get(x).getX(), allGates.get(x).getY());
+				
+			}
+			
+			for(int x = 0; x < allTunnels.size(); x++) {
+				
+				gc.drawImage(allTunnels.get(x).getImage(), allTunnels.get(x).getX(), allTunnels.get(x).getY());
+				
+			}
+			
+		}
+		
+	}
+
+	public void autoMovement() {
+		System.out.println("AUTOMOVEMENT");
+		if(allTrains.get(0).getOrientation() == 0) {
+			
+			allTrains.get(0).setY(allTrains.get(0).getY() - (allTrains.get(0).getSpeed() * 36));
+			
+			for(int x = 0; x < allWagons.size(); x++) {
+				
+				allWagons.get(x).getFutureMoves().add(0);
+				
+			}
+			
+		}else if(allTrains.get(0).getOrientation() == 2) {
+			
+			allTrains.get(0).setY(allTrains.get(0).getY() + (allTrains.get(0).getSpeed() * 36));
+			
+			for(int x = 0; x < allWagons.size(); x++) {
+				
+				allWagons.get(x).getFutureMoves().add(2);
+				
+			}
+			
+		}else if(allTrains.get(0).getOrientation() == 1) {
+			
+			allTrains.get(0).setX(allTrains.get(0).getX() - (allTrains.get(0).getSpeed() * 36));
+			
+			for(int x = 0; x < allWagons.size(); x++) {
+				
+				allWagons.get(x).getFutureMoves().add(1);
+				
+			}
+			
+		}else if(allTrains.get(0).getOrientation() == 3) {
+			
+			allTrains.get(0).setX(allTrains.get(0).getX() + (allTrains.get(0).getSpeed() * 36));
+			
+			for(int x = 0; x < allWagons.size(); x++) {
+				
+				allWagons.get(x).getFutureMoves().add(3);
+				
+			}
+			
+		}
+		
+		if(allTrains.get(0).getOrientation() == -1)
+			return;
+		
+	}
+	
+	public void loadAllLevels() throws IOException {
+		System.out.println("LOAD ALL LEVELS");
+		String AbsolutePath = new File(".").getAbsolutePath();
+		AbsolutePath = (AbsolutePath.substring(0, AbsolutePath.length() - 1));
+		AbsolutePath = AbsolutePath + "levels";
+		
+		int fileCount = new File(AbsolutePath).listFiles().length;
+
+		int levelNumber = 0;
+		String levelPassword = "";
+		
+		for(int x = 1; x <= fileCount; x++) {
+			
+			File file = new File(AbsolutePath + "/" + (allLevels.size() + 1) + ".txt");
+			
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			
+			try {
+				
+			    StringBuilder sb = new StringBuilder();
+			    String line = br.readLine();
+			    
+			    while (line != null) {
+			    	
+			    	if(line.startsWith("L")) {
+			    		
+			    		levelNumber = Integer.parseInt(line.substring(2, line.length() - 1));
+			    		
+			    	}
+			    	
+			    	if(line.startsWith("P")) {
+			    		
+			    		levelPassword = line.substring(2, line.length() - 1);
+			    		allPasswords.add(levelPassword);
+			    		
+			    	}
+			    	
+			    	sb.append(line);
+			        sb.append(System.lineSeparator());
+			        line = br.readLine();
+			        
+			    }
+			    
+			} finally {
+				
+				allLevels.add(new Level(file, levelNumber, levelPassword));
+				
+			    br.close();
+			    
+			}
+			
+		}
+		
+	}
+	
+	public void loadLevel() throws IOException {
+		System.out.println("LOAD LEVEL");
+		if(allTrains.size() > 0) {
+
+			allTrains.get(0).setSpeed(1);
+			
+			allTrains.get(0).getMove().stop();
+			
+			allWagons.clear();
+			allObjects.clear();
+			allWalls.clear();
+			allWagons.clear();
+			allTrains.clear();
+			allGates.clear();
+			allTunnels.clear();
+			
+		}
+		
+		alive = true;
+		lastKeyPressed = KeyCode.A;
+		won = false;
+		
+		File file = allLevels.get(currentLevel - 1).getFile();
+		
+		BufferedReader br = new BufferedReader(new FileReader(file));
+		
+		try {
+			
+		    StringBuilder sb = new StringBuilder();
+		    String line = br.readLine();
+		    
+		    while (line != null) {
+		    	
+		    	if(line.startsWith("L")) {
+		    		
+		    		level = Integer.parseInt(line.substring(2, line.length() - 1));
+		    		l_level.setText(Integer.toString(level));
+		    		
+		    	}
+		    	
+		    	if(line.startsWith("P")) {
+		    		
+		    		password = line.substring(2, line.length() - 1);
+		    		tf_password.setText(password);
+		    		
+		    	}
+		    	
+		    	if(line.startsWith("0")) {
+		    		
+		    		int X = Integer.parseInt(line.substring(line.indexOf("(") + 1, line.indexOf(",")));
+		    		int Y = Integer.parseInt(line.substring(line.indexOf(",") + 1, line.indexOf(")")));
+		    		
+		    		allWalls.add(new Wall(X, Y, wall));
+		    		
+		    	}
+		    	
+		    	if(line.startsWith("1")) {
+		    		
+		    		int X = Integer.parseInt(line.substring(line.indexOf("(") + 1, line.indexOf(",")));
+		    		int Y = Integer.parseInt(line.substring(line.indexOf(",") + 1, line.indexOf(")")));
+		    		
+		    		allTrains.add(new Train(X, Y, train));
+		    		
+		    	}
+		    	
+		    	if(line.startsWith("2")) {
+		    		
+		    		int X = Integer.parseInt(line.substring(line.indexOf("(") + 1, line.indexOf(",")));
+		    		int Y = Integer.parseInt(line.substring(line.indexOf(",") + 1, line.indexOf(")")));
+		    		
+		    		allObjects.add(new Object(X, Y, object));
+		    		
+		    	}
+		    	
+		    	if(line.startsWith("3")) {
+		    		
+		    		int X = Integer.parseInt(line.substring(line.indexOf("(") + 1, line.indexOf(",")));
+		    		int Y = Integer.parseInt(line.substring(line.indexOf(",") + 1, line.indexOf(")")));
+		    		
+		    		allGates.add(new Gate(X, Y, gate));
+		    		
+		    	}
+		    	
+		    	if(line.startsWith("4")) {
+		    		
+		    		int X = Integer.parseInt(line.substring(line.indexOf("(") + 1, line.indexOf(",")));
+		    		int Y = Integer.parseInt(line.substring(line.indexOf(",") + 1, line.indexOf(")")));
+		    		
+		    		allTunnels.add(new Tunnel(X, Y, tunnel));
+		    		
+		    	}
+		    	
+		    	sb.append(line);
+		        sb.append(System.lineSeparator());
+		        line = br.readLine();
+		        
+		    }
+		    
+		} finally {
+			
+		    br.close();
+		    
+		    if(allTunnels.size() > 0) {
+		    	
+			    for(int x = 0; x < allTunnels.size(); x = x + 2) {
+			    	
+			    	allTunnels.get(x).setEnd(allTunnels.get(x + 1));
+			    	allTunnels.get(x + 1).setEnd(allTunnels.get(x));
+			    	
+			    }
+		    	
+		    }
+		    
+		}
+		
+	}
+	
+	public void checkCollisionWithWalls() {
+		System.out.println("CHECK COLLISION WITH WALLS");
+		if(alive) {
+			
+			for(int x = 0; x < allWalls.size(); x++) {
+				
+				if(allTrains.get(0).getX() == allWalls.get(x).getX() && allTrains.get(0).getY() == allWalls.get(x).getY()) {
+					
+					dead();
+					
+				}
+				
+			}
+			
+		}
+		
+	}
+	
+	public void setCanvasKeyboardInput() {
+		System.out.println("SET CANVAS KEYBOAR INPUT");
+		c_canvas.setOnKeyPressed(e -> {
+			
+		    if (e.getCode() == KeyCode.LEFT) {
+		    	
+		    	if(lastKeyPressed != KeyCode.LEFT) {
+		    		
+		    		if(allTrains.get(0).getOrientation() == 3 && allWagons.size() > 0) {
+		    			
+		    			dead();
+		    			
+		    		}else {
+		    			
+		    			lastKeyPressed = KeyCode.LEFT;
+				    	
+		    			allTrains.get(0).setOrientation(1);
+		    			
+		    		}	    	
+		    		
+		    	}
+		        
+		    }
+		   
+		    if (e.getCode() == KeyCode.RIGHT) {
+		    	
+		    	if(lastKeyPressed != KeyCode.RIGHT) {
+		    		
+		    		if(allTrains.get(0).getOrientation() == 1 && allWagons.size() > 0) {
+		    			
+		    			dead();
+		    			
+		    		}else {
+		    			
+		    			lastKeyPressed = KeyCode.RIGHT;
+				    	
+		    			allTrains.get(0).setOrientation(3);
+		    			
+		    		}
+		    		
+		    	}
+		    	
+		    }
+		    
+		    if (e.getCode() == KeyCode.UP) {
+		    	
+		    	if(lastKeyPressed != KeyCode.UP) {
+		    		
+		    		if(allTrains.get(0).getOrientation() == 2 && allWagons.size() > 0) {
+		    			
+		    			dead();	
+		    			
+		    		}else {
+		    			
+		    			lastKeyPressed = KeyCode.UP;
+				    	
+		    			allTrains.get(0).setOrientation(0);
+		    			
+		    		}
+		    		
+		    	}
+		       
+		    }
+		    
+		    if (e.getCode() == KeyCode.DOWN) {
+		    	
+		    	if(lastKeyPressed != KeyCode.DOWN) {
+		    		
+		    		if(allTrains.get(0).getOrientation() == 0 && allWagons.size() > 0) {
+		    			
+		    			dead();
+		    			
+		    		}else {
+		    			
+		    			lastKeyPressed = KeyCode.DOWN;
+				    	
+		    			allTrains.get(0).setOrientation(2);
+		    			
+		    		}
+		    		
+		    	}
+		    	
+		    }
+		    
+		    if(e.getCode() == KeyCode.F4) {
+		    	
+		    	if(passwordActive == false) {
+		    		
+		    		if(allTrains.get(0).getOrientation() == -1) {
+		    			
+				    	l_f4.setVisible(false);
+				    	tf_password.setVisible(true);
+				    	
+				    	tf_password.requestFocus();
+				    	
+				    	passwordActive = true;
+		    			
+		    		}
+		    		
+		    	}
+		    	
+		    }
+		    
+		});
+		
+	}
+	
+	public void setPasswordKeyboardInput() {
+		System.out.println("SET PASSWORD KEYBOARD INPUT");
+		tf_password.setOnKeyPressed(e -> {
+			
+			if(e.getCode() == KeyCode.ESCAPE) {
+		    	
+		    	if(passwordActive == true) {
+		    		
+		    		l_f4.setVisible(true);
+			    	tf_password.setVisible(false);
+			    	
+			    	c_canvas.requestFocus();
+			    	
+			    	passwordActive = false;
+		    		
+		    	}
+		    	
+		    }
+		    
+		    if(e.getCode() == KeyCode.ENTER) {
+		    	
+		    	if(passwordActive == true) {
+		    		
+		    		l_f4.setVisible(true);
+			    	tf_password.setVisible(false);
+		    		
+			    	c_canvas.requestFocus();
+			    	
+			    	passwordActive = false;
+			    	
+		    		String key = tf_password.getText();
+		    		key = key.toUpperCase();
+		    		
+		    		for(int x = 0; x < allPasswords.size(); x++) {
+		    			
+		    			if(key.equals(allPasswords.get(x))) {
+		    				
+		    				currentLevel = x + 1;
+		    				
+		    				try {
+		    					
+								loadLevel();
+								
+							} catch (IOException e1) {
+								
+								e1.printStackTrace();
+								
+							}
+		    				
+		    			}else{
+		    				
+		    				tf_password.setText(password);
+		    				
+		    			}
+		    			
+		    		}
+		    		
+		    	}
+		    	
+		    }
+			
+		});
+		
+	}
+	
+	public void setAnimationTimer() {
+		System.out.println("SET ANIMATION TIMER");
+		AnimationTimer timer = new AnimationTimer() {
+
+			public void handle(long arg0) {
+				
+				update();
+				render();
+				
+			}
+			
+		};
+		
+		timer.start();
+		
+	}	
+	
+	private void checkCollisionWithObjects() {
+		System.out.println("CHECK COLLISION WITH OBJECTS");
+		if(alive) {
+			
+			for(int x = 0; x < allObjects.size(); x++) {
+				
+				if(allTrains.get(0).getX() == allObjects.get(x).getX() && allTrains.get(0).getY() == allObjects.get(x).getY()) {
+					
+					score = score + 100;
+					currentLevelScore = currentLevelScore + 100;
+					
+					l_score.setText(Integer.toString(score));
+					
+					allTrains.get(0).setLenght(allTrains.get(0).getLenght() + 1);
+					
+					if(allWagons.size() == 0) {
+						
+						if(allTrains.get(0).getOrientation() == 0) {
+							
+							 // ORIENTATION = 1 - LEFT, 3 - RIGHT, 0 - UP, 2 - DOWN
+							
+							allWagons.add(new Wagon(allObjects.get(x).getX(), allObjects.get(x).getY() + (36 * allTrains.get(0).getLenght()), wagon));
+							
+							for(int y = 0; y < allWagons.size(); y++) {
+								
+								allWagons.get(allWagons.size() - 1).getFutureMoves().add(0);
+								
+							}
+							
+						}else if(allTrains.get(0).getOrientation() == 1) {
+							
+							allWagons.add(new Wagon(allObjects.get(x).getX() + (36 * allTrains.get(0).getLenght()), allObjects.get(x).getY(), wagon));
+							
+							for(int y = 0; y < allWagons.size(); y++) {
+								
+								allWagons.get(allWagons.size() - 1).getFutureMoves().add(1);
+								
+							}
+							
+						}else if(allTrains.get(0).getOrientation() == 2) {
+							
+							allWagons.add(new Wagon(allObjects.get(x).getX(), allObjects.get(x).getY() - (36 * allTrains.get(0).getLenght()), wagon));
+							
+							for(int y = 0; y < allWagons.size(); y++) {
+								
+								allWagons.get(allWagons.size() - 1).getFutureMoves().add(2);
+								
+							}
+							
+						}else if(allTrains.get(0).getOrientation() == 3) {
+							
+							allWagons.add(new Wagon(allObjects.get(x).getX() - (36 * allTrains.get(0).getLenght()), allObjects.get(x).getY(), wagon));
+							
+							for(int y = 0; y < allWagons.size(); y++) {
+								
+								allWagons.get(allWagons.size() - 1).getFutureMoves().add(3);
+								
+							}
+							
+						}
+						
+					}else {
+						
+						if(allWagons.get(allWagons.size() - 1).getLastMove() == 0) {
+							
+							int X = allWagons.get(allWagons.size() - 1).getX();
+							int Y = allWagons.get(allWagons.size() - 1).getY();
+							
+							allWagons.add(new Wagon(X, Y + 36, wagon));
+							
+							for(int y = 0; y < allWagons.get(allWagons.size() - 2).getFutureMoves().size(); y++) {
+								
+								allWagons.get(allWagons.size() - 1).getFutureMoves().add(allWagons.get(allWagons.size() - 2).getFutureMoves().get(y));
+								
+							}
+							
+							allWagons.get(allWagons.size() - 1).getFutureMoves().add(0, 0);
+						
+						}else if(allWagons.get(allWagons.size() - 1).getLastMove() == 1) {
+							
+							int X = allWagons.get(allWagons.size() - 1).getX();
+							int Y = allWagons.get(allWagons.size() - 1).getY();
+
+							allWagons.add(new Wagon(X + 36, Y, wagon));
+							
+							for(int y = 0; y < allWagons.get(allWagons.size() - 2).getFutureMoves().size(); y++) {
+								
+								allWagons.get(allWagons.size() - 1).getFutureMoves().add(allWagons.get(allWagons.size() - 2).getFutureMoves().get(y));
+								
+							}
+							
+							allWagons.get(allWagons.size() - 1).getFutureMoves().add(0, 1);
+							
+						}else if(allWagons.get(allWagons.size() - 1).getLastMove() == 2) {
+							
+							int X = allWagons.get(allWagons.size() - 1).getX();
+							int Y = allWagons.get(allWagons.size() - 1).getY();
+							
+							allWagons.add(new Wagon(X, Y - 36, wagon));
+							
+							for(int y = 0; y < allWagons.get(allWagons.size() - 2).getFutureMoves().size(); y++) {
+								
+								allWagons.get(allWagons.size() - 1).getFutureMoves().add(allWagons.get(allWagons.size() - 2).getFutureMoves().get(y));
+								
+							}
+							
+							allWagons.get(allWagons.size() - 1).getFutureMoves().add(0, 2);
+							
+						}else if(allWagons.get(allWagons.size() - 1).getLastMove() == 3) {
+							
+							int X = allWagons.get(allWagons.size() - 1).getX();
+							int Y = allWagons.get(allWagons.size() - 1).getY();
+							
+							allWagons.add(new Wagon(X - 36, Y, wagon));
+							
+							for(int y = 0; y < allWagons.get(allWagons.size() - 2).getFutureMoves().size(); y++) {
+								
+								allWagons.get(allWagons.size() - 1).getFutureMoves().add(allWagons.get(allWagons.size() - 2).getFutureMoves().get(y));
+								
+							}
+							
+							allWagons.get(allWagons.size() - 1).getFutureMoves().add(0, 3);
+							
+						}
+						
+					}
+					
+					allObjects.remove(allObjects.get(x));
+					
+					return;
+					
+				}
+				
+			}
+			
+		}
+		
+	}
+	
+	private void autoMoveWagons() {
+		System.out.println("AUTO MOVE WAGONS");
+		for(int x = 0; x < allWagons.size(); x++) {
+			
+			if(allWagons.get(x).getFutureMoves().size() != 0) {
+				
+				// ORIENTATION = 1 - LEFT, 3 - RIGHT, 0 - UP, 2 - DOWN
+				
+				allWagons.get(x).setLastMove(allWagons.get(x).getFutureMoves().get(0));
+				
+				if(allWagons.get(x).getFutureMoves().get(0) == 0) {
+					
+					allWagons.get(x).setY(allWagons.get(x).getY() - 36);
+					allWagons.get(x).getFutureMoves().remove(0);
+					
+				}else if(allWagons.get(x).getFutureMoves().get(0) == 1) {
+					
+					allWagons.get(x).setX(allWagons.get(x).getX() - 36);
+					allWagons.get(x).getFutureMoves().remove(0);
+					
+				}else if(allWagons.get(x).getFutureMoves().get(0) == 2) {
+					
+					allWagons.get(x).setY(allWagons.get(x).getY() + 36);
+					allWagons.get(x).getFutureMoves().remove(0);
+					
+				}else if(allWagons.get(x).getFutureMoves().get(0) == 3) {
+					
+					allWagons.get(x).setX(allWagons.get(x).getX() + 36);
+					allWagons.get(x).getFutureMoves().remove(0);
+					
+				}
+				
+			}
+			
+		}
+		
+	}
+	
+	private void checkCollisionWithGate() {
+		System.out.println("CHECK COLLISION WITH GATE");
+		if(allObjects.size() == 0) {
+			
+			if(!won) {
+				
+				if((allTrains.get(0).getX() == allGates.get(0).getX()) && (allTrains.get(0).getY() == allGates.get(0).getY())) {
+
+					won = true;
+					
+					allTrains.get(0).setSpeed(0);
+					alive = false;
+					currentLevelScore = 0;
+					
+					for(int y = 0; y < allWagons.size(); y++) {
+						
+						allWagons.get(y).getFutureMoves().clear();
+						
+					}
+					
+					currentLevel++;
+					
+					try {
+						
+						loadLevel();
+						
+					} catch (IOException e) {
+						
+						e.printStackTrace();
+						
+					}
+					
+				}
+				
+			}
+			
+		}else {
+			
+			if(alive) {
+				
+				if((allTrains.get(0).getX() == allGates.get(0).getX()) && (allTrains.get(0).getY() == allGates.get(0).getY())) {
+
+					dead();
+					
+				}
+				
+			}
+			
+		}
+		
+	}
+	
+	private void checkCollisionWithWagons() {
+		System.out.println("CHECK COLLISION WITH WAGONS");
+		if(alive) {
+			
+			for(int x = 0; x < allWagons.size(); x++) {
+				
+				if((allTrains.get(0).getX() == allWagons.get(x).getX()) && (allTrains.get(0).getY() == allWagons.get(x).getY())) {
+					
+					dead();
+					
+				}
+				
+			}
+			
+		}
+		
+	}
+	
+	public void dead() {
+		System.out.println("DEAD");
+		allTrains.get(0).setSpeed(0);
+		alive = false;
+		
+		lastKeyPressed = KeyCode.A;
+		
+		allTrains.get(0).getMove().stop();
+		
+		score = score - currentLevelScore - 1000;
+		currentLevelScore = 0;
+		
+		l_score.setText(Integer.toString(score));
+		
+		for(int y = 0; y < allWagons.size(); y++) {
+			
+			allWagons.get(y).getFutureMoves().clear();
+			
+		}
+		
+		allWagons.clear();
+		allObjects.clear();
+		allWalls.clear();
+		allWagons.clear();
+		allTrains.clear();
+		allGates.clear();
+		
+		try {
+			
+			loadLevel();
+			
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+			
+		}
+		
+	}
+	
+	private void loadResources() {
+		System.out.println("LOAD RESOURCES");
+		String AbsolutePath = new File(".").getAbsolutePath();
+    	
+    	AbsolutePath = (AbsolutePath.substring(0, AbsolutePath.length() - 1));
+		AbsolutePath = AbsolutePath + "res";
+			
+		File file1 = new File(AbsolutePath + "/" + "wall.png");
+		File file2 = new File(AbsolutePath + "/" + "train.png");
+		File file3 = new File(AbsolutePath + "/" + "gate.png");
+		File file4 = new File(AbsolutePath + "/" + "object.png");
+		File file5 = new File(AbsolutePath + "/" + "wagon.png");
+		File file6 = new File(AbsolutePath + "/" + "tunnel.png");
+		
+		wall = new Image(file1.toURI().toString());
+		train = new Image(file2.toURI().toString());
+		gate = new Image(file3.toURI().toString());
+		object = new Image(file4.toURI().toString());
+		wagon = new Image(file5.toURI().toString());
+		tunnel = new Image(file6.toURI().toString());
+
+	}
+	
+	public void checkCollisionWithTunnels() {
+		System.out.println("CHECK COLLISION WITH TUNNELS");
+		
+		if(allTunnels.size() > 0) {
+			
+			for(int x = 0; x < allTunnels.size(); x++) {
+				
+				if((allTrains.get(0).getX() == allTunnels.get(x).getX()) && (allTrains.get(0).getY() == allTunnels.get(x).getY())) {
+					
+					if(allTrains.get(0).getOrientation() == 0) {
+						
+						allTrains.get(0).setX(allTunnels.get(x).getEnd().getX());
+						allTrains.get(0).setY(allTunnels.get(x).getEnd().getY() - 36);
+						
+					}else if(allTrains.get(0).getOrientation() == 1) {
+						
+						allTrains.get(0).setX(allTunnels.get(x).getEnd().getX() - 36);
+						allTrains.get(0).setY(allTunnels.get(x).getEnd().getY());
+						
+					}else if(allTrains.get(0).getOrientation() == 2) {
+						
+						allTrains.get(0).setX(allTunnels.get(x).getEnd().getX());
+						allTrains.get(0).setY(allTunnels.get(x).getEnd().getY() + 36);
+						
+					}else if(allTrains.get(0).getOrientation() == 3) {
+						
+						allTrains.get(0).setX(allTunnels.get(x).getEnd().getX() + 36);
+						allTrains.get(0).setY(allTunnels.get(x).getEnd().getY());
+						
+					}
+					
+				}
+				
+				if(allWagons.size() > 0) {
+					
+					for(int y = 0; y < allWagons.size(); y++) {
+						
+						if((allWagons.get(y).getX() == allTunnels.get(x).getX()) && (allWagons.get(y).getY() == allTunnels.get(x).getY())) {
+							
+							if(allWagons.get(y).getLastMove() == 0) {
+								
+								allWagons.get(y).setX(allTunnels.get(x).getEnd().getX());
+								allWagons.get(y).setY(allTunnels.get(x).getEnd().getY() - 36);
+								
+							}else if(allWagons.get(y).getLastMove() == 1) {
+								
+								allWagons.get(y).setX(allTunnels.get(x).getEnd().getX() - 36);
+								allWagons.get(y).setY(allTunnels.get(x).getEnd().getY());
+								
+							}else if(allWagons.get(y).getLastMove() == 2) {
+								
+								allWagons.get(y).setX(allTunnels.get(x).getEnd().getX());
+								allWagons.get(y).setY(allTunnels.get(x).getEnd().getY() + 36);
+								
+							}else if(allWagons.get(y).getLastMove() == 3) {
+								
+								allWagons.get(y).setX(allTunnels.get(x).getEnd().getX() + 36);
+								allWagons.get(y).setY(allTunnels.get(x).getEnd().getY());
+								
+							}
+							
+						}
+						
+					}
+					
+				}
+				
+			}
+			
+		}
+		
+	}
+	
+}
