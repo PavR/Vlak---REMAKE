@@ -32,26 +32,26 @@ public class Train {
 		orientation = -1;
 		lenght = 0;
 		
-		String AbsolutePath = new File(".").getAbsolutePath();
+		//String AbsolutePath = new File(".").getAbsolutePath();
     	
-    	AbsolutePath = (AbsolutePath.substring(0, AbsolutePath.length() - 1));
-    	AbsolutePath = AbsolutePath + "sounds";
+    //	AbsolutePath = (AbsolutePath.substring(0, AbsolutePath.length() - 1));
+    	//AbsolutePath = AbsolutePath + "sounds";
     	
-		File file = new File(AbsolutePath + "/" + "Move.wav");
+		//File file = new File(AbsolutePath + "/" + "Move.wav");
 		
-		try {
+		//try {
 			
-			move = AudioSystem.getClip();
-			AudioInputStream inputStream = AudioSystem.getAudioInputStream(file);
-			move.open(inputStream);
+		//	move = AudioSystem.getClip();
+		//	AudioInputStream inputStream = AudioSystem.getAudioInputStream(file);
+		//	move.open(inputStream);
 			
-		} catch (LineUnavailableException | UnsupportedAudioFileException | IOException e1) {
+		//} catch (LineUnavailableException | UnsupportedAudioFileException | IOException e1) {
+		//	
+		//	e1.printStackTrace();
 			
-			e1.printStackTrace();
-			
-		}
+		//}
 		
-		setMove(move);
+		//setMove(move);
 		
 	}
 

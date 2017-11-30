@@ -64,7 +64,7 @@ public class Main_Controller implements Initializable{
 	
 	private boolean passwordActive = false;
 	
-	private Image wall, train, gate, object, wagon, tunnel;
+	private Image wall, trainUp, trainLeft, trainDown, trainRight, gate, object, wagonRight, wagonUp, wagonDown, tunnel;
 	
 	public void initialize(URL location, ResourceBundle resources) {
 		
@@ -103,10 +103,56 @@ public class Main_Controller implements Initializable{
 				
 					if(lastKeyPressed != KeyCode.A) {
 						
-						allTrains.get(0).getMove().setFramePosition(0);
-						allTrains.get(0).getMove().start();
+						//allTrains.get(0).getMove().setFramePosition(0);
+						//allTrains.get(0).getMove().start();
 						
-						allTrains.get(0).getMove().loop(Clip.LOOP_CONTINUOUSLY);
+						//allTrains.get(0).getMove().loop(Clip.LOOP_CONTINUOUSLY);
+						
+						
+						for(int x = 0; x < allTrains.size(); x++) {
+							
+							if(allTrains.get(x).getOrientation() == 0) {
+								
+								allTrains.get(x).setImage(trainUp);
+								
+							}else if(allTrains.get(x).getOrientation() == 1) {
+								
+								allTrains.get(x).setImage(trainLeft);
+								
+							}else if(allTrains.get(x).getOrientation() == 2) {
+								
+								allTrains.get(x).setImage(trainDown);
+								
+							}else if(allTrains.get(x).getOrientation() == 3) {
+								
+								allTrains.get(x).setImage(trainRight);
+								
+							}
+							
+						}
+						
+						for(int x = 0; x < allWagons.size(); x++) {
+							
+							if(allWagons.get(x).getFutureMoves().get(0) == 0) {
+								
+								allWagons.get(x).setImage(wagonUp);
+								
+							}else if(allWagons.get(x).getFutureMoves().get(0) == 1) {
+								
+								allWagons.get(x).setImage(wagonRight);
+								
+							}else if(allWagons.get(x).getFutureMoves().get(0) == 2) {
+								
+								allWagons.get(x).setImage(wagonDown);
+								
+							}else if(allWagons.get(x).getFutureMoves().get(0) == 3) {
+								
+								allWagons.get(x).setImage(wagonRight);
+								
+							}
+							
+						}
+						
 						autoMovement();
 						
 						checkCollisionWithWagons();
@@ -285,7 +331,7 @@ public class Main_Controller implements Initializable{
 
 			allTrains.get(0).setSpeed(1);
 			
-			allTrains.get(0).getMove().stop();
+			//allTrains.get(0).getMove().stop();
 			
 			allWagons.clear();
 			allObjects.clear();
@@ -340,7 +386,7 @@ public class Main_Controller implements Initializable{
 		    		int X = Integer.parseInt(line.substring(line.indexOf("(") + 1, line.indexOf(",")));
 		    		int Y = Integer.parseInt(line.substring(line.indexOf(",") + 1, line.indexOf(")")));
 		    		
-		    		allTrains.add(new Train(X, Y, train));
+		    		allTrains.add(new Train(X, Y, trainRight));
 		    		
 		    	}
 		    	
@@ -624,7 +670,7 @@ public class Main_Controller implements Initializable{
 							
 							 // ORIENTATION = 1 - LEFT, 3 - RIGHT, 0 - UP, 2 - DOWN
 							
-							allWagons.add(new Wagon(allObjects.get(x).getX(), allObjects.get(x).getY() + (36 * allTrains.get(0).getLenght()), wagon));
+							allWagons.add(new Wagon(allObjects.get(x).getX(), allObjects.get(x).getY() + (36 * allTrains.get(0).getLenght()), wagonUp));
 							
 							for(int y = 0; y < allWagons.size(); y++) {
 								
@@ -634,7 +680,7 @@ public class Main_Controller implements Initializable{
 							
 						}else if(allTrains.get(0).getOrientation() == 1) {
 							
-							allWagons.add(new Wagon(allObjects.get(x).getX() + (36 * allTrains.get(0).getLenght()), allObjects.get(x).getY(), wagon));
+							allWagons.add(new Wagon(allObjects.get(x).getX() + (36 * allTrains.get(0).getLenght()), allObjects.get(x).getY(), wagonRight));
 							
 							for(int y = 0; y < allWagons.size(); y++) {
 								
@@ -644,7 +690,7 @@ public class Main_Controller implements Initializable{
 							
 						}else if(allTrains.get(0).getOrientation() == 2) {
 							
-							allWagons.add(new Wagon(allObjects.get(x).getX(), allObjects.get(x).getY() - (36 * allTrains.get(0).getLenght()), wagon));
+							allWagons.add(new Wagon(allObjects.get(x).getX(), allObjects.get(x).getY() - (36 * allTrains.get(0).getLenght()), wagonDown));
 							
 							for(int y = 0; y < allWagons.size(); y++) {
 								
@@ -654,7 +700,7 @@ public class Main_Controller implements Initializable{
 							
 						}else if(allTrains.get(0).getOrientation() == 3) {
 							
-							allWagons.add(new Wagon(allObjects.get(x).getX() - (36 * allTrains.get(0).getLenght()), allObjects.get(x).getY(), wagon));
+							allWagons.add(new Wagon(allObjects.get(x).getX() - (36 * allTrains.get(0).getLenght()), allObjects.get(x).getY(), wagonRight));
 							
 							for(int y = 0; y < allWagons.size(); y++) {
 								
@@ -671,7 +717,7 @@ public class Main_Controller implements Initializable{
 							int X = allWagons.get(allWagons.size() - 1).getX();
 							int Y = allWagons.get(allWagons.size() - 1).getY();
 							
-							allWagons.add(new Wagon(X, Y + 36, wagon));
+							allWagons.add(new Wagon(X, Y + 36, wagonUp));
 							
 							for(int y = 0; y < allWagons.get(allWagons.size() - 2).getFutureMoves().size(); y++) {
 								
@@ -686,7 +732,7 @@ public class Main_Controller implements Initializable{
 							int X = allWagons.get(allWagons.size() - 1).getX();
 							int Y = allWagons.get(allWagons.size() - 1).getY();
 
-							allWagons.add(new Wagon(X + 36, Y, wagon));
+							allWagons.add(new Wagon(X + 36, Y, wagonRight));
 							
 							for(int y = 0; y < allWagons.get(allWagons.size() - 2).getFutureMoves().size(); y++) {
 								
@@ -701,7 +747,7 @@ public class Main_Controller implements Initializable{
 							int X = allWagons.get(allWagons.size() - 1).getX();
 							int Y = allWagons.get(allWagons.size() - 1).getY();
 							
-							allWagons.add(new Wagon(X, Y - 36, wagon));
+							allWagons.add(new Wagon(X, Y - 36, wagonDown));
 							
 							for(int y = 0; y < allWagons.get(allWagons.size() - 2).getFutureMoves().size(); y++) {
 								
@@ -716,7 +762,7 @@ public class Main_Controller implements Initializable{
 							int X = allWagons.get(allWagons.size() - 1).getX();
 							int Y = allWagons.get(allWagons.size() - 1).getY();
 							
-							allWagons.add(new Wagon(X - 36, Y, wagon));
+							allWagons.add(new Wagon(X - 36, Y, wagonRight));
 							
 							for(int y = 0; y < allWagons.get(allWagons.size() - 2).getFutureMoves().size(); y++) {
 								
@@ -857,7 +903,7 @@ public class Main_Controller implements Initializable{
 		
 		lastKeyPressed = KeyCode.A;
 		
-		allTrains.get(0).getMove().stop();
+		//allTrains.get(0).getMove().stop();
 		
 		score = score - currentLevelScore - 1000;
 		currentLevelScore = 0;
@@ -897,17 +943,35 @@ public class Main_Controller implements Initializable{
 		AbsolutePath = AbsolutePath + "res";
 			
 		File file1 = new File(AbsolutePath + "/" + "wall.png");
-		File file2 = new File(AbsolutePath + "/" + "train.png");
+		
+		File file2a = new File(AbsolutePath + "/" + "blueTrainUp.gif");
+		File file2b = new File(AbsolutePath + "/" + "blueTrainDown.gif");
+		File file2c = new File(AbsolutePath + "/" + "blueTrainLeft.gif");
+		File file2d = new File(AbsolutePath + "/" + "blueTrainRight.gif");
+		
 		File file3 = new File(AbsolutePath + "/" + "gate.png");
-		File file4 = new File(AbsolutePath + "/" + "object.png");
-		File file5 = new File(AbsolutePath + "/" + "wagon.png");
+		File file4 = new File(AbsolutePath + "/" + "object.gif");
+
+		File file5a = new File(AbsolutePath + "/" + "wagonRight.png");
+		File file5b = new File(AbsolutePath + "/" + "wagonUp.png");
+		File file5c = new File(AbsolutePath + "/" + "wagonDown.png");
+		
 		File file6 = new File(AbsolutePath + "/" + "tunnel.png");
 		
 		wall = new Image(file1.toURI().toString());
-		train = new Image(file2.toURI().toString());
+		
+		trainUp = new Image(file2a.toURI().toString());
+		trainDown = new Image(file2b.toURI().toString());
+		trainLeft = new Image(file2c.toURI().toString());
+		trainRight = new Image(file2d.toURI().toString());
+		
 		gate = new Image(file3.toURI().toString());
 		object = new Image(file4.toURI().toString());
-		wagon = new Image(file5.toURI().toString());
+	
+		wagonRight = new Image(file5a.toURI().toString());
+		wagonUp = new Image(file5c.toURI().toString());
+		wagonDown = new Image(file5b.toURI().toString());
+		
 		tunnel = new Image(file6.toURI().toString());
 
 	}

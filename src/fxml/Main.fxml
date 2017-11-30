@@ -8,31 +8,31 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Main_Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="720.0" style="-fx-background-color: BLACK;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Main_Controller">
    <children>
       <Canvas fx:id="c_canvas" focusTraversable="true" height="720.0" width="720.0" />
       <Line endX="620.0" layoutX="100.0" layoutY="720.0" startX="-100.0" strokeWidth="5.0" />
-      <Label layoutX="14.0" layoutY="740.0" text="SCORE: ">
+      <Label layoutX="14.0" layoutY="740.0" text="SCORE: " textFill="WHITE">
          <font>
             <Font size="25.0" />
          </font>
       </Label>
-      <Label layoutX="591.0" layoutY="740.0" text="LEVEL:">
+      <Label layoutX="591.0" layoutY="740.0" text="LEVEL:" textFill="WHITE">
          <font>
             <Font size="25.0" />
          </font>
       </Label>
-      <Label fx:id="l_f4" layoutX="303.0" layoutY="740.0" text="F4 - CODE">
+      <Label fx:id="l_f4" layoutX="303.0" layoutY="740.0" text="F4 - CODE" textFill="WHITE">
          <font>
             <Font size="25.0" />
          </font>
       </Label>
-      <Label fx:id="l_score" layoutX="102.0" layoutY="740.0" text="0">
+      <Label fx:id="l_score" layoutX="102.0" layoutY="740.0" text="0" textFill="WHITE">
          <font>
             <Font size="25.0" />
          </font>
       </Label>
-      <Label fx:id="l_level" layoutX="668.0" layoutY="740.0" text="50">
+      <Label fx:id="l_level" layoutX="668.0" layoutY="740.0" text="50" textFill="WHITE">
          <font>
             <Font size="25.0" />
          </font>
