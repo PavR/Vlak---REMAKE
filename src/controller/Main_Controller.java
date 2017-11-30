@@ -40,7 +40,7 @@ public class Main_Controller implements Initializable{
 	
 	private int framsePassed = 0;
 	
-	private KeyCode lastKeyPressed = KeyCode.A;
+	private KeyCode lastKeyPressed = KeyCode.B;
 	
 	private ArrayList<Object> allObjects = new ArrayList<Object>();
 	private ArrayList<Wagon> allWagons = new ArrayList<Wagon>();
