@@ -5,12 +5,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane maxHeight="800.0" maxWidth="720.0" minHeight="800.0" minWidth="720.0" prefHeight="800.0" prefWidth="720.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+<AnchorPane maxHeight="800.0" maxWidth="720.0" minHeight="800.0" minWidth="720.0" prefHeight="800.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Menu_Controller">
    <children>
       <Pane prefHeight="800.0" prefWidth="720.0">
          <children>
-            <Button layoutX="304.0" layoutY="170.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="120.0" text="PLAY" />
+            <Button fx:id="b_play" layoutX="304.0" layoutY="170.0" mnemonicParsing="false" onAction="#b_play_onAction" prefHeight="35.0" prefWidth="120.0" text="PLAY" />
             <Button layoutX="304.0" layoutY="232.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="120.0" text="OPTIONS" />
             <Button layoutX="304.0" layoutY="291.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="120.0" text="ACHIEVEMENTS" />
             <Button layoutX="304.0" layoutY="354.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="120.0" text="EXIT" />

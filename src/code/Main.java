@@ -15,7 +15,7 @@ public class Main extends Application{
 		
 		try {
 			
-			Parent root = FXMLLoader.load(getClass().getResource("/fxml/Main.fxml"));
+			Parent root = FXMLLoader.load(getClass().getResource("/fxml/Menu.fxml"));
 			Scene scene = new Scene(root, WIDTH, HEIGHT);
 			
 			primaryStage.setTitle("Vlak - REMAKE");

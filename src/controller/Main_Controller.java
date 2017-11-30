@@ -103,11 +103,10 @@ public class Main_Controller implements Initializable{
 				
 					if(lastKeyPressed != KeyCode.A) {
 						
-						//allTrains.get(0).getMove().setFramePosition(0);
-						//allTrains.get(0).getMove().start();
+						allTrains.get(0).getMove().setFramePosition(0);
+						allTrains.get(0).getMove().start();
 						
-						//allTrains.get(0).getMove().loop(Clip.LOOP_CONTINUOUSLY);
-						
+						allTrains.get(0).getMove().loop(Clip.LOOP_CONTINUOUSLY);
 						
 						for(int x = 0; x < allTrains.size(); x++) {
 							
@@ -331,7 +330,7 @@ public class Main_Controller implements Initializable{
 
 			allTrains.get(0).setSpeed(1);
 			
-			//allTrains.get(0).getMove().stop();
+			allTrains.get(0).getMove().stop();
 			
 			allWagons.clear();
 			allObjects.clear();
@@ -651,11 +650,21 @@ public class Main_Controller implements Initializable{
 	
 	private void checkCollisionWithObjects() {
 		System.out.println("CHECK COLLISION WITH OBJECTS");
+		
 		if(alive) {
+			
+			allTrains.get(0).getPick().stop();
 			
 			for(int x = 0; x < allObjects.size(); x++) {
 				
 				if(allTrains.get(0).getX() == allObjects.get(x).getX() && allTrains.get(0).getY() == allObjects.get(x).getY()) {
+					
+					allTrains.get(0).getMove().stop();
+					
+					allTrains.get(0).getPick().setFramePosition(0);
+					allTrains.get(0).getPick().start();
+					
+					allTrains.get(0).getPick().loop(Clip.LOOP_CONTINUOUSLY);
 					
 					score = score + 100;
 					currentLevelScore = currentLevelScore + 100;
@@ -903,7 +912,11 @@ public class Main_Controller implements Initializable{
 		
 		lastKeyPressed = KeyCode.A;
 		
-		//allTrains.get(0).getMove().stop();
+		allTrains.get(0).getPick().setFramePosition(0);
+		allTrains.get(0).getDeath().start();
+		
+		allTrains.get(0).getMove().stop();
+		allTrains.get(0).getPick().stop();
 		
 		score = score - currentLevelScore - 1000;
 		currentLevelScore = 0;

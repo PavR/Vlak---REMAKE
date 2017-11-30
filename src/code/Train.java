@@ -19,7 +19,7 @@ public class Train {
 	private int orientation;	 // ORIENTATION = 1 - LEFT, 3 - RIGHT, 0 - UP, 2 - DOWN
 	private int lenght;
 	
-	private Clip move;
+	private Clip move, pick, death;
 	
 	public Train(int x, int y, Image image) {
 		
@@ -32,26 +32,38 @@ public class Train {
 		orientation = -1;
 		lenght = 0;
 		
-		//String AbsolutePath = new File(".").getAbsolutePath();
+		String AbsolutePath = new File(".").getAbsolutePath();
     	
-    //	AbsolutePath = (AbsolutePath.substring(0, AbsolutePath.length() - 1));
-    	//AbsolutePath = AbsolutePath + "sounds";
+    	AbsolutePath = (AbsolutePath.substring(0, AbsolutePath.length() - 1));
+    	AbsolutePath = AbsolutePath + "sounds";
     	
-		//File file = new File(AbsolutePath + "/" + "Move.wav");
+		File fileA = new File(AbsolutePath + "/" + "Move.wav");
+		File fileB = new File(AbsolutePath + "/" + "Pick.wav");
+		File fileC = new File(AbsolutePath + "/" + "Death.wav");
 		
-		//try {
+		try {
 			
-		//	move = AudioSystem.getClip();
-		//	AudioInputStream inputStream = AudioSystem.getAudioInputStream(file);
-		//	move.open(inputStream);
+			move = AudioSystem.getClip();
+			AudioInputStream inputStream = AudioSystem.getAudioInputStream(fileA);
+			move.open(inputStream);
 			
-		//} catch (LineUnavailableException | UnsupportedAudioFileException | IOException e1) {
-		//	
-		//	e1.printStackTrace();
+			pick = AudioSystem.getClip();
+			inputStream = AudioSystem.getAudioInputStream(fileB);
+			pick.open(inputStream);
 			
-		//}
+			death = AudioSystem.getClip();
+			inputStream = AudioSystem.getAudioInputStream(fileC);
+			death.open(inputStream);
+			
+		} catch (LineUnavailableException | UnsupportedAudioFileException | IOException e1) {
+			
+			e1.printStackTrace();
 		
-		//setMove(move);
+		}
+		
+		setMove(move);
+		setPick(pick);
+		setDeath(death);
 		
 	}
 
@@ -136,6 +148,30 @@ public class Train {
 	public void setMove(Clip move) {
 		
 		this.move = move;
+		
+	}
+
+	public Clip getPick() {
+		
+		return pick;
+		
+	}
+
+	public void setPick(Clip pick) {
+		
+		this.pick = pick;
+		
+	}
+
+	public Clip getDeath() {
+		
+		return death;
+		
+	}
+
+	public void setDeath(Clip death) {
+		
+		this.death = death;
 		
 	}
 	
