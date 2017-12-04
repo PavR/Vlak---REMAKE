@@ -12,7 +12,11 @@ public class Sound_Handler {
 	
 	private MediaPlayer mediaPlayer;
 	
+	private boolean playing;;
+	
 	public Sound_Handler() {
+		
+		playing = false;
 		
 		String AbsolutePath = new File(".").getAbsolutePath();
     	
@@ -44,12 +48,16 @@ public class Sound_Handler {
 		mediaPlayer = new MediaPlayer(menu);
 		mediaPlayer.play();
 		
+		playing = true;
+		
 	}
 	
 	public void playPick() {
 		
 		mediaPlayer = new MediaPlayer(pick);
 		mediaPlayer.play();
+		
+		playing = true;
 		
 	}
 	
@@ -58,6 +66,8 @@ public class Sound_Handler {
 		mediaPlayer = new MediaPlayer(dead);
 		mediaPlayer.play();
 		
+		playing = true;
+		
 	}
 	
 	public void playMove() {
@@ -65,11 +75,27 @@ public class Sound_Handler {
 		mediaPlayer = new MediaPlayer(move);
 		mediaPlayer.play();
 		
+		playing = true;
+		
 	}
 	
 	public void stopSound() {
 		
 		mediaPlayer.stop();
+		
+		playing = false;
+		
+	}
+
+	public boolean isPlaying() {
+		
+		return playing;
+		
+	}
+
+	public void setPlaying(boolean playing) {
+		
+		this.playing = playing;
 		
 	}
 	

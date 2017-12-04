@@ -330,7 +330,11 @@ public class Main_Controller implements Initializable{
 
 			allTrains.get(0).setSpeed(1);
 			
-			sh.stopSound();
+			if(sh.isPlaying()) {
+				
+				sh.stopSound();
+				
+			}
 			
 			allWagons.clear();
 			allObjects.clear();
