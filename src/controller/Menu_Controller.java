@@ -1,17 +1,11 @@
 package controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
-
 import code.Main;
+import handler.Sound_Handler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -25,39 +19,19 @@ public class Menu_Controller implements Initializable{
 	@FXML
 	private Button b_play;
 	
-	private Clip music;
+	private Sound_Handler sh;
 	
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		
-		String AbsolutePath = new File(".").getAbsolutePath();
-    	
-    	AbsolutePath = (AbsolutePath.substring(0, AbsolutePath.length() - 1));
-    	AbsolutePath = AbsolutePath + "sounds";
-    	
-		File file = new File(AbsolutePath + "/" + "Menu.wav");
-		
-		try {
 			
-			music = AudioSystem.getClip();
-			AudioInputStream inputStream = AudioSystem.getAudioInputStream(file);
-			music.open(inputStream);
-			
-			music.setFramePosition(0);
-			music.start();
-			
-			music.loop(Clip.LOOP_CONTINUOUSLY);
-			
-		} catch (LineUnavailableException | UnsupportedAudioFileException | IOException e1) {
-			
-			e1.printStackTrace();
-		
-		}
+		sh = new Sound_Handler();
+
+		sh.playMenu();
 		
 	}
 
 	public void b_play_onAction() throws IOException {
 		
-		music.stop();
+		sh.stopSound();
 		
 		Parent root = FXMLLoader.load(getClass().getResource("/fxml/Main.fxml"));
 		Scene scene = new Scene(root, Main.WIDTH, Main.HEIGHT);

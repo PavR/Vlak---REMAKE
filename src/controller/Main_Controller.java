@@ -8,8 +8,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import javax.sound.sampled.Clip;
-
 import code.Gate;
 import code.Level;
 import code.Object;
@@ -17,6 +15,7 @@ import code.Train;
 import code.Tunnel;
 import code.Wagon;
 import code.Wall;
+import handler.Sound_Handler;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -66,6 +65,8 @@ public class Main_Controller implements Initializable{
 	
 	private Image wall, trainUp, trainLeft, trainDown, trainRight, gate, object, wagonRight, wagonUp, wagonDown, tunnel;
 	
+	private Sound_Handler sh;
+	
 	public void initialize(URL location, ResourceBundle resources) {
 		
 		loadResources();
@@ -87,6 +88,8 @@ public class Main_Controller implements Initializable{
 			
 		}
 		
+		sh = new Sound_Handler();
+		
 	}
 	
 	private void update() {
@@ -103,10 +106,7 @@ public class Main_Controller implements Initializable{
 				
 					if(lastKeyPressed != KeyCode.A) {
 						
-						allTrains.get(0).getMove().setFramePosition(0);
-						allTrains.get(0).getMove().start();
-						
-						allTrains.get(0).getMove().loop(Clip.LOOP_CONTINUOUSLY);
+						sh.playMove();
 						
 						for(int x = 0; x < allTrains.size(); x++) {
 							
@@ -330,7 +330,7 @@ public class Main_Controller implements Initializable{
 
 			allTrains.get(0).setSpeed(1);
 			
-			allTrains.get(0).getMove().stop();
+			sh.stopSound();
 			
 			allWagons.clear();
 			allObjects.clear();
@@ -653,18 +653,12 @@ public class Main_Controller implements Initializable{
 		
 		if(alive) {
 			
-			allTrains.get(0).getPick().stop();
-			
 			for(int x = 0; x < allObjects.size(); x++) {
 				
 				if(allTrains.get(0).getX() == allObjects.get(x).getX() && allTrains.get(0).getY() == allObjects.get(x).getY()) {
 					
-					allTrains.get(0).getMove().stop();
-					
-					allTrains.get(0).getPick().setFramePosition(0);
-					allTrains.get(0).getPick().start();
-					
-					allTrains.get(0).getPick().loop(Clip.LOOP_CONTINUOUSLY);
+					sh.stopSound();
+					sh.playPick();
 					
 					score = score + 100;
 					currentLevelScore = currentLevelScore + 100;
@@ -912,11 +906,8 @@ public class Main_Controller implements Initializable{
 		
 		lastKeyPressed = KeyCode.A;
 		
-		allTrains.get(0).getPick().setFramePosition(0);
-		allTrains.get(0).getDeath().start();
-		
-		allTrains.get(0).getMove().stop();
-		allTrains.get(0).getPick().stop();
+		sh.stopSound();
+		sh.playDead();
 		
 		score = score - currentLevelScore - 1000;
 		currentLevelScore = 0;
