@@ -10,6 +10,8 @@ public class Train {
 	private int orientation;	 // ORIENTATION = 1 - LEFT, 3 - RIGHT, 0 - UP, 2 - DOWN
 	private int lenght;
 	
+	private boolean alive;
+	
 	public Train(int x, int y, Image image) {
 		
 		this.x = x;
@@ -20,6 +22,8 @@ public class Train {
 		speed = 1;
 		orientation = -1;
 		lenght = 0;
+		
+		alive = false;
 		
 	}
 
@@ -92,6 +96,18 @@ public class Train {
 	public void setLenght(int lenght) {
 		
 		this.lenght = lenght;
+		
+	}
+
+	public boolean isAlive() {
+		
+		return alive;
+		
+	}
+
+	public void setAlive(boolean alive) {
+		
+		this.alive = alive;
 		
 	}
 	
