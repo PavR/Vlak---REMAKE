@@ -49,4 +49,72 @@ public class Menu_Controller implements Initializable{
 		
 	}
 	
+	public void b_options_onAction() throws IOException {
+		
+		sh.stopSound();
+		
+		Parent root = FXMLLoader.load(getClass().getResource("/fxml/Options.fxml"));
+		Scene scene = new Scene(root, Main.WIDTH, Main.HEIGHT);
+		
+		Stage primaryStage = new Stage();
+		
+		primaryStage.setTitle("Vlak - REMAKE");
+		primaryStage.setResizable(false);
+		primaryStage.sizeToScene();
+		primaryStage.setScene(scene);
+		primaryStage.show();
+		
+		Stage previousStage = (Stage)b_play.getScene().getWindow();
+		previousStage.close();
+		
+	}
+	
+	public void b_editor_onAction() throws IOException {
+		
+		sh.stopSound();
+		
+		Parent root = FXMLLoader.load(getClass().getResource("/fxml/Editor.fxml"));
+		Scene scene = new Scene(root, Main.WIDTH, Main.HEIGHT);
+		
+		Stage primaryStage = new Stage();
+		
+		primaryStage.setTitle("Vlak - REMAKE");
+		primaryStage.setResizable(false);
+		primaryStage.sizeToScene();
+		primaryStage.setScene(scene);
+		primaryStage.show();
+		
+		Stage previousStage = (Stage)b_play.getScene().getWindow();
+		previousStage.close();
+		
+	}
+	
+	public void b_achievements_onAction() throws IOException {
+		
+		sh.stopSound();
+		
+		Parent root = FXMLLoader.load(getClass().getResource("/fxml/Achievements.fxml"));
+		Scene scene = new Scene(root, Main.WIDTH, Main.HEIGHT);
+		
+		Stage primaryStage = new Stage();
+		
+		primaryStage.setTitle("Vlak - REMAKE");
+		primaryStage.setResizable(false);
+		primaryStage.sizeToScene();
+		primaryStage.setScene(scene);
+		primaryStage.show();
+		
+		Stage previousStage = (Stage)b_play.getScene().getWindow();
+		previousStage.close();
+		
+	}
+	
+	public void b_exit_onAction() {
+		
+		sh.stopSound();
+		
+		System.exit(0);
+		
+	}
+	
 }
