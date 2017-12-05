@@ -15,6 +15,7 @@ import code.Train;
 import code.Tunnel;
 import code.Wagon;
 import code.Wall;
+import handler.Graphics_Handler;
 import handler.Sound_Handler;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
@@ -23,7 +24,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 
 public class Main_Controller implements Initializable{
@@ -63,13 +63,13 @@ public class Main_Controller implements Initializable{
 	
 	private boolean passwordActive = false;
 	
-	private Image wall, trainUp, trainLeft, trainDown, trainRight, gate, object, wagonRight, wagonUp, wagonDown, tunnel;
-	
 	private Sound_Handler sh;
+	private Graphics_Handler gh;
 	
 	public void initialize(URL location, ResourceBundle resources) {
 		
-		loadResources();
+		sh = new Sound_Handler();
+		gh = new Graphics_Handler();
 		
 		setAnimationTimer();
 		setCanvasKeyboardInput();
@@ -87,8 +87,6 @@ public class Main_Controller implements Initializable{
 			e.printStackTrace();
 			
 		}
-		
-		sh = new Sound_Handler();
 		
 	}
 	
@@ -112,19 +110,19 @@ public class Main_Controller implements Initializable{
 							
 							if(allTrains.get(x).getOrientation() == 0) {
 								
-								allTrains.get(x).setImage(trainUp);
+								allTrains.get(x).setImage(gh.getTrainUp());
 								
 							}else if(allTrains.get(x).getOrientation() == 1) {
 								
-								allTrains.get(x).setImage(trainLeft);
+								allTrains.get(x).setImage(gh.getTrainLeft());
 								
 							}else if(allTrains.get(x).getOrientation() == 2) {
 								
-								allTrains.get(x).setImage(trainDown);
+								allTrains.get(x).setImage(gh.getTrainDown());
 								
 							}else if(allTrains.get(x).getOrientation() == 3) {
 								
-								allTrains.get(x).setImage(trainRight);
+								allTrains.get(x).setImage(gh.getTrainRight());
 								
 							}
 							
@@ -134,19 +132,19 @@ public class Main_Controller implements Initializable{
 							
 							if(allWagons.get(x).getFutureMoves().get(0) == 0) {
 								
-								allWagons.get(x).setImage(wagonUp);
+								allWagons.get(x).setImage(gh.getWagonUp());
 								
 							}else if(allWagons.get(x).getFutureMoves().get(0) == 1) {
 								
-								allWagons.get(x).setImage(wagonRight);
+								allWagons.get(x).setImage(gh.getWagonRight());
 								
 							}else if(allWagons.get(x).getFutureMoves().get(0) == 2) {
 								
-								allWagons.get(x).setImage(wagonDown);
+								allWagons.get(x).setImage(gh.getWagonDown());
 								
 							}else if(allWagons.get(x).getFutureMoves().get(0) == 3) {
 								
-								allWagons.get(x).setImage(wagonRight);
+								allWagons.get(x).setImage(gh.getWagonRight());
 								
 							}
 							
@@ -380,7 +378,7 @@ public class Main_Controller implements Initializable{
 		    		int X = Integer.parseInt(line.substring(line.indexOf("(") + 1, line.indexOf(",")));
 		    		int Y = Integer.parseInt(line.substring(line.indexOf(",") + 1, line.indexOf(")")));
 		    		
-		    		allWalls.add(new Wall(X, Y, wall));
+		    		allWalls.add(new Wall(X, Y, gh.getWall()));
 		    		
 		    	}
 		    	
@@ -389,7 +387,7 @@ public class Main_Controller implements Initializable{
 		    		int X = Integer.parseInt(line.substring(line.indexOf("(") + 1, line.indexOf(",")));
 		    		int Y = Integer.parseInt(line.substring(line.indexOf(",") + 1, line.indexOf(")")));
 		    		
-		    		allTrains.add(new Train(X, Y, trainRight));
+		    		allTrains.add(new Train(X, Y, gh.getTrainRight()));
 		    		
 		    	}
 		    	
@@ -398,7 +396,7 @@ public class Main_Controller implements Initializable{
 		    		int X = Integer.parseInt(line.substring(line.indexOf("(") + 1, line.indexOf(",")));
 		    		int Y = Integer.parseInt(line.substring(line.indexOf(",") + 1, line.indexOf(")")));
 		    		
-		    		allObjects.add(new Object(X, Y, object));
+		    		allObjects.add(new Object(X, Y, gh.getObject()));
 		    		
 		    	}
 		    	
@@ -407,7 +405,7 @@ public class Main_Controller implements Initializable{
 		    		int X = Integer.parseInt(line.substring(line.indexOf("(") + 1, line.indexOf(",")));
 		    		int Y = Integer.parseInt(line.substring(line.indexOf(",") + 1, line.indexOf(")")));
 		    		
-		    		allGates.add(new Gate(X, Y, gate));
+		    		allGates.add(new Gate(X, Y, gh.getGate()));
 		    		
 		    	}
 		    	
@@ -416,7 +414,7 @@ public class Main_Controller implements Initializable{
 		    		int X = Integer.parseInt(line.substring(line.indexOf("(") + 1, line.indexOf(",")));
 		    		int Y = Integer.parseInt(line.substring(line.indexOf(",") + 1, line.indexOf(")")));
 		    		
-		    		allTunnels.add(new Tunnel(X, Y, tunnel));
+		    		allTunnels.add(new Tunnel(X, Y, gh.getTunnel()));
 		    		
 		    	}
 		    	
@@ -677,7 +675,7 @@ public class Main_Controller implements Initializable{
 							
 							 // ORIENTATION = 1 - LEFT, 3 - RIGHT, 0 - UP, 2 - DOWN
 							
-							allWagons.add(new Wagon(allObjects.get(x).getX(), allObjects.get(x).getY() + (36 * allTrains.get(0).getLenght()), wagonUp));
+							allWagons.add(new Wagon(allObjects.get(x).getX(), allObjects.get(x).getY() + (36 * allTrains.get(0).getLenght()), gh.getWagonUp()));
 							
 							for(int y = 0; y < allWagons.size(); y++) {
 								
@@ -687,7 +685,7 @@ public class Main_Controller implements Initializable{
 							
 						}else if(allTrains.get(0).getOrientation() == 1) {
 							
-							allWagons.add(new Wagon(allObjects.get(x).getX() + (36 * allTrains.get(0).getLenght()), allObjects.get(x).getY(), wagonRight));
+							allWagons.add(new Wagon(allObjects.get(x).getX() + (36 * allTrains.get(0).getLenght()), allObjects.get(x).getY(), gh.getWagonRight()));
 							
 							for(int y = 0; y < allWagons.size(); y++) {
 								
@@ -697,7 +695,7 @@ public class Main_Controller implements Initializable{
 							
 						}else if(allTrains.get(0).getOrientation() == 2) {
 							
-							allWagons.add(new Wagon(allObjects.get(x).getX(), allObjects.get(x).getY() - (36 * allTrains.get(0).getLenght()), wagonDown));
+							allWagons.add(new Wagon(allObjects.get(x).getX(), allObjects.get(x).getY() - (36 * allTrains.get(0).getLenght()), gh.getWagonDown()));
 							
 							for(int y = 0; y < allWagons.size(); y++) {
 								
@@ -707,7 +705,7 @@ public class Main_Controller implements Initializable{
 							
 						}else if(allTrains.get(0).getOrientation() == 3) {
 							
-							allWagons.add(new Wagon(allObjects.get(x).getX() - (36 * allTrains.get(0).getLenght()), allObjects.get(x).getY(), wagonRight));
+							allWagons.add(new Wagon(allObjects.get(x).getX() - (36 * allTrains.get(0).getLenght()), allObjects.get(x).getY(), gh.getWagonRight()));
 							
 							for(int y = 0; y < allWagons.size(); y++) {
 								
@@ -724,7 +722,7 @@ public class Main_Controller implements Initializable{
 							int X = allWagons.get(allWagons.size() - 1).getX();
 							int Y = allWagons.get(allWagons.size() - 1).getY();
 							
-							allWagons.add(new Wagon(X, Y + 36, wagonUp));
+							allWagons.add(new Wagon(X, Y + 36, gh.getWagonUp()));
 							
 							for(int y = 0; y < allWagons.get(allWagons.size() - 2).getFutureMoves().size(); y++) {
 								
@@ -739,7 +737,7 @@ public class Main_Controller implements Initializable{
 							int X = allWagons.get(allWagons.size() - 1).getX();
 							int Y = allWagons.get(allWagons.size() - 1).getY();
 
-							allWagons.add(new Wagon(X + 36, Y, wagonRight));
+							allWagons.add(new Wagon(X + 36, Y, gh.getWagonRight()));
 							
 							for(int y = 0; y < allWagons.get(allWagons.size() - 2).getFutureMoves().size(); y++) {
 								
@@ -754,7 +752,7 @@ public class Main_Controller implements Initializable{
 							int X = allWagons.get(allWagons.size() - 1).getX();
 							int Y = allWagons.get(allWagons.size() - 1).getY();
 							
-							allWagons.add(new Wagon(X, Y - 36, wagonDown));
+							allWagons.add(new Wagon(X, Y - 36, gh.getWagonDown()));
 							
 							for(int y = 0; y < allWagons.get(allWagons.size() - 2).getFutureMoves().size(); y++) {
 								
@@ -769,7 +767,7 @@ public class Main_Controller implements Initializable{
 							int X = allWagons.get(allWagons.size() - 1).getX();
 							int Y = allWagons.get(allWagons.size() - 1).getY();
 							
-							allWagons.add(new Wagon(X - 36, Y, wagonRight));
+							allWagons.add(new Wagon(X - 36, Y, gh.getWagonRight()));
 							
 							for(int y = 0; y < allWagons.get(allWagons.size() - 2).getFutureMoves().size(); y++) {
 								
@@ -941,47 +939,6 @@ public class Main_Controller implements Initializable{
 			
 		}
 		
-	}
-	
-	private void loadResources() {
-		System.out.println("LOAD RESOURCES");
-		String AbsolutePath = new File(".").getAbsolutePath();
-    	
-    	AbsolutePath = (AbsolutePath.substring(0, AbsolutePath.length() - 1));
-		AbsolutePath = AbsolutePath + "res";
-			
-		File file1 = new File(AbsolutePath + "/" + "wall.png");
-		
-		File file2a = new File(AbsolutePath + "/" + "blueTrainUp.gif");
-		File file2b = new File(AbsolutePath + "/" + "blueTrainDown.gif");
-		File file2c = new File(AbsolutePath + "/" + "blueTrainLeft.gif");
-		File file2d = new File(AbsolutePath + "/" + "blueTrainRight.gif");
-		
-		File file3 = new File(AbsolutePath + "/" + "gate.png");
-		File file4 = new File(AbsolutePath + "/" + "object.gif");
-
-		File file5a = new File(AbsolutePath + "/" + "wagonRight.png");
-		File file5b = new File(AbsolutePath + "/" + "wagonUp.png");
-		File file5c = new File(AbsolutePath + "/" + "wagonDown.png");
-		
-		File file6 = new File(AbsolutePath + "/" + "tunnel.png");
-		
-		wall = new Image(file1.toURI().toString());
-		
-		trainUp = new Image(file2a.toURI().toString());
-		trainDown = new Image(file2b.toURI().toString());
-		trainLeft = new Image(file2c.toURI().toString());
-		trainRight = new Image(file2d.toURI().toString());
-		
-		gate = new Image(file3.toURI().toString());
-		object = new Image(file4.toURI().toString());
-	
-		wagonRight = new Image(file5a.toURI().toString());
-		wagonUp = new Image(file5c.toURI().toString());
-		wagonDown = new Image(file5b.toURI().toString());
-		
-		tunnel = new Image(file6.toURI().toString());
-
 	}
 	
 	public void checkCollisionWithTunnels() {
