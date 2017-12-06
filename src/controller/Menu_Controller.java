@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import code.Main;
+import code_game.Main;
 import handler.Sound_Handler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -74,7 +74,7 @@ public class Menu_Controller implements Initializable{
 		sh.stopSound();
 		
 		Parent root = FXMLLoader.load(getClass().getResource("/fxml/Editor.fxml"));
-		Scene scene = new Scene(root, Main.WIDTH, Main.HEIGHT);
+		Scene scene = new Scene(root, 1000, 750);
 		
 		Stage primaryStage = new Stage();
 		

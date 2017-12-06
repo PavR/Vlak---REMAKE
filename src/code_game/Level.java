@@ -1,4 +1,4 @@
-package code;
+package code_game;
 
 import java.io.File;
 

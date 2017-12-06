@@ -1,24 +1,22 @@
-package code;
-
-import java.util.ArrayList;
+package code_editor;
 
 import javafx.scene.image.Image;
 
-public class Wagon {
+public class Editor_Tunnel {
 
 	private int x, y;
 	private Image image;
+	private String name;
 	
-	private ArrayList<Integer> futureMoves = new ArrayList<Integer>();
+	private Editor_Tunnel end;
 	
-	private int lastMove;
-	
-	public Wagon(int x, int y, Image image) {
+	public Editor_Tunnel(int x, int y, Image image, String name) {
 		
 		this.x = x;
 		this.y = y;
 		
 		this.image = image;
+		this.name = name;
 		
 	}
 
@@ -58,27 +56,27 @@ public class Wagon {
 		
 	}
 
-	public ArrayList<Integer> getFutureMoves() {
+	public String getName() {
 		
-		return futureMoves;
-		
-	}
-
-	public void setFutureMoves(ArrayList<Integer> futureMoves) {
-		
-		this.futureMoves = futureMoves;
+		return name;
 		
 	}
 
-	public int getLastMove() {
+	public void setName(String name) {
 		
-		return lastMove;
+		this.name = name;
+	
+	}
+
+	public Editor_Tunnel getEnd() {
+		
+		return end;
 		
 	}
 
-	public void setLastMove(int lastMove) {
+	public void setEnd(Editor_Tunnel end) {
 		
-		this.lastMove = lastMove;
+		this.end = end;
 		
 	}
 	

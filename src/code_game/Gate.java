@@ -1,13 +1,13 @@
-package code;
+package code_game;
 
 import javafx.scene.image.Image;
 
-public class Wall {
+public class Gate {
 
 	private int x, y;
 	private Image image;
 	
-	public Wall(int x, int y, Image image) {
+	public Gate(int x, int y, Image image) {
 		
 		this.x = x;
 		this.y = y;

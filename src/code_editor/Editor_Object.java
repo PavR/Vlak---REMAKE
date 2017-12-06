@@ -1,20 +1,31 @@
-package code;
+package code_editor;
 
 import javafx.scene.image.Image;
 
-public class Object {
+public class Editor_Object {
 
 	private int x, y;
 	private Image image;
+	private String name;
 	
-	public Object(int x, int y, Image image) {
+	public Editor_Object(int x, int y, Image image, String name) {
 		
 		this.x = x;
 		this.y = y;
 		
 		this.image = image;
 		
+		this.name = name;
+		
 	}
+	
+	public Editor_Object(Image image, String name) {
+		
+		this.image = image;
+		this.name = name;
+		
+	}
+	
 
 	public int getX() {
 		
@@ -49,6 +60,18 @@ public class Object {
 	public void setImage(Image image) {
 		
 		this.image = image;
+		
+	}
+
+	public String getName() {
+		
+		return name;
+		
+	}
+
+	public void setName(String name) {
+		
+		this.name = name;
 		
 	}
 	
