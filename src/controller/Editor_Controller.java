@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 import code_editor.Editor_Object;
 import code_editor.Editor_SelectedTile;
 import code_editor.Editor_Tunnel;
+import handler.Graphics_Handler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
@@ -24,7 +25,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
@@ -62,37 +62,37 @@ public class Editor_Controller implements Initializable{
 	
 	private Formatter x;
 	
-	private Image Iwall, Itrain, Igate, IEditor_Object, IEditor_Tunnel;
-	
 	private boolean connectEditor_Tunnels = false;
 	
+	private Graphics_Handler gh;
+	
 	public void initialize(URL arg0, ResourceBundle arg1) {
+
+		gh = new Graphics_Handler();
 		
-		loadResources();
-		
-		Editor_Object wall = new Editor_Object(Iwall, "Wall");
+		Editor_Object wall = new Editor_Object(gh.getWall(), "Wall");
 		
 		l_1.setText(wall.getName());
 		iv_1.setImage(wall.getImage());
 		
-		Editor_Object train = new Editor_Object(Itrain, "Train");
+		Editor_Object train = new Editor_Object(gh.getTrainRightStation(), "Train");
 		
 		l_2.setText(train.getName());
 		iv_2.setImage(train.getImage());
 		
-		Editor_Object Editor_Object = new Editor_Object(IEditor_Object, "Editor_Object");
+		Editor_Object Editor_Object = new Editor_Object(gh.getObjectStation(), "Editor_Object");
 		
 		l_3.setText(Editor_Object.getName());
 		iv_3.setImage(Editor_Object.getImage());
 		
-		Editor_Object gate = new Editor_Object(Igate, "Gate");
+		Editor_Object gate = new Editor_Object(gh.getGate(), "Gate");
 		
 		l_4.setText(gate.getName());
 		iv_4.setImage(gate.getImage());
 		
 		l_5.setText("Empty");
 		
-		Editor_Object Editor_Tunnel = new Editor_Object(IEditor_Tunnel, "Editor_Tunnel");
+		Editor_Object Editor_Tunnel = new Editor_Object(gh.getTunnel(), "Editor_Tunnel");
 		
 		l_6.setText(Editor_Tunnel.getName());
 		iv_6.setImage(Editor_Tunnel.getImage());
@@ -179,7 +179,7 @@ public class Editor_Controller implements Initializable{
 
 		    		if(allEditor_Objects.isEmpty()) {
 		    			
-		    			allEditor_Objects.add(new Editor_Object(X, Y, Iwall, "Wall"));
+		    			allEditor_Objects.add(new Editor_Object(X, Y, gh.getWall(), "Wall"));
 
 			    		clearCanvas();
 			    		drawCanvas();
@@ -196,7 +196,7 @@ public class Editor_Controller implements Initializable{
 			    			
 			    		}
 
-	    				allEditor_Objects.add(new Editor_Object(X, Y, Iwall, "Wall"));
+	    				allEditor_Objects.add(new Editor_Object(X, Y, gh.getWall(), "Wall"));
 
 			    		clearCanvas();
 			    		drawCanvas();
@@ -219,7 +219,7 @@ public class Editor_Controller implements Initializable{
 		    			
 		    			trainPlaced = true;
 		    			
-		    			allEditor_Objects.add(new Editor_Object(X, Y, Itrain, "Train"));
+		    			allEditor_Objects.add(new Editor_Object(X, Y, gh.getTrainRightStation(), "Train"));
 
 			    		clearCanvas();
 			    		drawCanvas();
@@ -230,7 +230,7 @@ public class Editor_Controller implements Initializable{
 		    		
 		    		if(allEditor_Objects.isEmpty()) {
 		    			
-		    			allEditor_Objects.add(new Editor_Object(X, Y, IEditor_Object, "Editor_Object"));
+		    			allEditor_Objects.add(new Editor_Object(X, Y, gh.getObjectStation(), "Editor_Object"));
 
 			    		clearCanvas();
 			    		drawCanvas();
@@ -247,7 +247,7 @@ public class Editor_Controller implements Initializable{
 			    			
 			    		}
 
-	    				allEditor_Objects.add(new Editor_Object(X, Y, IEditor_Object, "Editor_Object"));
+	    				allEditor_Objects.add(new Editor_Object(X, Y, gh.getObjectStation(), "Editor_Object"));
 
 			    		clearCanvas();
 			    		drawCanvas();
@@ -270,7 +270,7 @@ public class Editor_Controller implements Initializable{
 		    			
 		    			gatePlaced = true;
 		    			
-		    			allEditor_Objects.add(new Editor_Object(X, Y, Igate, "Gate"));
+		    			allEditor_Objects.add(new Editor_Object(X, Y, gh.getGate(), "Gate"));
 
 			    		clearCanvas();
 			    		drawCanvas();
@@ -350,7 +350,7 @@ public class Editor_Controller implements Initializable{
 						    				
 						    				if(connectEditor_Tunnels == false) {
 						    					
-						    					allEditor_Tunnels.add(new Editor_Tunnel(X, Y, IEditor_Tunnel, "Editor_Tunnel"));
+						    					allEditor_Tunnels.add(new Editor_Tunnel(X, Y, gh.getTunnel(), "Editor_Tunnel"));
 						    					
 						    					connectEditor_Tunnels = true;
 						    					
@@ -363,7 +363,7 @@ public class Editor_Controller implements Initializable{
 						    					
 						    					connectEditor_Tunnels = false;
 						    					
-						    					allEditor_Tunnels.add(new Editor_Tunnel(X, Y, IEditor_Tunnel, "Editor_Tunnel"));
+						    					allEditor_Tunnels.add(new Editor_Tunnel(X, Y, gh.getTunnel(), "Editor_Tunnel"));
 						    					
 						    					allEditor_Tunnels.get(allEditor_Tunnels.size() - 2).setEnd(allEditor_Tunnels.get(allEditor_Tunnels.size() - 1));
 						    					allEditor_Tunnels.get(allEditor_Tunnels.size() - 1).setEnd(allEditor_Tunnels.get(allEditor_Tunnels.size() - 2));
@@ -380,7 +380,7 @@ public class Editor_Controller implements Initializable{
 			    					
 			    				}else {
 			    					
-			    					allEditor_Tunnels.add(new Editor_Tunnel(X, Y, IEditor_Tunnel, "Editor_Tunnel"));
+			    					allEditor_Tunnels.add(new Editor_Tunnel(X, Y, gh.getTunnel(), "Editor_Tunnel"));
 			    					
 			    					connectEditor_Tunnels = true;
 			    					
@@ -409,7 +409,7 @@ public class Editor_Controller implements Initializable{
 				    				
 				    				if(connectEditor_Tunnels == false) {
 				    					
-				    					allEditor_Tunnels.add(new Editor_Tunnel(X, Y, IEditor_Tunnel, "Editor_Tunnel"));
+				    					allEditor_Tunnels.add(new Editor_Tunnel(X, Y, gh.getTunnel(), "Editor_Tunnel"));
 				    					
 				    					connectEditor_Tunnels = true;
 				    					
@@ -422,7 +422,7 @@ public class Editor_Controller implements Initializable{
 				    					
 				    					connectEditor_Tunnels = false;
 				    					
-				    					allEditor_Tunnels.add(new Editor_Tunnel(X, Y, IEditor_Tunnel, "Editor_Tunnel"));
+				    					allEditor_Tunnels.add(new Editor_Tunnel(X, Y, gh.getTunnel(), "Editor_Tunnel"));
 				    					
 				    					allEditor_Tunnels.get(allEditor_Tunnels.size() - 2).setEnd(allEditor_Tunnels.get(allEditor_Tunnels.size() - 1));
 				    					allEditor_Tunnels.get(allEditor_Tunnels.size() - 1).setEnd(allEditor_Tunnels.get(allEditor_Tunnels.size() - 2));
@@ -440,7 +440,7 @@ public class Editor_Controller implements Initializable{
 		    				
 		    			}else {
 		    				
-		    				allEditor_Tunnels.add(new Editor_Tunnel(X, Y, IEditor_Tunnel, "Editor_Tunnel"));
+		    				allEditor_Tunnels.add(new Editor_Tunnel(X, Y, gh.getTunnel(), "Editor_Tunnel"));
 		    				
 		    				connectEditor_Tunnels = true;
 		    				
@@ -657,7 +657,7 @@ public class Editor_Controller implements Initializable{
 		    		int X = Integer.parseInt(line.substring(line.indexOf("(") + 1, line.indexOf(",")));
 		    		int Y = Integer.parseInt(line.substring(line.indexOf(",") + 1, line.indexOf(")")));
 		    		
-		    		allEditor_Objects.add(new Editor_Object(X, Y, Iwall, "Wall"));
+		    		allEditor_Objects.add(new Editor_Object(X, Y, gh.getWall(), "Wall"));
 		    		
 		    	}
 		    	
@@ -666,7 +666,7 @@ public class Editor_Controller implements Initializable{
 		    		int X = Integer.parseInt(line.substring(line.indexOf("(") + 1, line.indexOf(",")));
 		    		int Y = Integer.parseInt(line.substring(line.indexOf(",") + 1, line.indexOf(")")));
 		    		
-		    		allEditor_Objects.add(new Editor_Object(X, Y, Itrain, "Train"));
+		    		allEditor_Objects.add(new Editor_Object(X, Y, gh.getTrainRightStation(), "Train"));
 		    		
 		    	}
 		    	
@@ -675,7 +675,7 @@ public class Editor_Controller implements Initializable{
 		    		int X = Integer.parseInt(line.substring(line.indexOf("(") + 1, line.indexOf(",")));
 		    		int Y = Integer.parseInt(line.substring(line.indexOf(",") + 1, line.indexOf(")")));
 		    		
-		    		allEditor_Objects.add(new Editor_Object(X, Y, IEditor_Object, "Editor_Object"));
+		    		allEditor_Objects.add(new Editor_Object(X, Y, gh.getObjectStation(), "Editor_Object"));
 		    		
 		    	}
 		    	
@@ -684,7 +684,7 @@ public class Editor_Controller implements Initializable{
 		    		int X = Integer.parseInt(line.substring(line.indexOf("(") + 1, line.indexOf(",")));
 		    		int Y = Integer.parseInt(line.substring(line.indexOf(",") + 1, line.indexOf(")")));
 		    		
-		    		allEditor_Objects.add(new Editor_Object(X, Y, Igate, "Gate"));
+		    		allEditor_Objects.add(new Editor_Object(X, Y, gh.getGate(), "Gate"));
 		    		
 		    	}
 		    	
@@ -693,7 +693,7 @@ public class Editor_Controller implements Initializable{
 		    		int X = Integer.parseInt(line.substring(line.indexOf("(") + 1, line.indexOf(",")));
 		    		int Y = Integer.parseInt(line.substring(line.indexOf(",") + 1, line.indexOf(")")));
 		    		
-		    		allEditor_Tunnels.add(new Editor_Tunnel(X, Y, IEditor_Tunnel, "Editor_Tunnel"));
+		    		allEditor_Tunnels.add(new Editor_Tunnel(X, Y, gh.getTunnel(), "Editor_Tunnel"));
 		    		
 		    	}
 		    	
@@ -809,27 +809,6 @@ public class Editor_Controller implements Initializable{
 	private void closeFile() {
 		
 		x.close();
-		
-	}
-	
-	private void loadResources() {
-		
-		String AbsolutePath = new File(".").getAbsolutePath();
-    	
-    	AbsolutePath = (AbsolutePath.substring(0, AbsolutePath.length() - 1));
-		AbsolutePath = AbsolutePath + "res";
-			
-		File file1 = new File(AbsolutePath + "/" + "wall.png");
-		File file2 = new File(AbsolutePath + "/" + "train.png");
-		File file3 = new File(AbsolutePath + "/" + "gate.png");
-		File file4 = new File(AbsolutePath + "/" + "Editor_Object.png");
-		File file5 = new File(AbsolutePath + "/" + "Editor_Tunnel.png");
-		
-		Iwall = new Image(file1.toURI().toString());
-		Itrain = new Image(file2.toURI().toString());
-		Igate = new Image(file3.toURI().toString());
-		IEditor_Object = new Image(file4.toURI().toString());
-		IEditor_Tunnel = new Image(file5.toURI().toString());
 		
 	}
 	

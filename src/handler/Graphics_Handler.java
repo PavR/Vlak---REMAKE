@@ -6,7 +6,7 @@ import javafx.scene.image.Image;
 
 public class Graphics_Handler {
 
-	private Image wall, trainUp, trainLeft, trainDown, trainRight, gate, object, wagonRight, wagonUp, wagonDown, tunnel;
+	private Image wall, trainUp, trainLeft, trainDown, trainRight, gate, object, wagonRight, wagonUp, wagonDown, tunnel, objectStation, trainRightStation;
 	
 	public Graphics_Handler() {
 		
@@ -22,9 +22,12 @@ public class Graphics_Handler {
 		File file2b = new File(AbsolutePath + "/" + "blueTrainDown.gif");
 		File file2c = new File(AbsolutePath + "/" + "blueTrainLeft.gif");
 		File file2d = new File(AbsolutePath + "/" + "blueTrainRight.gif");
+		File file2e = new File(AbsolutePath + "/" + "blueTrainRightStation.png");
 		
 		File file3 = new File(AbsolutePath + "/" + "gate.png");
-		File file4 = new File(AbsolutePath + "/" + "object.gif");
+		
+		File file4a = new File(AbsolutePath + "/" + "object.gif");
+		File file4b = new File(AbsolutePath + "/" + "objectStation.png");
 
 		File file5a = new File(AbsolutePath + "/" + "wagonRight.png");
 		File file5b = new File(AbsolutePath + "/" + "wagonUp.png");
@@ -38,9 +41,12 @@ public class Graphics_Handler {
 		trainDown = new Image(file2b.toURI().toString());
 		trainLeft = new Image(file2c.toURI().toString());
 		trainRight = new Image(file2d.toURI().toString());
+		trainRightStation = new Image(file2e.toURI().toString());
 		
 		gate = new Image(file3.toURI().toString());
-		object = new Image(file4.toURI().toString());
+		
+		object = new Image(file4a.toURI().toString());
+		objectStation = new Image(file4b.toURI().toString());
 	
 		wagonRight = new Image(file5a.toURI().toString());
 		wagonUp = new Image(file5c.toURI().toString());
@@ -113,6 +119,18 @@ public class Graphics_Handler {
 	public Image getTunnel() {
 		
 		return tunnel;
+		
+	}
+
+	public Image getObjectStation() {
+		
+		return objectStation;
+		
+	}
+
+	public Image getTrainRightStation() {
+		
+		return trainRightStation;
 		
 	}
 	
