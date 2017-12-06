@@ -6,6 +6,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.ResourceBundle;
@@ -713,7 +717,7 @@ public class Editor_Controller implements Initializable{
 		
 	}
 	
-	public void miSaveOnAction() {
+	public void miSaveOnAction() throws IOException {
 		
 		if(tf_level.getText().isEmpty() && tf_password.getText().isEmpty()) {
 			
@@ -806,9 +810,27 @@ public class Editor_Controller implements Initializable{
 		
 	}
 	
-	private void closeFile() {
+	private void closeFile() throws IOException {
 		
 		x.close();
+		
+		String AbsolutePath = new File(".").getAbsolutePath();
+		AbsolutePath = (AbsolutePath.substring(0, AbsolutePath.length() - 1));
+		
+		AbsolutePath = AbsolutePath + "/" + tf_level.getText() + ".txt";
+		
+		File a = new File(AbsolutePath);
+		
+		String AbsolutePath1 = new File(".").getAbsolutePath();
+		AbsolutePath1 = (AbsolutePath1.substring(0, AbsolutePath1.length() - 1));
+		
+		Path sourcePath = Paths.get(a.getName());
+		
+		String ss = AbsolutePath1 + "levels/" + a.getName();
+		
+		Path destinationPath = Paths.get(ss);
+		
+		Files.move(sourcePath, destinationPath, StandardCopyOption.REPLACE_EXISTING);
 		
 	}
 	
