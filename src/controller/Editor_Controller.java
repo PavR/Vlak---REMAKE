@@ -116,40 +116,6 @@ public class Editor_Controller implements Initializable{
 
 		drawCanvas();
 		
-		f
-		f
-		f
-		
-		f
-		f
-		f
-		f
-		f
-		f
-		f
-		
-		f
-		f
-		f
-		f
-		f
-		f
-		f
-		
-		f
-		f
-		f
-		f
-		f
-		f
-		f
-		
-		f
-		f
-		f
-		f
-		f
-		
 		for (int x = 0; x < 20; x++){
 			for (int y = 0; y < 20; y++){
 				if (x == 0 && y == 0){	
