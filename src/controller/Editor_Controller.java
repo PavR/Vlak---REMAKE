@@ -679,7 +679,7 @@ public class Editor_Controller implements Initializable{
 		    		int X = Integer.parseInt(line.substring(line.indexOf("(") + 1, line.indexOf(",")));
 		    		int Y = Integer.parseInt(line.substring(line.indexOf(",") + 1, line.indexOf(")")));
 		    		
-		    		allEditor_Objects.add(new Editor_Object(X, Y, gh.getObjectStation(), "Editor_Object"));
+		    		allEditor_Objects.add(new Editor_Object(X, Y, gh.getObjectStation(), "Object"));
 		    		
 		    	}
 		    	
@@ -697,7 +697,7 @@ public class Editor_Controller implements Initializable{
 		    		int X = Integer.parseInt(line.substring(line.indexOf("(") + 1, line.indexOf(",")));
 		    		int Y = Integer.parseInt(line.substring(line.indexOf(",") + 1, line.indexOf(")")));
 		    		
-		    		allEditor_Tunnels.add(new Editor_Tunnel(X, Y, gh.getTunnel(), "Editor_Tunnel"));
+		    		allEditor_Tunnels.add(new Editor_Tunnel(X, Y, gh.getTunnel(), "Tunnel"));
 		    		
 		    	}
 		    	
