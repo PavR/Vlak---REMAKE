@@ -116,11 +116,45 @@ public class Editor_Controller implements Initializable{
 
 		drawCanvas();
 		
+		f
+		f
+		f
+		
+		f
+		f
+		f
+		f
+		f
+		f
+		f
+		
+		f
+		f
+		f
+		f
+		f
+		f
+		f
+		
+		f
+		f
+		f
+		f
+		f
+		f
+		f
+		
+		f
+		f
+		f
+		f
+		f
+		
 		for (int x = 0; x < 20; x++){
 			for (int y = 0; y < 20; y++){
 				if (x == 0 && y == 0){	
 					Editor_Object ObjWall = new Editor_Object(x,y,gh.getWall(),"Wall");
-					allEditor_Objects.add(ObjWall);lul
+					allEditor_Objects.add(ObjWall);
 				}
 				if (x == 20 && y == 20){
 					Editor_Object ObjWall = new Editor_Object(x,y,gh.getWall(),"Wall");
