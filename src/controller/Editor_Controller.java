@@ -84,7 +84,7 @@ public class Editor_Controller implements Initializable{
 		l_2.setText(train.getName());
 		iv_2.setImage(train.getImage());
 		
-		Editor_Object Editor_Object = new Editor_Object(gh.getObjectStation(), "Editor_Object");
+		Editor_Object Editor_Object = new Editor_Object(gh.getObjectStation(), "Object");
 		
 		l_3.setText(Editor_Object.getName());
 		iv_3.setImage(Editor_Object.getImage());
@@ -96,7 +96,7 @@ public class Editor_Controller implements Initializable{
 		
 		l_5.setText("Empty");
 		
-		Editor_Object Editor_Tunnel = new Editor_Object(gh.getTunnel(), "Editor_Tunnel");
+		Editor_Object Editor_Tunnel = new Editor_Object(gh.getTunnel(), "Tunnel");
 		
 		l_6.setText(Editor_Tunnel.getName());
 		iv_6.setImage(Editor_Tunnel.getImage());
@@ -243,11 +243,11 @@ public class Editor_Controller implements Initializable{
 		    			
 		    		}
 		    		
-		    	}else if(selectedEditor_Object.equals("Editor_Object")) {
+		    	}else if(selectedEditor_Object.equals("Object")) {
 		    		
 		    		if(allEditor_Objects.isEmpty()) {
 		    			
-		    			allEditor_Objects.add(new Editor_Object(X, Y, gh.getObjectStation(), "Editor_Object"));
+		    			allEditor_Objects.add(new Editor_Object(X, Y, gh.getObjectStation(), "Object"));
 
 			    		clearCanvas();
 			    		drawCanvas();
@@ -264,7 +264,7 @@ public class Editor_Controller implements Initializable{
 			    			
 			    		}
 
-	    				allEditor_Objects.add(new Editor_Object(X, Y, gh.getObjectStation(), "Editor_Object"));
+	    				allEditor_Objects.add(new Editor_Object(X, Y, gh.getObjectStation(), "Object"));
 
 			    		clearCanvas();
 			    		drawCanvas();
@@ -343,7 +343,7 @@ public class Editor_Controller implements Initializable{
 		    		clearCanvas();
 		    		drawCanvas();
 		    		
-		    	}else if(selectedEditor_Object.equals("Editor_Tunnel")) {
+		    	}else if(selectedEditor_Object.equals("Tunnel")) {
 		    		
 		    		if(allEditor_Objects.size() > 0) {
 		    			
@@ -367,7 +367,7 @@ public class Editor_Controller implements Initializable{
 						    				
 						    				if(connectEditor_Tunnels == false) {
 						    					
-						    					allEditor_Tunnels.add(new Editor_Tunnel(X, Y, gh.getTunnel(), "Editor_Tunnel"));
+						    					allEditor_Tunnels.add(new Editor_Tunnel(X, Y, gh.getTunnel(), "Tunnel"));
 						    					
 						    					connectEditor_Tunnels = true;
 						    					
@@ -380,7 +380,7 @@ public class Editor_Controller implements Initializable{
 						    					
 						    					connectEditor_Tunnels = false;
 						    					
-						    					allEditor_Tunnels.add(new Editor_Tunnel(X, Y, gh.getTunnel(), "Editor_Tunnel"));
+						    					allEditor_Tunnels.add(new Editor_Tunnel(X, Y, gh.getTunnel(), "Tunnel"));
 						    					
 						    					allEditor_Tunnels.get(allEditor_Tunnels.size() - 2).setEnd(allEditor_Tunnels.get(allEditor_Tunnels.size() - 1));
 						    					allEditor_Tunnels.get(allEditor_Tunnels.size() - 1).setEnd(allEditor_Tunnels.get(allEditor_Tunnels.size() - 2));
@@ -397,7 +397,7 @@ public class Editor_Controller implements Initializable{
 			    					
 			    				}else {
 			    					
-			    					allEditor_Tunnels.add(new Editor_Tunnel(X, Y, gh.getTunnel(), "Editor_Tunnel"));
+			    					allEditor_Tunnels.add(new Editor_Tunnel(X, Y, gh.getTunnel(), "Tunnel"));
 			    					
 			    					connectEditor_Tunnels = true;
 			    					
@@ -426,7 +426,7 @@ public class Editor_Controller implements Initializable{
 				    				
 				    				if(connectEditor_Tunnels == false) {
 				    					
-				    					allEditor_Tunnels.add(new Editor_Tunnel(X, Y, gh.getTunnel(), "Editor_Tunnel"));
+				    					allEditor_Tunnels.add(new Editor_Tunnel(X, Y, gh.getTunnel(), "Tunnel"));
 				    					
 				    					connectEditor_Tunnels = true;
 				    					
@@ -439,7 +439,7 @@ public class Editor_Controller implements Initializable{
 				    					
 				    					connectEditor_Tunnels = false;
 				    					
-				    					allEditor_Tunnels.add(new Editor_Tunnel(X, Y, gh.getTunnel(), "Editor_Tunnel"));
+				    					allEditor_Tunnels.add(new Editor_Tunnel(X, Y, gh.getTunnel(), "Tunnel"));
 				    					
 				    					allEditor_Tunnels.get(allEditor_Tunnels.size() - 2).setEnd(allEditor_Tunnels.get(allEditor_Tunnels.size() - 1));
 				    					allEditor_Tunnels.get(allEditor_Tunnels.size() - 1).setEnd(allEditor_Tunnels.get(allEditor_Tunnels.size() - 2));
@@ -457,7 +457,7 @@ public class Editor_Controller implements Initializable{
 		    				
 		    			}else {
 		    				
-		    				allEditor_Tunnels.add(new Editor_Tunnel(X, Y, gh.getTunnel(), "Editor_Tunnel"));
+		    				allEditor_Tunnels.add(new Editor_Tunnel(X, Y, gh.getTunnel(), "Tunnel"));
 		    				
 		    				connectEditor_Tunnels = true;
 		    				
@@ -596,7 +596,7 @@ public class Editor_Controller implements Initializable{
 				
 			}else if(allCheckBoxes.get(2).isSelected()) {
 				
-				selectedEditor_Object = "Editor_Object";
+				selectedEditor_Object = "Object";
 				return;
 				
 			}else if(allCheckBoxes.get(3).isSelected()) {
@@ -611,7 +611,7 @@ public class Editor_Controller implements Initializable{
 				
 			}else if(allCheckBoxes.get(5).isSelected()) {
 				
-				selectedEditor_Object = "Editor_Tunnel";
+				selectedEditor_Object = "Tunnel";
 				return;
 				
 			}
