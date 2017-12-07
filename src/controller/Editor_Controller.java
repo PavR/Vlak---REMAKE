@@ -121,11 +121,7 @@ public class Editor_Controller implements Initializable{
 				if (x == 0 && y == 0){	
 					Editor_Object ObjWall = new Editor_Object(x,y,gh.getWall(),"Wall");
 					allEditor_Objects.add(ObjWall);
-				}
-				if (x == 20 && y == 20){
-					Editor_Object ObjWall = new Editor_Object(x,y,gh.getWall(),"Wall");
-					allEditor_Objects.add(ObjWall);
-				}
+			
 			}
 		}
 		
