@@ -13,6 +13,7 @@ public class Sound_Handler {
 	private MediaPlayer mediaPlayer;
 	
 	private boolean playing;;
+	private static boolean allowed = true;
 	
 	public Sound_Handler() {
 		
@@ -45,45 +46,65 @@ public class Sound_Handler {
 	
 	public void playMenu() {
 		
-		mediaPlayer = new MediaPlayer(menu);
-		mediaPlayer.play();
-		
-		playing = true;
+		if(allowed) {
+			
+			mediaPlayer = new MediaPlayer(menu);
+			mediaPlayer.play();
+			
+			playing = true;
+			
+		}
 		
 	}
 	
 	public void playPick() {
 		
-		mediaPlayer = new MediaPlayer(pick);
-		mediaPlayer.play();
-		
-		playing = true;
+		if(allowed) {
+			
+			mediaPlayer = new MediaPlayer(pick);
+			mediaPlayer.play();
+			
+			playing = true;
+			
+		}
 		
 	}
 	
 	public void playDead() {
 		
-		mediaPlayer = new MediaPlayer(dead);
-		mediaPlayer.play();
-		
-		playing = true;
+		if(allowed) {
+			
+			mediaPlayer = new MediaPlayer(dead);
+			mediaPlayer.play();
+			
+			playing = true;
+			
+		}
 		
 	}
 	
 	public void playMove() {
 		
-		mediaPlayer = new MediaPlayer(move);
-		mediaPlayer.play();
-		
-		playing = true;
+		if(allowed) {
+			
+			mediaPlayer = new MediaPlayer(move);
+			mediaPlayer.play();
+			
+			playing = true;
+			
+		}
 		
 	}
 	
 	public void stopSound() {
 		
-		mediaPlayer.stop();
-		
-		playing = false;
+		if(allowed) {
+			
+			mediaPlayer.stop();
+			
+			playing = false;
+			
+		}
 		
 	}
 
@@ -96,6 +117,18 @@ public class Sound_Handler {
 	public void setPlaying(boolean playing) {
 		
 		this.playing = playing;
+		
+	}
+
+	public static boolean isAllowed() {
+		
+		return allowed;
+		
+	}
+
+	public static void setAllowed(boolean allowed) {
+		
+		Sound_Handler.allowed = allowed;
 		
 	}
 	

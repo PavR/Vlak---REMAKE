@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Options_Controller">
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Options_Controller">
    <children>
       <Pane prefHeight="800.0" prefWidth="720.0">
          <children>
             <Label layoutX="30.0" layoutY="32.0" text="SOUNDS" />
-            <ToggleButton fx:id="b_sounds" layoutX="36.0" layoutY="62.0" mnemonicParsing="false" onAction="#b_sounds_onAction" text="ON" />
+            <CheckBox fx:id="cb_sounds" layoutX="43.0" layoutY="57.0" mnemonicParsing="false" onAction="#cb_sounds_onAction" />
+            <Button fx:id="b_back" layoutX="17.0" layoutY="761.0" mnemonicParsing="false" onAction="#b_back_onAction" text="BACK" />
          </children>
       </Pane>
    </children>
