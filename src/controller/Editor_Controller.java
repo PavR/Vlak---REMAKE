@@ -120,7 +120,7 @@ public class Editor_Controller implements Initializable{
 			for (int y = 0; y < 20; y++){
 				if (x == 0 && y == 0){	
 					Editor_Object ObjWall = new Editor_Object(x,y,gh.getWall(),"Wall");
-					allEditor_Objects.add(ObjWall);
+					allEditor_Objects.add(ObjWall);lul
 				}
 				if (x == 20 && y == 20){
 					Editor_Object ObjWall = new Editor_Object(x,y,gh.getWall(),"Wall");
