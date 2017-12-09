@@ -1,5 +1,6 @@
 package code_game;
 
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 public class Wall {
@@ -14,6 +15,12 @@ public class Wall {
 		
 		this.image = image;
 		
+	}
+	
+	public void render(GraphicsContext gc) {
+			
+		gc.drawImage(image, x, y);
+
 	}
 
 	public int getX() {

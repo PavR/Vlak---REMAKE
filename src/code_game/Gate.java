@@ -1,5 +1,6 @@
 package code_game;
 
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 public class Gate {
@@ -16,6 +17,12 @@ public class Gate {
 		
 	}
 
+	public void render(GraphicsContext gc) {
+		
+		gc.drawImage(image, x, y);
+
+	}
+	
 	public int getX() {
 		
 		return x;

@@ -1,6 +1,10 @@
 package handler;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.MalformedURLException;
 
 import javafx.scene.media.Media;
@@ -22,6 +26,67 @@ public class Sound_Handler {
 		String AbsolutePath = new File(".").getAbsolutePath();
     	
     	AbsolutePath = (AbsolutePath.substring(0, AbsolutePath.length() - 1));
+    	
+    	File options = new File(AbsolutePath + "OPTIONS.txt");
+
+    	BufferedReader br;
+    	
+		try {
+			
+			br = new BufferedReader(new FileReader(options));
+			
+			try {
+				
+			    StringBuilder sb = new StringBuilder();
+			    String line = br.readLine();
+			    
+			    while (line != null) {
+			    	
+			    	if(line.startsWith("sounds")) {
+			    		
+			    		if(line.contains("=on")) {
+			    			
+			    			allowed = true;
+			    			
+			    		}else {
+			    			
+			    			allowed = false;
+			    			
+			    		}
+			    		
+			    	}
+			    	
+			    	
+			    	sb.append(line);
+			        sb.append(System.lineSeparator());
+			        line = br.readLine();
+			        
+			    }
+			    
+			} catch (IOException e) {
+				
+				e.printStackTrace();
+				
+			} finally {
+				
+			    try {
+			    	
+					br.close();
+					
+				} catch (IOException e) {
+					
+					e.printStackTrace();
+					
+				}
+			    
+			}
+			
+		} catch (FileNotFoundException e1) {
+			
+			e1.printStackTrace();
+			
+		}
+    	
     	AbsolutePath = AbsolutePath + "sounds";
     	
 		File fileA = new File(AbsolutePath + "/" + "Dead.wav");

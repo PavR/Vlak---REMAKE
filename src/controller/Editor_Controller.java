@@ -17,9 +17,13 @@ import java.util.ResourceBundle;
 import code_editor.Editor_Object;
 import code_editor.Editor_SelectedTile;
 import code_editor.Editor_Tunnel;
+import code_game.Main;
 import handler.Graphics_Handler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
@@ -29,6 +33,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
@@ -40,16 +45,18 @@ public class Editor_Controller implements Initializable{
 	@FXML
 	private Canvas c_canvas;
 	@FXML
-	private Label l_1, l_2, l_3, l_4, l_5, l_6;
+	private Label l_1, l_2, l_3, l_4, l_5, l_6, l_7;
 	@FXML
-	private CheckBox cb_1, cb_2, cb_3, cb_4, cb_5, cb_6;
+	private CheckBox cb_1, cb_2, cb_3, cb_4, cb_5, cb_6, cb_7;
 	@FXML
-	private ImageView iv_1, iv_2, iv_3, iv_4, iv_5, iv_6;
+	private ImageView iv_1, iv_2, iv_3, iv_4, iv_5, iv_6, iv_7;
 	@FXML
 	private MenuItem mi_load, mi_save;
 	@FXML
 	private TextField tf_level, tf_password;
-
+	@FXML
+	private Button b_back;
+	
 	private GraphicsContext gc;
 	
 	private ArrayList<Editor_Object> allEditor_Objects = new ArrayList<Editor_Object>();
@@ -84,10 +91,10 @@ public class Editor_Controller implements Initializable{
 		l_2.setText(train.getName());
 		iv_2.setImage(train.getImage());
 		
-		Editor_Object Editor_Object = new Editor_Object(gh.getObjectStation(), "Object");
+		Editor_Object Editor_Object1 = new Editor_Object(gh.getObjectPizzaStation(), "Pizza");
 		
-		l_3.setText(Editor_Object.getName());
-		iv_3.setImage(Editor_Object.getImage());
+		l_3.setText(Editor_Object1.getName());
+		iv_3.setImage(Editor_Object1.getImage());
 		
 		Editor_Object gate = new Editor_Object(gh.getGate(), "Gate");
 		
@@ -101,12 +108,18 @@ public class Editor_Controller implements Initializable{
 		l_6.setText(Editor_Tunnel.getName());
 		iv_6.setImage(Editor_Tunnel.getImage());
 		
+		Editor_Object Editor_Object2 = new Editor_Object(gh.getObjectUnicornStation(), "Unicorn");
+		
+		l_7.setText(Editor_Object2.getName());
+		iv_7.setImage(Editor_Object2.getImage());
+		
 		allCheckBoxes.add(cb_1);
 		allCheckBoxes.add(cb_2);
 		allCheckBoxes.add(cb_3);
 		allCheckBoxes.add(cb_4);
 		allCheckBoxes.add(cb_5);
 		allCheckBoxes.add(cb_6);
+		allCheckBoxes.add(cb_7);
 
 		setKeyboardInput();
 		
@@ -114,20 +127,26 @@ public class Editor_Controller implements Initializable{
 		
 		st = new Editor_SelectedTile(0, 0);
 
-		drawCanvas();
+		for(int x = 0; x <= 19; x++) {
+			
+			if(x == 0 || x == 19) {
+				
+				for(int y = 0; y <= 19; y++) {
+					
+					allEditor_Objects.add(new Editor_Object(x * 36, y * 36, gh.getWall(), "Wall"));
+					
+				}
+				
+			}else {
+				
+				allEditor_Objects.add(new Editor_Object(x * 36, 0, gh.getWall(), "Wall"));
+				allEditor_Objects.add(new Editor_Object(x * 36, 19 * 36, gh.getWall(), "Wall"));
+				
+			}
+
+		}
 		
-		//for (int x = 0; x < 20; x++){
-		//	for (int y = 0; y < 20; y++){
-		//		if (x == 0 && y == 0){	
-		//			Editor_Object ObjWall = new Editor_Object(x,y,gh.getWall(),"Wall");
-		//			allEditor_Objects.add(ObjWall);
-		//		}
-		//		if (x == 20 && y == 20){
-		//			Editor_Object ObjWall = new Editor_Object(x,y,gh.getWall(),"Wall");
-		//			allEditor_Objects.add(ObjWall);
-		//		}
-		//	}
-		//}
+		drawCanvas();
 		
 	} 
 	
@@ -243,11 +262,11 @@ public class Editor_Controller implements Initializable{
 		    			
 		    		}
 		    		
-		    	}else if(selectedEditor_Object.equals("Object")) {
+		    	}else if(selectedEditor_Object.equals("Pizza")) {
 		    		
 		    		if(allEditor_Objects.isEmpty()) {
 		    			
-		    			allEditor_Objects.add(new Editor_Object(X, Y, gh.getObjectStation(), "Object"));
+		    			allEditor_Objects.add(new Editor_Object(X, Y, gh.getObjectPizzaStation(), "Pizza"));
 
 			    		clearCanvas();
 			    		drawCanvas();
@@ -264,7 +283,35 @@ public class Editor_Controller implements Initializable{
 			    			
 			    		}
 
-	    				allEditor_Objects.add(new Editor_Object(X, Y, gh.getObjectStation(), "Object"));
+	    				allEditor_Objects.add(new Editor_Object(X, Y, gh.getObjectPizzaStation(), "Pizza"));
+
+			    		clearCanvas();
+			    		drawCanvas();
+		    			
+		    		}
+		    		
+		    	}else if(selectedEditor_Object.equals("Unicorn")){
+		    		
+		    		if(allEditor_Objects.isEmpty()) {
+		    			
+		    			allEditor_Objects.add(new Editor_Object(X, Y, gh.getObjectUnicornStation(), "Unicorn"));
+
+			    		clearCanvas();
+			    		drawCanvas();
+		    			
+		    		}else {
+		    			
+		    			for(int x = 0; x < allEditor_Objects.size(); x++) {
+
+			    			if((allEditor_Objects.get(x).getX() == X) && (allEditor_Objects.get(x).getY() == Y)) {
+			    				
+			    				return;
+			    				
+			    			}
+			    			
+			    		}
+
+	    				allEditor_Objects.add(new Editor_Object(X, Y, gh.getObjectUnicornStation(), "Unicorn"));
 
 			    		clearCanvas();
 			    		drawCanvas();
@@ -272,7 +319,7 @@ public class Editor_Controller implements Initializable{
 		    		}
 		    		
 		    	}else if(selectedEditor_Object.equals("Gate")) {
-		    		
+		    	
 		    		if(gatePlaced == false) {
 		    			
 		    			for(int x = 0; x < allEditor_Objects.size(); x++) {
@@ -596,7 +643,7 @@ public class Editor_Controller implements Initializable{
 				
 			}else if(allCheckBoxes.get(2).isSelected()) {
 				
-				selectedEditor_Object = "Object";
+				selectedEditor_Object = "Pizza";
 				return;
 				
 			}else if(allCheckBoxes.get(3).isSelected()) {
@@ -612,6 +659,11 @@ public class Editor_Controller implements Initializable{
 			}else if(allCheckBoxes.get(5).isSelected()) {
 				
 				selectedEditor_Object = "Tunnel";
+				return;
+				
+			}else if(allCheckBoxes.get(6).isSelected()) {
+				
+				selectedEditor_Object = "Unicorn";
 				return;
 				
 			}
@@ -692,7 +744,7 @@ public class Editor_Controller implements Initializable{
 		    		int X = Integer.parseInt(line.substring(line.indexOf("(") + 1, line.indexOf(",")));
 		    		int Y = Integer.parseInt(line.substring(line.indexOf(",") + 1, line.indexOf(")")));
 		    		
-		    		allEditor_Objects.add(new Editor_Object(X, Y, gh.getObjectStation(), "Object"));
+		    		allEditor_Objects.add(new Editor_Object(X, Y, gh.getObjectPizzaStation(), "Object"));
 		    		
 		    	}
 		    	
@@ -711,6 +763,15 @@ public class Editor_Controller implements Initializable{
 		    		int Y = Integer.parseInt(line.substring(line.indexOf(",") + 1, line.indexOf(")")));
 		    		
 		    		allEditor_Tunnels.add(new Editor_Tunnel(X, Y, gh.getTunnel(), "Tunnel"));
+		    		
+		    	}
+		    	
+		    	if(line.startsWith("5")) {
+		    		
+		    		int X = Integer.parseInt(line.substring(line.indexOf("(") + 1, line.indexOf(",")));
+		    		int Y = Integer.parseInt(line.substring(line.indexOf(",") + 1, line.indexOf(")")));
+		    		
+		    		allEditor_Objects.add(new Editor_Object(X, Y, gh.getObjectUnicornStation(), "Unicorn"));
 		    		
 		    	}
 		    	
@@ -799,13 +860,17 @@ public class Editor_Controller implements Initializable{
 				
 				x.format(1 + "(" + allEditor_Objects.get(y).getX() + "," + allEditor_Objects.get(y).getY() + ")" + "\n");
 				
-			}else if(allEditor_Objects.get(y).getName().equals("Object")) {
+			}else if(allEditor_Objects.get(y).getName().equals("Pizza")) {
 				
 				x.format(2 + "(" + allEditor_Objects.get(y).getX() + "," + allEditor_Objects.get(y).getY() + ")" + "\n");
 				
 			}else if(allEditor_Objects.get(y).getName().equals("Gate")) {
 				
 				x.format(3 + "(" + allEditor_Objects.get(y).getX() + "," + allEditor_Objects.get(y).getY() + ")" + "\n");
+				
+			}else if(allEditor_Objects.get(y).getName().equals("Unicorn")) {
+				
+				x.format(5 + "(" + allEditor_Objects.get(y).getX() + "," + allEditor_Objects.get(y).getY() + ")" + "\n");
 				
 			}
 			
@@ -844,6 +909,24 @@ public class Editor_Controller implements Initializable{
 		Path destinationPath = Paths.get(ss);
 		
 		Files.move(sourcePath, destinationPath, StandardCopyOption.REPLACE_EXISTING);
+		
+	}
+	
+	public void b_back_onAction() throws IOException {
+		
+		Parent root = FXMLLoader.load(getClass().getResource("/fxml/Menu.fxml"));
+		Scene scene = new Scene(root, Main.WIDTH, Main.HEIGHT);
+		
+		Stage primaryStage = new Stage();
+		
+		primaryStage.setTitle("Vlak - REMAKE");
+		primaryStage.setResizable(false);
+		primaryStage.sizeToScene();
+		primaryStage.setScene(scene);
+		primaryStage.show();
+		
+		Stage previousStage = (Stage)b_back.getScene().getWindow();
+		previousStage.close();
 		
 	}
 	

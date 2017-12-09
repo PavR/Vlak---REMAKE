@@ -1,5 +1,8 @@
 package code_game;
 
+import java.util.ArrayList;
+
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 public class Train {
@@ -11,6 +14,8 @@ public class Train {
 	private int lenght;
 	
 	private boolean alive;
+	
+	private ArrayList<Integer> lastPosition = new ArrayList<Integer>();
 	
 	public Train(int x, int y, Image image) {
 		
@@ -27,6 +32,13 @@ public class Train {
 		
 	}
 
+	public void render(GraphicsContext gc) {
+		
+		gc.clearRect(lastPosition.get(0), lastPosition.get(1), 36, 36);
+		gc.drawImage(image, x, y);
+
+	}
+	
 	public int getX() {
 		
 		return x;
@@ -108,6 +120,12 @@ public class Train {
 	public void setAlive(boolean alive) {
 		
 		this.alive = alive;
+		
+	}
+
+	public ArrayList<Integer> getLastPosition() {
+		
+		return lastPosition;
 		
 	}
 	

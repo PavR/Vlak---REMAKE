@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.image.*?>
@@ -117,6 +118,21 @@
                   <Insets bottom="50.0" left="17.5" />
                </GridPane.margin>
             </ImageView>
+            <CheckBox fx:id="cb_7" focusTraversable="false" mnemonicParsing="false" onAction="#cbOnAction" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets left="37.5" top="70.0" />
+               </GridPane.margin>
+            </CheckBox>
+            <Label fx:id="l_7" focusTraversable="false" text="Label" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets left="30.0" top="25.0" />
+               </GridPane.margin>
+            </Label>
+            <ImageView fx:id="iv_7" fitHeight="60.0" fitWidth="60.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets bottom="50.0" left="17.5" />
+               </GridPane.margin>
+            </ImageView>
          </children>
       </GridPane>
       <MenuBar maxHeight="30.0" maxWidth="278.0" minHeight="30.0" minWidth="278.0" prefHeight="30.0" prefWidth="278.0">
@@ -139,5 +155,10 @@
             <Canvas fx:id="c_canvas" focusTraversable="true" height="720.0" onMouseEntered="#onMouseMoved" width="720.0" />
          </children>
       </AnchorPane>
+      <Button fx:id="b_back" alignment="CENTER" focusTraversable="false" layoutX="896.0" layoutY="6.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#b_back_onAction" prefHeight="20.0" prefWidth="90.0" text="BACK" textAlignment="CENTER">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

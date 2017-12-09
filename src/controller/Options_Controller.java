@@ -1,5 +1,8 @@
 package controller;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -28,6 +31,10 @@ public class Options_Controller implements Initializable {
 			
 			cb_sounds.setSelected(true);
 			
+		}else {
+			
+			cb_sounds.setSelected(false);
+			
 		}
 		
 	}
@@ -47,6 +54,28 @@ public class Options_Controller implements Initializable {
 	}
 	
 	public void b_back_onAction() throws IOException {
+		
+		String AbsolutePath = new File(".").getAbsolutePath();
+    	
+    	AbsolutePath = (AbsolutePath.substring(0, AbsolutePath.length() - 1));
+    	
+    	File options = new File(AbsolutePath + "OPTIONS.txt");
+    	
+    	FileWriter fw = new FileWriter(options.getAbsoluteFile());
+    	BufferedWriter bw = new BufferedWriter(fw);
+    	
+    	if(Sound_Handler.isAllowed()) {
+    		
+    		bw.write("sounds=on");
+    		
+    	}else {
+    		
+    		bw.write("sounds=off");
+    		
+    	}
+    	
+    	bw.flush();
+    	bw.close();
 		
 		Parent root = FXMLLoader.load(getClass().getResource("/fxml/Menu.fxml"));
 		Scene scene = new Scene(root, 720, 800);

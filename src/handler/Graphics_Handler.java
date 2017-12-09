@@ -6,7 +6,7 @@ import javafx.scene.image.Image;
 
 public class Graphics_Handler {
 
-	private Image wall, trainUp, trainLeft, trainDown, trainRight, gate, object, wagonRight, wagonUp, wagonDown, tunnel, objectStation, trainRightStation;
+	private Image wall, trainUp, trainLeft, trainDown, trainRight, gate, objectPizza, wagonPizzaRight, wagonPizzaUp, wagonPizzaDown, tunnel, objectPizzaStation, trainRightStation, objectUnicorn, wagonUnicornRight, wagonUnicornUp, wagonUnicornDown, objectUnicornStation;
 	
 	public Graphics_Handler() {
 		
@@ -26,14 +26,21 @@ public class Graphics_Handler {
 		
 		File file3 = new File(AbsolutePath + "/" + "gate.png");
 		
-		File file4a = new File(AbsolutePath + "/" + "object.gif");
-		File file4b = new File(AbsolutePath + "/" + "objectStation.png");
+		File file4a = new File(AbsolutePath + "/" + "objectPizza.gif");
+		File file4b = new File(AbsolutePath + "/" + "objectPizzaStation.png");
 
-		File file5a = new File(AbsolutePath + "/" + "wagonRight.png");
-		File file5b = new File(AbsolutePath + "/" + "wagonUp.png");
-		File file5c = new File(AbsolutePath + "/" + "wagonDown.png");
+		File file5a = new File(AbsolutePath + "/" + "wagonPizzaRight.png");
+		File file5b = new File(AbsolutePath + "/" + "wagonPizzaUp.png");
+		File file5c = new File(AbsolutePath + "/" + "wagonPizzaDown.png");
 		
 		File file6 = new File(AbsolutePath + "/" + "tunnel.png");
+		
+		File file7a = new File(AbsolutePath + "/" + "objectUnicorn.gif");
+		File file7b = new File(AbsolutePath + "/" + "objectUnicornStation.png");
+
+		File file8a = new File(AbsolutePath + "/" + "wagonUnicornRight.png");
+		File file8b = new File(AbsolutePath + "/" + "wagonUnicornUp.png");
+		File file8c = new File(AbsolutePath + "/" + "wagonUnicornDown.png");
 		
 		wall = new Image(file1.toURI().toString());
 		
@@ -45,12 +52,19 @@ public class Graphics_Handler {
 		
 		gate = new Image(file3.toURI().toString());
 		
-		object = new Image(file4a.toURI().toString());
-		objectStation = new Image(file4b.toURI().toString());
+		objectPizza = new Image(file4a.toURI().toString());
+		objectPizzaStation = new Image(file4b.toURI().toString());
 	
-		wagonRight = new Image(file5a.toURI().toString());
-		wagonUp = new Image(file5c.toURI().toString());
-		wagonDown = new Image(file5b.toURI().toString());
+		wagonPizzaRight = new Image(file5a.toURI().toString());
+		wagonPizzaUp = new Image(file5c.toURI().toString());
+		wagonPizzaDown = new Image(file5b.toURI().toString());
+		
+		objectUnicorn = new Image(file7a.toURI().toString());
+		objectUnicornStation = new Image(file7b.toURI().toString());
+	
+		wagonUnicornRight = new Image(file8a.toURI().toString());
+		wagonUnicornUp = new Image(file8c.toURI().toString());
+		wagonUnicornDown = new Image(file8b.toURI().toString());
 		
 		tunnel = new Image(file6.toURI().toString());
 		
@@ -92,45 +106,75 @@ public class Graphics_Handler {
 		
 	}
 
-	public Image getObject() {
-		
-		return object;
-		
-	}
-
-	public Image getWagonRight() {
-		
-		return wagonRight;
-		
-	}
-
-	public Image getWagonUp() {
-		
-		return wagonUp;
-		
-	}
-
-	public Image getWagonDown() {
-		
-		return wagonDown;
-		
-	}
-
 	public Image getTunnel() {
 		
 		return tunnel;
 		
 	}
 
-	public Image getObjectStation() {
-		
-		return objectStation;
-		
-	}
-
 	public Image getTrainRightStation() {
 		
 		return trainRightStation;
+		
+	}
+
+	public Image getObjectPizza() {
+		
+		return objectPizza;
+		
+	}
+
+	public Image getWagonPizzaRight() {
+		
+		return wagonPizzaRight;
+		
+	}
+
+	public Image getWagonPizzaUp() {
+		
+		return wagonPizzaUp;
+		
+	}
+
+	public Image getWagonPizzaDown() {
+		
+		return wagonPizzaDown;
+		
+	}
+
+	public Image getObjectPizzaStation() {
+		
+		return objectPizzaStation;
+		
+	}
+
+	public Image getObjectUnicorn() {
+		
+		return objectUnicorn;
+		
+	}
+
+	public Image getWagonUnicornRight() {
+		
+		return wagonUnicornRight;
+		
+	}
+
+	public Image getWagonUnicornUp() {
+		
+		return wagonUnicornUp;
+		
+	}
+
+	public Image getWagonUnicornDown() {
+		
+		return wagonUnicornDown;
+		
+	}
+
+	public Image getObjectUnicornStation() {
+		
+		return objectUnicornStation;
 		
 	}
 	
