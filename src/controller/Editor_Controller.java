@@ -36,6 +36,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -211,315 +212,28 @@ public class Editor_Controller implements Initializable{
 		    	int X = st.getX();
 		    	int Y = st.getY();
 		    	
-		    	if(selectedEditor_Object.equals("Wall")) {
-
-		    		if(allEditor_Objects.isEmpty()) {
-		    			
-		    			allEditor_Objects.add(new Editor_Object(X, Y, gh.getWall(), "Wall"));
-
-			    		clearCanvas();
-			    		drawCanvas();
-		    			
-		    		}else {
-		    			
-		    			for(int x = 0; x < allEditor_Objects.size(); x++) {
-
-			    			if((allEditor_Objects.get(x).getX() == X) && (allEditor_Objects.get(x).getY() == Y)) {
-			    				
-			    				return;
-			    				
-			    			}
-			    			
-			    		}
-
-	    				allEditor_Objects.add(new Editor_Object(X, Y, gh.getWall(), "Wall"));
-
-			    		clearCanvas();
-			    		drawCanvas();
-		    			
-		    		}
-		    		
-		    	}else if(selectedEditor_Object.equals("Train")) {
-		    		
-		    		if(trainPlaced == false) {
-		    			
-		    			for(int x = 0; x < allEditor_Objects.size(); x++) {
-
-			    			if((allEditor_Objects.get(x).getX() == X) && (allEditor_Objects.get(x).getY() == Y)) {
-			    				
-			    				return;
-			    				
-			    			}
-			    			
-			    		}
-		    			
-		    			trainPlaced = true;
-		    			
-		    			allEditor_Objects.add(new Editor_Object(X, Y, gh.getTrainRightStation(), "Train"));
-
-			    		clearCanvas();
-			    		drawCanvas();
-		    			
-		    		}
-		    		
-		    	}else if(selectedEditor_Object.equals("Pizza")) {
-		    		
-		    		if(allEditor_Objects.isEmpty()) {
-		    			
-		    			allEditor_Objects.add(new Editor_Object(X, Y, gh.getObjectPizzaStation(), "Pizza"));
-
-			    		clearCanvas();
-			    		drawCanvas();
-		    			
-		    		}else {
-		    			
-		    			for(int x = 0; x < allEditor_Objects.size(); x++) {
-
-			    			if((allEditor_Objects.get(x).getX() == X) && (allEditor_Objects.get(x).getY() == Y)) {
-			    				
-			    				return;
-			    				
-			    			}
-			    			
-			    		}
-
-	    				allEditor_Objects.add(new Editor_Object(X, Y, gh.getObjectPizzaStation(), "Pizza"));
-
-			    		clearCanvas();
-			    		drawCanvas();
-		    			
-		    		}
-		    		
-		    	}else if(selectedEditor_Object.equals("Unicorn")){
-		    		
-		    		if(allEditor_Objects.isEmpty()) {
-		    			
-		    			allEditor_Objects.add(new Editor_Object(X, Y, gh.getObjectUnicornStation(), "Unicorn"));
-
-			    		clearCanvas();
-			    		drawCanvas();
-		    			
-		    		}else {
-		    			
-		    			for(int x = 0; x < allEditor_Objects.size(); x++) {
-
-			    			if((allEditor_Objects.get(x).getX() == X) && (allEditor_Objects.get(x).getY() == Y)) {
-			    				
-			    				return;
-			    				
-			    			}
-			    			
-			    		}
-
-	    				allEditor_Objects.add(new Editor_Object(X, Y, gh.getObjectUnicornStation(), "Unicorn"));
-
-			    		clearCanvas();
-			    		drawCanvas();
-		    			
-		    		}
-		    		
-		    	}else if(selectedEditor_Object.equals("Gate")) {
-		    	
-		    		if(gatePlaced == false) {
-		    			
-		    			for(int x = 0; x < allEditor_Objects.size(); x++) {
-
-			    			if((allEditor_Objects.get(x).getX() == X) && (allEditor_Objects.get(x).getY() == Y)) {
-			    				
-			    				return;
-			    				
-			    			}
-			    			
-			    		}
-		    			
-		    			gatePlaced = true;
-		    			
-		    			allEditor_Objects.add(new Editor_Object(X, Y, gh.getGate(), "Gate"));
-
-			    		clearCanvas();
-			    		drawCanvas();
-		    			
-		    		}
-		    		
-		    	}else if(selectedEditor_Object.equals("Empty")) {
-		    		
-		    		for(int x = 0; x < allEditor_Objects.size(); x++) {
-
-		    			if((allEditor_Objects.get(x).getX() == X) && (allEditor_Objects.get(x).getY() == Y)) {
-		    				
-		    				if(allEditor_Objects.get(x).getName().equals("Train")) {
-		    					
-		    					trainPlaced = false;
-		    					
-		    				}
-		    				
-		    				if(allEditor_Objects.get(x).getName().equals("Gate")) {
-		    					
-		    					gatePlaced = false;
-		    					
-		    				}
-		    				
-		    				allEditor_Objects.remove(x);
-		    				
-		    			}
-		    			
-		    		}
-		    		
-		    		for(int x = 0; x < allEditor_Tunnels.size(); x++) {
-
-		    			if((allEditor_Tunnels.get(x).getX() == X) && (allEditor_Tunnels.get(x).getY() == Y)) {
-		    				
-		    				if(x > allEditor_Tunnels.indexOf(allEditor_Tunnels.get(x).getEnd())) {
-		    					
-		    					int a = allEditor_Tunnels.indexOf(allEditor_Tunnels.get(x).getEnd());
-		    					
-		    					allEditor_Tunnels.remove(x);
-		    					allEditor_Tunnels.remove(a);
-		    					
-		    				}else {
-		    					
-		    					allEditor_Tunnels.remove(allEditor_Tunnels.indexOf(allEditor_Tunnels.get(x).getEnd()));
-		    					allEditor_Tunnels.remove(x);
-		    					
-		    				}
-		    				
-		    			}
-		    			
-		    		}
-		    		
-		    		clearCanvas();
-		    		drawCanvas();
-		    		
-		    	}else if(selectedEditor_Object.equals("Tunnel")) {
-		    		
-		    		if(allEditor_Objects.size() > 0) {
-		    			
-			    		for(int x = 0; x < allEditor_Objects.size(); x++) {
-			    			
-			    			if((allEditor_Objects.get(x).getX() == X) && (allEditor_Objects.get(x).getY() == Y)) {
-			    				
-			    				return;
-			    				
-			    			}else {
-			    				
-			    				if(allEditor_Tunnels.size() > 0) {
-			    					
-				    				for(int y = 0; y < allEditor_Tunnels.size();) {
-				    					
-					    				if((allEditor_Tunnels.get(y).getX() == X) && (allEditor_Tunnels.get(y).getY() == Y)) {
-					    					
-					    					return;
-						    				
-						    			}else {
-						    				
-						    				if(connectEditor_Tunnels == false) {
-						    					
-						    					allEditor_Tunnels.add(new Editor_Tunnel(X, Y, gh.getTunnel(), "Tunnel"));
-						    					
-						    					connectEditor_Tunnels = true;
-						    					
-						    					clearCanvas();
-						    		    		drawCanvas();
-						    					
-						    					return;
-						    					
-						    				}else {
-						    					
-						    					connectEditor_Tunnels = false;
-						    					
-						    					allEditor_Tunnels.add(new Editor_Tunnel(X, Y, gh.getTunnel(), "Tunnel"));
-						    					
-						    					allEditor_Tunnels.get(allEditor_Tunnels.size() - 2).setEnd(allEditor_Tunnels.get(allEditor_Tunnels.size() - 1));
-						    					allEditor_Tunnels.get(allEditor_Tunnels.size() - 1).setEnd(allEditor_Tunnels.get(allEditor_Tunnels.size() - 2));
-						    					
-						    					clearCanvas();
-						    		    		drawCanvas();
-						    					
-						    					return;
-						    				}
-						    				
-						    			}
-				    					
-				    				}
-			    					
-			    				}else {
-			    					
-			    					allEditor_Tunnels.add(new Editor_Tunnel(X, Y, gh.getTunnel(), "Tunnel"));
-			    					
-			    					connectEditor_Tunnels = true;
-			    					
-			    					clearCanvas();
-			    		    		drawCanvas();
-			    					
-			    					return;
-			    					
-			    				}
-			    				
-			    			}
-			    			
-			    		}
-		    			
-		    		}else {
-		    			
-		    			if(allEditor_Tunnels.size() > 0) {
-		    				
-		    				for(int y = 0; y < allEditor_Tunnels.size();) {
-		    					
-			    				if((allEditor_Tunnels.get(y).getX() == X) && (allEditor_Tunnels.get(y).getY() == Y)) {
-			    					
-			    					return;
-				    				
-				    			}else {
-				    				
-				    				if(connectEditor_Tunnels == false) {
-				    					
-				    					allEditor_Tunnels.add(new Editor_Tunnel(X, Y, gh.getTunnel(), "Tunnel"));
-				    					
-				    					connectEditor_Tunnels = true;
-				    					
-				    					clearCanvas();
-				    		    		drawCanvas();
-				    					
-				    					return;
-				    					
-				    				}else {
-				    					
-				    					connectEditor_Tunnels = false;
-				    					
-				    					allEditor_Tunnels.add(new Editor_Tunnel(X, Y, gh.getTunnel(), "Tunnel"));
-				    					
-				    					allEditor_Tunnels.get(allEditor_Tunnels.size() - 2).setEnd(allEditor_Tunnels.get(allEditor_Tunnels.size() - 1));
-				    					allEditor_Tunnels.get(allEditor_Tunnels.size() - 1).setEnd(allEditor_Tunnels.get(allEditor_Tunnels.size() - 2));
-				    					
-				    					clearCanvas();
-				    		    		drawCanvas();
-				    					
-				    					return;
-				    					
-				    				}
-				    				
-				    			}
-		    					
-		    				}
-		    				
-		    			}else {
-		    				
-		    				allEditor_Tunnels.add(new Editor_Tunnel(X, Y, gh.getTunnel(), "Tunnel"));
-		    				
-		    				connectEditor_Tunnels = true;
-		    				
-		    				clearCanvas();
-				    		drawCanvas();
-		    				
-		    				return;
-		    			}
-		    			
-		    		}
-		    	
-		    	}
+		    	makeObject(X, Y);
 
 		    }
 		    
+		});
+		
+		c_canvas.setOnMouseClicked(e -> {
+			
+			if(e.getButton() == MouseButton.PRIMARY) {
+				
+				int X = (int)((e.getSceneX() - 280) / 36);
+		    	int Y = (int)((e.getSceneY() - 30) / 36);
+		    	
+		    	X = X * 36;
+		    	Y = Y * 36;
+		    	
+		    	st.setX(X);
+		    	st.setY(Y);
+		    	
+		    	makeObject(X, Y);
+			}
+			
 		});
 		
 	}
@@ -909,6 +623,317 @@ public class Editor_Controller implements Initializable{
 		Path destinationPath = Paths.get(ss);
 		
 		Files.move(sourcePath, destinationPath, StandardCopyOption.REPLACE_EXISTING);
+		
+	}
+	
+	public void makeObject(int X, int Y) {
+		
+		if(selectedEditor_Object.equals("Wall")) {
+
+    		if(allEditor_Objects.isEmpty()) {
+    			
+    			allEditor_Objects.add(new Editor_Object(X, Y, gh.getWall(), "Wall"));
+
+	    		clearCanvas();
+	    		drawCanvas();
+    			
+    		}else {
+    			
+    			for(int x = 0; x < allEditor_Objects.size(); x++) {
+
+	    			if((allEditor_Objects.get(x).getX() == X) && (allEditor_Objects.get(x).getY() == Y)) {
+	    				
+	    				return;
+	    				
+	    			}
+	    			
+	    		}
+
+				allEditor_Objects.add(new Editor_Object(X, Y, gh.getWall(), "Wall"));
+
+	    		clearCanvas();
+	    		drawCanvas();
+    			
+    		}
+    		
+    	}else if(selectedEditor_Object.equals("Train")) {
+    		
+    		if(trainPlaced == false) {
+    			
+    			for(int x = 0; x < allEditor_Objects.size(); x++) {
+
+	    			if((allEditor_Objects.get(x).getX() == X) && (allEditor_Objects.get(x).getY() == Y)) {
+	    				
+	    				return;
+	    				
+	    			}
+	    			
+	    		}
+    			
+    			trainPlaced = true;
+    			
+    			allEditor_Objects.add(new Editor_Object(X, Y, gh.getTrainRightStation(), "Train"));
+
+	    		clearCanvas();
+	    		drawCanvas();
+    			
+    		}
+    		
+    	}else if(selectedEditor_Object.equals("Pizza")) {
+    		
+    		if(allEditor_Objects.isEmpty()) {
+    			
+    			allEditor_Objects.add(new Editor_Object(X, Y, gh.getObjectPizzaStation(), "Pizza"));
+
+	    		clearCanvas();
+	    		drawCanvas();
+    			
+    		}else {
+    			
+    			for(int x = 0; x < allEditor_Objects.size(); x++) {
+
+	    			if((allEditor_Objects.get(x).getX() == X) && (allEditor_Objects.get(x).getY() == Y)) {
+	    				
+	    				return;
+	    				
+	    			}
+	    			
+	    		}
+
+				allEditor_Objects.add(new Editor_Object(X, Y, gh.getObjectPizzaStation(), "Pizza"));
+
+	    		clearCanvas();
+	    		drawCanvas();
+    			
+    		}
+    		
+    	}else if(selectedEditor_Object.equals("Unicorn")){
+    		
+    		if(allEditor_Objects.isEmpty()) {
+    			
+    			allEditor_Objects.add(new Editor_Object(X, Y, gh.getObjectUnicornStation(), "Unicorn"));
+
+	    		clearCanvas();
+	    		drawCanvas();
+    			
+    		}else {
+    			
+    			for(int x = 0; x < allEditor_Objects.size(); x++) {
+
+	    			if((allEditor_Objects.get(x).getX() == X) && (allEditor_Objects.get(x).getY() == Y)) {
+	    				
+	    				return;
+	    				
+	    			}
+	    			
+	    		}
+
+				allEditor_Objects.add(new Editor_Object(X, Y, gh.getObjectUnicornStation(), "Unicorn"));
+
+	    		clearCanvas();
+	    		drawCanvas();
+    			
+    		}
+    		
+    	}else if(selectedEditor_Object.equals("Gate")) {
+    	
+    		if(gatePlaced == false) {
+    			
+    			for(int x = 0; x < allEditor_Objects.size(); x++) {
+
+	    			if((allEditor_Objects.get(x).getX() == X) && (allEditor_Objects.get(x).getY() == Y)) {
+	    				
+	    				return;
+	    				
+	    			}
+	    			
+	    		}
+    			
+    			gatePlaced = true;
+    			
+    			allEditor_Objects.add(new Editor_Object(X, Y, gh.getGate(), "Gate"));
+
+	    		clearCanvas();
+	    		drawCanvas();
+    			
+    		}
+    		
+    	}else if(selectedEditor_Object.equals("Empty")) {
+    		
+    		for(int x = 0; x < allEditor_Objects.size(); x++) {
+
+    			if((allEditor_Objects.get(x).getX() == X) && (allEditor_Objects.get(x).getY() == Y)) {
+    				
+    				if(allEditor_Objects.get(x).getName().equals("Train")) {
+    					
+    					trainPlaced = false;
+    					
+    				}
+    				
+    				if(allEditor_Objects.get(x).getName().equals("Gate")) {
+    					
+    					gatePlaced = false;
+    					
+    				}
+    				
+    				allEditor_Objects.remove(x);
+    				
+    			}
+    			
+    		}
+    		
+    		for(int x = 0; x < allEditor_Tunnels.size(); x++) {
+
+    			if((allEditor_Tunnels.get(x).getX() == X) && (allEditor_Tunnels.get(x).getY() == Y)) {
+    				
+    				if(x > allEditor_Tunnels.indexOf(allEditor_Tunnels.get(x).getEnd())) {
+    					
+    					int a = allEditor_Tunnels.indexOf(allEditor_Tunnels.get(x).getEnd());
+    					
+    					allEditor_Tunnels.remove(x);
+    					allEditor_Tunnels.remove(a);
+    					
+    				}else {
+    					
+    					allEditor_Tunnels.remove(allEditor_Tunnels.indexOf(allEditor_Tunnels.get(x).getEnd()));
+    					allEditor_Tunnels.remove(x);
+    					
+    				}
+    				
+    			}
+    			
+    		}
+    		
+    		clearCanvas();
+    		drawCanvas();
+    		
+    	}else if(selectedEditor_Object.equals("Tunnel")) {
+    		
+    		if(allEditor_Objects.size() > 0) {
+    			
+	    		for(int x = 0; x < allEditor_Objects.size(); x++) {
+	    			
+	    			if((allEditor_Objects.get(x).getX() == X) && (allEditor_Objects.get(x).getY() == Y)) {
+	    				
+	    				return;
+	    				
+	    			}else {
+	    				
+	    				if(allEditor_Tunnels.size() > 0) {
+	    					
+		    				for(int y = 0; y < allEditor_Tunnels.size();) {
+		    					
+			    				if((allEditor_Tunnels.get(y).getX() == X) && (allEditor_Tunnels.get(y).getY() == Y)) {
+			    					
+			    					return;
+				    				
+				    			}else {
+				    				
+				    				if(connectEditor_Tunnels == false) {
+				    					
+				    					allEditor_Tunnels.add(new Editor_Tunnel(X, Y, gh.getTunnel(), "Tunnel"));
+				    					
+				    					connectEditor_Tunnels = true;
+				    					
+				    					clearCanvas();
+				    		    		drawCanvas();
+				    					
+				    					return;
+				    					
+				    				}else {
+				    					
+				    					connectEditor_Tunnels = false;
+				    					
+				    					allEditor_Tunnels.add(new Editor_Tunnel(X, Y, gh.getTunnel(), "Tunnel"));
+				    					
+				    					allEditor_Tunnels.get(allEditor_Tunnels.size() - 2).setEnd(allEditor_Tunnels.get(allEditor_Tunnels.size() - 1));
+				    					allEditor_Tunnels.get(allEditor_Tunnels.size() - 1).setEnd(allEditor_Tunnels.get(allEditor_Tunnels.size() - 2));
+				    					
+				    					clearCanvas();
+				    		    		drawCanvas();
+				    					
+				    					return;
+				    				}
+				    				
+				    			}
+		    					
+		    				}
+	    					
+	    				}else {
+	    					
+	    					allEditor_Tunnels.add(new Editor_Tunnel(X, Y, gh.getTunnel(), "Tunnel"));
+	    					
+	    					connectEditor_Tunnels = true;
+	    					
+	    					clearCanvas();
+	    		    		drawCanvas();
+	    					
+	    					return;
+	    					
+	    				}
+	    				
+	    			}
+	    			
+	    		}
+    			
+    		}else {
+    			
+    			if(allEditor_Tunnels.size() > 0) {
+    				
+    				for(int y = 0; y < allEditor_Tunnels.size();) {
+    					
+	    				if((allEditor_Tunnels.get(y).getX() == X) && (allEditor_Tunnels.get(y).getY() == Y)) {
+	    					
+	    					return;
+		    				
+		    			}else {
+		    				
+		    				if(connectEditor_Tunnels == false) {
+		    					
+		    					allEditor_Tunnels.add(new Editor_Tunnel(X, Y, gh.getTunnel(), "Tunnel"));
+		    					
+		    					connectEditor_Tunnels = true;
+		    					
+		    					clearCanvas();
+		    		    		drawCanvas();
+		    					
+		    					return;
+		    					
+		    				}else {
+		    					
+		    					connectEditor_Tunnels = false;
+		    					
+		    					allEditor_Tunnels.add(new Editor_Tunnel(X, Y, gh.getTunnel(), "Tunnel"));
+		    					
+		    					allEditor_Tunnels.get(allEditor_Tunnels.size() - 2).setEnd(allEditor_Tunnels.get(allEditor_Tunnels.size() - 1));
+		    					allEditor_Tunnels.get(allEditor_Tunnels.size() - 1).setEnd(allEditor_Tunnels.get(allEditor_Tunnels.size() - 2));
+		    					
+		    					clearCanvas();
+		    		    		drawCanvas();
+		    					
+		    					return;
+		    					
+		    				}
+		    				
+		    			}
+    					
+    				}
+    				
+    			}else {
+    				
+    				allEditor_Tunnels.add(new Editor_Tunnel(X, Y, gh.getTunnel(), "Tunnel"));
+    				
+    				connectEditor_Tunnels = true;
+    				
+    				clearCanvas();
+		    		drawCanvas();
+    				
+    				return;
+    			}
+    			
+    		}
+    	
+    	}
 		
 	}
 	
