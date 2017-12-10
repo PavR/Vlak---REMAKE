@@ -75,4 +75,10 @@ public class Editor_Object {
 		
 	}
 	
+	public String toString() {
+		
+		return name;
+		
+	}
+	
 }

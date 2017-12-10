@@ -6,7 +6,8 @@ import javafx.scene.image.Image;
 
 public class Graphics_Handler {
 
-	private Image wall, trainUp, trainLeft, trainDown, trainRight, gate, objectPizza, wagonPizzaRight, wagonPizzaUp, wagonPizzaDown, tunnel, objectPizzaStation, trainRightStation, objectUnicorn, wagonUnicornRight, wagonUnicornUp, wagonUnicornDown, objectUnicornStation;
+	private Image wall, trainUp, trainLeft, trainDown, trainRight, gate, objectPizza, wagonPizzaRight, wagonPizzaUp, wagonPizzaDown,
+				  tunnel, objectPizzaStation, trainRightStation, objectUnicorn, wagonUnicornRight, wagonUnicornUp, wagonUnicornDown, objectUnicornStation, empty;
 	
 	public Graphics_Handler() {
 		
@@ -42,6 +43,8 @@ public class Graphics_Handler {
 		File file8b = new File(AbsolutePath + "/" + "wagonUnicornUp.png");
 		File file8c = new File(AbsolutePath + "/" + "wagonUnicornDown.png");
 		
+		File file9 = new File(AbsolutePath + "/" + "empty.png");
+		
 		wall = new Image(file1.toURI().toString());
 		
 		trainUp = new Image(file2a.toURI().toString());
@@ -67,6 +70,8 @@ public class Graphics_Handler {
 		wagonUnicornDown = new Image(file8b.toURI().toString());
 		
 		tunnel = new Image(file6.toURI().toString());
+		
+		empty = new Image(file9.toURI().toString());
 		
 	}
 
@@ -175,6 +180,12 @@ public class Graphics_Handler {
 	public Image getObjectUnicornStation() {
 		
 		return objectUnicornStation;
+		
+	}
+
+	public Image getEmpty() {
+		
+		return empty;
 		
 	}
 	

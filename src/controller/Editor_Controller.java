@@ -19,6 +19,8 @@ import code_editor.Editor_SelectedTile;
 import code_editor.Editor_Tunnel;
 import code_game.Main;
 import handler.Graphics_Handler;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -28,35 +30,34 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 public class Editor_Controller implements Initializable{
 
 	@FXML
 	private Canvas c_canvas;
 	@FXML
-	private Label l_1, l_2, l_3, l_4, l_5, l_6, l_7;
-	@FXML
-	private CheckBox cb_1, cb_2, cb_3, cb_4, cb_5, cb_6, cb_7;
-	@FXML
-	private ImageView iv_1, iv_2, iv_3, iv_4, iv_5, iv_6, iv_7;
-	@FXML
 	private MenuItem mi_load, mi_save;
 	@FXML
 	private TextField tf_level, tf_password;
 	@FXML
 	private Button b_back;
+	@FXML
+	private ListView<Editor_Object> lw_objects;
+	
+	private ObservableList<Editor_Object> ol_objects;
 	
 	private GraphicsContext gc;
 	
@@ -64,8 +65,6 @@ public class Editor_Controller implements Initializable{
 	private ArrayList<Editor_Tunnel> allEditor_Tunnels = new ArrayList<Editor_Tunnel>();
 	
 	private Editor_SelectedTile st;
-	
-	private ArrayList<CheckBox> allCheckBoxes = new ArrayList<CheckBox>();
 	
 	private String selectedEditor_Object = "";
 	
@@ -85,46 +84,6 @@ public class Editor_Controller implements Initializable{
 	public void initialize(URL arg0, ResourceBundle arg1) {
 
 		gh = new Graphics_Handler();
-		
-		Editor_Object wall = new Editor_Object(gh.getWall(), "Wall");
-		
-		l_1.setText(wall.getName());
-		iv_1.setImage(wall.getImage());
-		
-		Editor_Object train = new Editor_Object(gh.getTrainRightStation(), "Train");
-		
-		l_2.setText(train.getName());
-		iv_2.setImage(train.getImage());
-		
-		Editor_Object Editor_Object1 = new Editor_Object(gh.getObjectPizzaStation(), "Pizza");
-		
-		l_3.setText(Editor_Object1.getName());
-		iv_3.setImage(Editor_Object1.getImage());
-		
-		Editor_Object gate = new Editor_Object(gh.getGate(), "Gate");
-		
-		l_4.setText(gate.getName());
-		iv_4.setImage(gate.getImage());
-		
-		l_5.setText("Empty");
-		
-		Editor_Object Editor_Tunnel = new Editor_Object(gh.getTunnel(), "Tunnel");
-		
-		l_6.setText(Editor_Tunnel.getName());
-		iv_6.setImage(Editor_Tunnel.getImage());
-		
-		Editor_Object Editor_Object2 = new Editor_Object(gh.getObjectUnicornStation(), "Unicorn");
-		
-		l_7.setText(Editor_Object2.getName());
-		iv_7.setImage(Editor_Object2.getImage());
-		
-		allCheckBoxes.add(cb_1);
-		allCheckBoxes.add(cb_2);
-		allCheckBoxes.add(cb_3);
-		allCheckBoxes.add(cb_4);
-		allCheckBoxes.add(cb_5);
-		allCheckBoxes.add(cb_6);
-		allCheckBoxes.add(cb_7);
 
 		setKeyboardInput();
 		
@@ -132,6 +91,46 @@ public class Editor_Controller implements Initializable{
 		
 		st = new Editor_SelectedTile(0, 0);
 
+		ol_objects = FXCollections.observableArrayList();
+		
+		ol_objects.add(new Editor_Object(gh.getWall(), "Wall"));
+		ol_objects.add(new Editor_Object(gh.getTrainRightStation(), "Train"));
+		ol_objects.add(new Editor_Object(gh.getGate(), "Gate"));
+		ol_objects.add(new Editor_Object(gh.getObjectPizzaStation(), "Pizza"));
+		ol_objects.add(new Editor_Object(gh.getObjectUnicornStation(), "Unicorn"));
+		ol_objects.add(new Editor_Object(gh.getEmpty(), "Empty"));
+		ol_objects.add(new Editor_Object(gh.getTunnel(), "Tunnel"));
+		
+		lw_objects.setCellFactory(new Callback<ListView<Editor_Object>, ListCell<Editor_Object>>(){
+			
+			public ListCell<Editor_Object> call(ListView<Editor_Object> arg0) {
+				
+				ListCell<Editor_Object> cell = new ListCell<Editor_Object>() {
+					
+					protected void updateItem(Editor_Object object, boolean b) {
+						
+						super.updateItem(object, b);
+						
+						if(object != null) {
+							
+							ImageView view = new ImageView(object.getImage());
+							setGraphic(view);
+							setText(object.getName());
+							
+						}
+						
+					}
+					
+				};
+				
+				return cell;
+			}
+			
+		});
+		
+		lw_objects.setItems(ol_objects);
+		lw_objects.refresh();
+		
 		for(int x = 0; x <= 19; x++) {
 			
 			if(x == 0 || x == 19) {
@@ -285,6 +284,8 @@ public class Editor_Controller implements Initializable{
 	    	
 	    	X = X / 36;
 	    	Y = Y / 36;
+	    	
+	    	selectedEditor_Object = lw_objects.getSelectionModel().getSelectedItem().getName();
 	    	
 			if(selectedEditor_Object.equals("Wall")) {
 	    			
@@ -792,6 +793,18 @@ public class Editor_Controller implements Initializable{
 					    			
 						    		if((allEditor_Objects.get(z).getX() == dragX1 + (x * 36)) && (allEditor_Objects.get(z).getY() == dragY1 + (y * 36))) {
 					    				
+						    			if(allEditor_Objects.get(z).getName().equals("Train")) {
+						    				
+						    				trainPlaced = false;
+						    				
+						    			}
+						    			
+						    			if(allEditor_Objects.get(z).getName().equals("Gate")) {
+						    				
+						    				gatePlaced = false;
+						    				
+						    			}
+						    			
 						    			allEditor_Objects.remove(z);
 					    				
 					    			}
@@ -804,6 +817,18 @@ public class Editor_Controller implements Initializable{
 					    			
 						    		if((allEditor_Objects.get(z).getX() == dragX1 + (x * 36)) && (allEditor_Objects.get(z).getY() == dragY2 + (y * 36))) {
 					    				
+						    			if(allEditor_Objects.get(z).getName().equals("Train")) {
+						    				
+						    				trainPlaced = false;
+						    				
+						    			}
+						    			
+						    			if(allEditor_Objects.get(z).getName().equals("Gate")) {
+						    				
+						    				gatePlaced = false;
+						    				
+						    			}
+						    			
 						    			allEditor_Objects.remove(z);
 					    				
 					    			}
@@ -828,6 +853,18 @@ public class Editor_Controller implements Initializable{
 					    			
 						    		if((allEditor_Objects.get(z).getX() == dragX2 + (x * 36)) && (allEditor_Objects.get(z).getY() == dragY1 + (y * 36))) {
 					    				
+						    			if(allEditor_Objects.get(z).getName().equals("Train")) {
+						    				
+						    				trainPlaced = false;
+						    				
+						    			}
+						    			
+						    			if(allEditor_Objects.get(z).getName().equals("Gate")) {
+						    				
+						    				gatePlaced = false;
+						    				
+						    			}
+						    			
 						    			allEditor_Objects.remove(z);
 					    				
 					    			}
@@ -840,6 +877,18 @@ public class Editor_Controller implements Initializable{
 					    			
 						    		if((allEditor_Objects.get(z).getX() == dragX2 + (x * 36)) && (allEditor_Objects.get(z).getY() == dragY2 + (y * 36))) {
 					    				
+						    			if(allEditor_Objects.get(z).getName().equals("Train")) {
+						    				
+						    				trainPlaced = false;
+						    				
+						    			}
+						    			
+						    			if(allEditor_Objects.get(z).getName().equals("Gate")) {
+						    				
+						    				gatePlaced = false;
+						    				
+						    			}
+						    			
 						    			allEditor_Objects.remove(z);
 					    				
 					    			}
@@ -930,99 +979,7 @@ public class Editor_Controller implements Initializable{
 		
 	}
 	
-	public void cbOnAction() {
-		
-		for(int x = 0; x < allCheckBoxes.size(); x++) {
-			
-			if(allCheckBoxes.get(x).isSelected()) {
-				
-				allCheckBoxes.get(x).setDisable(false);
-				
-			}else {
-				
-				allCheckBoxes.get(x).setDisable(true);
-				
-			}
-			
-		}
-		
-		int a = 0;
-		
-		for(int x = 0; x < allCheckBoxes.size(); x++) {
-			
-			if(!allCheckBoxes.get(x).isSelected()) {
-				
-				a++;
-				
-			}
-			
-		}
-		
-		if(a == allCheckBoxes.size()) {
-			
-			for(int x = 0; x < allCheckBoxes.size(); x++) {
-				
-				allCheckBoxes.get(x).setDisable(false);
-				
-			}
-			
-		}
-		
-		for(int x = 0; x < allCheckBoxes.size(); x++) {
-			
-			if(allCheckBoxes.get(0).isSelected()) {
-				
-				selectedEditor_Object = "Wall";
-				return;
-				
-			}else if(allCheckBoxes.get(1).isSelected()) {
-				
-				selectedEditor_Object = "Train";
-				return;
-				
-			}else if(allCheckBoxes.get(2).isSelected()) {
-				
-				selectedEditor_Object = "Pizza";
-				return;
-				
-			}else if(allCheckBoxes.get(3).isSelected()) {
-				
-				selectedEditor_Object = "Gate";
-				return;
-				
-			}else if(allCheckBoxes.get(4).isSelected()) {
-				
-				selectedEditor_Object = "Empty";
-				return;
-				
-			}else if(allCheckBoxes.get(5).isSelected()) {
-				
-				selectedEditor_Object = "Tunnel";
-				return;
-				
-			}else if(allCheckBoxes.get(6).isSelected()) {
-				
-				selectedEditor_Object = "Unicorn";
-				return;
-				
-			}else {
-				
-				selectedEditor_Object = null;
-				return;
-				
-			}
-			
-		}
-		
-	}
-	
 	public void onMouseMoved() {
-		
-		for(int x = 0; x < allCheckBoxes.size(); x++) {
-			
-			allCheckBoxes.get(x).setFocusTraversable(false);
-			
-		}
 		
 		c_canvas.requestFocus();
 		
@@ -1258,14 +1215,13 @@ public class Editor_Controller implements Initializable{
 	
 	public void makeObject(int X, int Y) {
 		
+		selectedEditor_Object = lw_objects.getSelectionModel().getSelectedItem().getName();
+		
 		if(selectedEditor_Object.equals("Wall")) {
 
     		if(allEditor_Objects.isEmpty()) {
     			
     			allEditor_Objects.add(new Editor_Object(X, Y, gh.getWall(), "Wall"));
-
-	    		clearCanvas();
-	    		drawCanvas();
     			
     		}else {
     			
@@ -1280,9 +1236,6 @@ public class Editor_Controller implements Initializable{
 	    		}
 
 				allEditor_Objects.add(new Editor_Object(X, Y, gh.getWall(), "Wall"));
-
-	    		clearCanvas();
-	    		drawCanvas();
     			
     		}
     		
@@ -1303,9 +1256,6 @@ public class Editor_Controller implements Initializable{
     			trainPlaced = true;
     			
     			allEditor_Objects.add(new Editor_Object(X, Y, gh.getTrainRightStation(), "Train"));
-
-	    		clearCanvas();
-	    		drawCanvas();
     			
     		}
     		
@@ -1314,9 +1264,6 @@ public class Editor_Controller implements Initializable{
     		if(allEditor_Objects.isEmpty()) {
     			
     			allEditor_Objects.add(new Editor_Object(X, Y, gh.getObjectPizzaStation(), "Pizza"));
-
-	    		clearCanvas();
-	    		drawCanvas();
     			
     		}else {
     			
@@ -1331,9 +1278,6 @@ public class Editor_Controller implements Initializable{
 	    		}
 
 				allEditor_Objects.add(new Editor_Object(X, Y, gh.getObjectPizzaStation(), "Pizza"));
-
-	    		clearCanvas();
-	    		drawCanvas();
     			
     		}
     		
@@ -1342,9 +1286,6 @@ public class Editor_Controller implements Initializable{
     		if(allEditor_Objects.isEmpty()) {
     			
     			allEditor_Objects.add(new Editor_Object(X, Y, gh.getObjectUnicornStation(), "Unicorn"));
-
-	    		clearCanvas();
-	    		drawCanvas();
     			
     		}else {
     			
@@ -1359,9 +1300,6 @@ public class Editor_Controller implements Initializable{
 	    		}
 
 				allEditor_Objects.add(new Editor_Object(X, Y, gh.getObjectUnicornStation(), "Unicorn"));
-
-	    		clearCanvas();
-	    		drawCanvas();
     			
     		}
     		
@@ -1382,9 +1320,6 @@ public class Editor_Controller implements Initializable{
     			gatePlaced = true;
     			
     			allEditor_Objects.add(new Editor_Object(X, Y, gh.getGate(), "Gate"));
-
-	    		clearCanvas();
-	    		drawCanvas();
     			
     		}
     		
@@ -1434,9 +1369,6 @@ public class Editor_Controller implements Initializable{
     			
     		}
     		
-    		clearCanvas();
-    		drawCanvas();
-    		
     	}else if(selectedEditor_Object.equals("Tunnel")) {
     		
     		if(allEditor_Objects.size() > 0) {
@@ -1465,9 +1397,6 @@ public class Editor_Controller implements Initializable{
 				    					
 				    					connectEditor_Tunnels = true;
 				    					
-				    					clearCanvas();
-				    		    		drawCanvas();
-				    					
 				    					return;
 				    					
 				    				}else {
@@ -1478,9 +1407,6 @@ public class Editor_Controller implements Initializable{
 				    					
 				    					allEditor_Tunnels.get(allEditor_Tunnels.size() - 2).setEnd(allEditor_Tunnels.get(allEditor_Tunnels.size() - 1));
 				    					allEditor_Tunnels.get(allEditor_Tunnels.size() - 1).setEnd(allEditor_Tunnels.get(allEditor_Tunnels.size() - 2));
-				    					
-				    					clearCanvas();
-				    		    		drawCanvas();
 				    					
 				    					return;
 				    				}
@@ -1494,9 +1420,6 @@ public class Editor_Controller implements Initializable{
 	    					allEditor_Tunnels.add(new Editor_Tunnel(X, Y, gh.getTunnel(), "Tunnel"));
 	    					
 	    					connectEditor_Tunnels = true;
-	    					
-	    					clearCanvas();
-	    		    		drawCanvas();
 	    					
 	    					return;
 	    					
@@ -1524,9 +1447,6 @@ public class Editor_Controller implements Initializable{
 		    					
 		    					connectEditor_Tunnels = true;
 		    					
-		    					clearCanvas();
-		    		    		drawCanvas();
-		    					
 		    					return;
 		    					
 		    				}else {
@@ -1537,9 +1457,6 @@ public class Editor_Controller implements Initializable{
 		    					
 		    					allEditor_Tunnels.get(allEditor_Tunnels.size() - 2).setEnd(allEditor_Tunnels.get(allEditor_Tunnels.size() - 1));
 		    					allEditor_Tunnels.get(allEditor_Tunnels.size() - 1).setEnd(allEditor_Tunnels.get(allEditor_Tunnels.size() - 2));
-		    					
-		    					clearCanvas();
-		    		    		drawCanvas();
 		    					
 		    					return;
 		    					
@@ -1555,15 +1472,15 @@ public class Editor_Controller implements Initializable{
     				
     				connectEditor_Tunnels = true;
     				
-    				clearCanvas();
-		    		drawCanvas();
-    				
     				return;
     			}
     			
     		}
     	
     	}
+		
+		clearCanvas();
+		drawCanvas();
 		
 	}
 	

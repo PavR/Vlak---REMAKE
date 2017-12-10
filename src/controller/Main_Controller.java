@@ -957,6 +957,7 @@ public class Main_Controller implements Initializable{
 	}
 	
 	public void dead() {
+		
 		System.out.println("DEAD");
 		allTrains.get(0).setSpeed(0);
 		alive = false;
