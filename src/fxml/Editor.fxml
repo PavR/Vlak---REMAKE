@@ -38,6 +38,6 @@
             <Font size="10.0" />
          </font>
       </Button>
-      <ListView fx:id="lw_objects" layoutY="29.0" prefHeight="720.0" prefWidth="278.0" />
+      <ListView fx:id="lw_objects" focusTraversable="false" layoutY="29.0" prefHeight="720.0" prefWidth="278.0" />
    </children>
 </AnchorPane>
