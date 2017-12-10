@@ -78,6 +78,10 @@ public class Editor_Controller implements Initializable{
 	
 	private Graphics_Handler gh;
 	
+	private int dragX1, dragX2, dragY1, dragY2;
+	
+	private ArrayList<Integer> skipPlaceing = new ArrayList<Integer>();
+	
 	public void initialize(URL arg0, ResourceBundle arg1) {
 
 		gh = new Graphics_Handler();
@@ -236,6 +240,627 @@ public class Editor_Controller implements Initializable{
 			
 		});
 		
+		c_canvas.setOnMousePressed(e -> {
+			
+			dragX1 = (int)((e.getSceneX() - 280) / 36);
+	    	dragY1 = (int)((e.getSceneY() - 30) / 36);
+	    	
+	    	dragX1 = dragX1 * 36;
+	    	dragY1 = dragY1 * 36;
+			
+		});
+		
+		c_canvas.setOnMouseReleased(e -> {
+			
+			dragX2 = (int)((e.getSceneX() - 280) / 36);
+	    	dragY2 = (int)((e.getSceneY() - 30) / 36);
+	    	
+	    	dragX2 = dragX2 * 36;
+	    	dragY2 = dragY2 * 36;
+	    	
+	    	st.setX(dragX2);
+	    	st.setY(dragY2);
+	    	
+	    	int X, Y;
+	    	
+	    	if(dragX1 > dragX2) {
+	    		
+	    		X = dragX1 - dragX2;
+	    		
+	    	}else {
+	    		
+	    		X = dragX2 - dragX1;
+	    		
+	    	}
+	    	
+	    	if(dragY1 > dragY2) {
+	    		
+	    		Y = dragY1 - dragY2;
+	    		
+	    	}else {
+	    		
+	    		Y = dragY2 - dragY1;
+	    		
+	    	}
+	    	
+	    	X = X / 36;
+	    	Y = Y / 36;
+	    	
+			if(selectedEditor_Object.equals("Wall")) {
+	    			
+			    if(dragX2 > dragX1) {
+			    		
+				    for(int y = 0; y <= Y; y++) {
+				    		
+					   	for(int x = 0; x <= X; x++) {
+					    		
+					    	if(dragY2 > dragY1) {
+					    		
+					    		skipPlaceing.clear();
+					    		
+					    		for(int z = 0; z < allEditor_Objects.size(); z++) {
+					    			
+						    		if((allEditor_Objects.get(z).getX() == dragX1 + (x * 36)) && (allEditor_Objects.get(z).getY() == dragY1 + (y * 36))) {
+					    				
+						    			skipPlaceing.add(allEditor_Objects.get(z).getX());
+						    			skipPlaceing.add(allEditor_Objects.get(z).getY());
+					    				
+					    			}
+		
+					    		}
+					    		
+					    		if(skipPlaceing.size() > 0) {
+					    			
+						    		if(skipPlaceing.get(0) == dragX1 + (x * 36) && skipPlaceing.get(1) == dragY1 + (y * 36)) {
+						    			
+						    			skipPlaceing.remove(1);
+						    			skipPlaceing.remove(0);
+						    			
+						    		}else {
+						    			
+						    			allEditor_Objects.add(new Editor_Object(dragX1 + (x * 36), dragY1 + (y * 36), gh.getWall(), "Wall"));
+						    			
+						    		}
+					    			
+					    		}else {
+					    			
+					    			allEditor_Objects.add(new Editor_Object(dragX1 + (x * 36), dragY1 + (y * 36), gh.getWall(), "Wall"));
+					    			
+					    		}
+					    			
+					    	}else {
+					    			
+					    		skipPlaceing.clear();
+					    		
+					    		for(int z = 0; z < allEditor_Objects.size(); z++) {
+					    			
+						    		if((allEditor_Objects.get(z).getX() == dragX1 + (x * 36)) && (allEditor_Objects.get(z).getY() == dragY2 + (y * 36))) {
+					    				
+						    			skipPlaceing.add(allEditor_Objects.get(z).getX());
+						    			skipPlaceing.add(allEditor_Objects.get(z).getY());
+					    				
+					    			}
+		
+					    		}
+					    		
+					    		if(skipPlaceing.size() > 0) {
+					    			
+						    		if(skipPlaceing.get(0) == dragX1 + (x * 36) && skipPlaceing.get(1) == dragY2 + (y * 36)) {
+						    			
+						    			skipPlaceing.remove(1);
+						    			skipPlaceing.remove(0);
+						    			
+						    		}else {
+						    			
+						    			allEditor_Objects.add(new Editor_Object(dragX1 + (x * 36), dragY2 + (y * 36), gh.getWall(), "Wall"));
+						    			
+						    		}
+					    			
+					    		}else {
+					    			
+					    			allEditor_Objects.add(new Editor_Object(dragX1 + (x * 36), dragY2 + (y * 36), gh.getWall(), "Wall"));
+					    			
+					    		}
+					    			
+					    	}
+					    		
+					    }
+				    		
+				    }
+			    		
+			    }else {
+			    		
+				    for(int y = 0; y <= Y; y++) {
+				    		
+					   	for(int x = 0; x <= X; x++) {
+					   		
+					    	if(dragY2 > dragY1) {
+					    			
+					    		skipPlaceing.clear();
+					    		
+					    		for(int z = 0; z < allEditor_Objects.size(); z++) {
+					    			
+						    		if((allEditor_Objects.get(z).getX() == dragX2 + (x * 36)) && (allEditor_Objects.get(z).getY() == dragY1 + (y * 36))) {
+					    				
+						    			skipPlaceing.add(allEditor_Objects.get(z).getX());
+						    			skipPlaceing.add(allEditor_Objects.get(z).getY());
+					    				
+					    			}
+		
+					    		}
+					    		
+					    		if(skipPlaceing.size() > 0) {
+					    			
+						    		if(skipPlaceing.get(0) == dragX2 + (x * 36) && skipPlaceing.get(1) == dragY1 + (y * 36)) {
+						    			
+						    			skipPlaceing.remove(1);
+						    			skipPlaceing.remove(0);
+						    			
+						    		}else {
+						    			
+						    			allEditor_Objects.add(new Editor_Object(dragX2 + (x * 36), dragY1 + (y * 36), gh.getWall(), "Wall"));
+						    			
+						    		}
+					    			
+					    		}else {
+					    			
+					    			allEditor_Objects.add(new Editor_Object(dragX2 + (x * 36), dragY1 + (y * 36), gh.getWall(), "Wall"));
+					    			
+					    		}
+					    			
+					    	}else {
+					    			
+					    		skipPlaceing.clear();
+					    		
+					    		for(int z = 0; z < allEditor_Objects.size(); z++) {
+					    			
+						    		if((allEditor_Objects.get(z).getX() == dragX2 + (x * 36)) && (allEditor_Objects.get(z).getY() == dragY2 + (y * 36))) {
+					    				
+						    			skipPlaceing.add(allEditor_Objects.get(z).getX());
+						    			skipPlaceing.add(allEditor_Objects.get(z).getY());
+					    				
+					    			}
+		
+					    		}
+					    		
+					    		if(skipPlaceing.size() > 0) {
+					    			
+						    		if(skipPlaceing.get(0) == dragX2 + (x * 36) && skipPlaceing.get(1) == dragY2 + (y * 36)) {
+						    			
+						    			skipPlaceing.remove(1);
+						    			skipPlaceing.remove(0);
+						    			
+						    		}else {
+						    			
+							    		allEditor_Objects.add(new Editor_Object(dragX2 + (x * 36), dragY2 + (y * 36), gh.getWall(), "Wall"));
+						    			
+						    		}
+					    			
+					    		}else {
+					    			
+						    		allEditor_Objects.add(new Editor_Object(dragX2 + (x * 36), dragY2 + (y * 36), gh.getWall(), "Wall"));
+					    			
+					    		}
+					    			
+					    	}
+					    		
+					    }
+				    		
+				    }
+			    		
+			    }
+				
+			}else if(selectedEditor_Object.equals("Pizza")) {
+				
+				if(dragX2 > dragX1) {
+		    		
+				    for(int y = 0; y <= Y; y++) {
+				    		
+					   	for(int x = 0; x <= X; x++) {
+					    		
+					    	if(dragY2 > dragY1) {
+					    		
+					    		skipPlaceing.clear();
+					    		
+					    		for(int z = 0; z < allEditor_Objects.size(); z++) {
+					    			
+						    		if((allEditor_Objects.get(z).getX() == dragX1 + (x * 36)) && (allEditor_Objects.get(z).getY() == dragY1 + (y * 36))) {
+					    				
+						    			skipPlaceing.add(allEditor_Objects.get(z).getX());
+						    			skipPlaceing.add(allEditor_Objects.get(z).getY());
+					    				
+					    			}
+		
+					    		}
+					    		
+					    		if(skipPlaceing.size() > 0) {
+					    			
+						    		if(skipPlaceing.get(0) == dragX1 + (x * 36) && skipPlaceing.get(1) == dragY1 + (y * 36)) {
+						    			
+						    			skipPlaceing.remove(1);
+						    			skipPlaceing.remove(0);
+						    			
+						    		}else {
+						    			
+						    			allEditor_Objects.add(new Editor_Object(dragX1 + (x * 36), dragY1 + (y * 36), gh.getObjectPizzaStation(), "Pizza"));
+						    			
+						    		}
+					    			
+					    		}else {
+					    			
+					    			allEditor_Objects.add(new Editor_Object(dragX1 + (x * 36), dragY1 + (y * 36), gh.getObjectPizzaStation(), "Pizza"));
+					    			
+					    		}
+					    			
+					    	}else {
+					    			
+					    		skipPlaceing.clear();
+					    		
+					    		for(int z = 0; z < allEditor_Objects.size(); z++) {
+					    			
+						    		if((allEditor_Objects.get(z).getX() == dragX1 + (x * 36)) && (allEditor_Objects.get(z).getY() == dragY2 + (y * 36))) {
+					    				
+						    			skipPlaceing.add(allEditor_Objects.get(z).getX());
+						    			skipPlaceing.add(allEditor_Objects.get(z).getY());
+					    				
+					    			}
+		
+					    		}
+					    		
+					    		if(skipPlaceing.size() > 0) {
+					    			
+						    		if(skipPlaceing.get(0) == dragX1 + (x * 36) && skipPlaceing.get(1) == dragY2 + (y * 36)) {
+						    			
+						    			skipPlaceing.remove(1);
+						    			skipPlaceing.remove(0);
+						    			
+						    		}else {
+						    			
+						    			allEditor_Objects.add(new Editor_Object(dragX1 + (x * 36), dragY2 + (y * 36), gh.getObjectPizzaStation(), "Pizza"));
+						    			
+						    		}
+					    			
+					    		}else {
+					    			
+					    			allEditor_Objects.add(new Editor_Object(dragX1 + (x * 36), dragY2 + (y * 36), gh.getObjectPizzaStation(), "Pizza"));
+					    			
+					    		}
+					    			
+					    	}
+					    		
+					    }
+				    		
+				    }
+			    		
+			    }else {
+			    		
+				    for(int y = 0; y <= Y; y++) {
+				    		
+					   	for(int x = 0; x <= X; x++) {
+					   		
+					    	if(dragY2 > dragY1) {
+					    			
+					    		skipPlaceing.clear();
+					    		
+					    		for(int z = 0; z < allEditor_Objects.size(); z++) {
+					    			
+						    		if((allEditor_Objects.get(z).getX() == dragX2 + (x * 36)) && (allEditor_Objects.get(z).getY() == dragY1 + (y * 36))) {
+					    				
+						    			skipPlaceing.add(allEditor_Objects.get(z).getX());
+						    			skipPlaceing.add(allEditor_Objects.get(z).getY());
+					    				
+					    			}
+		
+					    		}
+					    		
+					    		if(skipPlaceing.size() > 0) {
+					    			
+						    		if(skipPlaceing.get(0) == dragX2 + (x * 36) && skipPlaceing.get(1) == dragY1 + (y * 36)) {
+						    			
+						    			skipPlaceing.remove(1);
+						    			skipPlaceing.remove(0);
+						    			
+						    		}else {
+						    			
+						    			allEditor_Objects.add(new Editor_Object(dragX2 + (x * 36), dragY1 + (y * 36), gh.getObjectPizzaStation(), "Pizza"));
+						    			
+						    		}
+					    			
+					    		}else {
+					    			
+					    			allEditor_Objects.add(new Editor_Object(dragX2 + (x * 36), dragY1 + (y * 36), gh.getObjectPizzaStation(), "Pizza"));
+					    			
+					    		}
+					    			
+					    	}else {
+					    			
+					    		skipPlaceing.clear();
+					    		
+					    		for(int z = 0; z < allEditor_Objects.size(); z++) {
+					    			
+						    		if((allEditor_Objects.get(z).getX() == dragX2 + (x * 36)) && (allEditor_Objects.get(z).getY() == dragY2 + (y * 36))) {
+					    				
+						    			skipPlaceing.add(allEditor_Objects.get(z).getX());
+						    			skipPlaceing.add(allEditor_Objects.get(z).getY());
+					    				
+					    			}
+		
+					    		}
+					    		
+					    		if(skipPlaceing.size() > 0) {
+					    			
+						    		if(skipPlaceing.get(0) == dragX2 + (x * 36) && skipPlaceing.get(1) == dragY2 + (y * 36)) {
+						    			
+						    			skipPlaceing.remove(1);
+						    			skipPlaceing.remove(0);
+						    			
+						    		}else {
+						    			
+							    		allEditor_Objects.add(new Editor_Object(dragX2 + (x * 36), dragY2 + (y * 36), gh.getObjectPizzaStation(), "Pizza"));
+						    			
+						    		}
+					    			
+					    		}else {
+					    			
+						    		allEditor_Objects.add(new Editor_Object(dragX2 + (x * 36), dragY2 + (y * 36), gh.getObjectPizzaStation(), "Pizza"));
+					    			
+					    		}
+					    			
+					    	}
+					    		
+					    }
+				    		
+				    }
+			    		
+			    }
+				
+			}else if(selectedEditor_Object.equals("Unicorn")) {
+				
+				if(dragX2 > dragX1) {
+		    		
+				    for(int y = 0; y <= Y; y++) {
+				    		
+					   	for(int x = 0; x <= X; x++) {
+					    		
+					    	if(dragY2 > dragY1) {
+					    		
+					    		skipPlaceing.clear();
+					    		
+					    		for(int z = 0; z < allEditor_Objects.size(); z++) {
+					    			
+						    		if((allEditor_Objects.get(z).getX() == dragX1 + (x * 36)) && (allEditor_Objects.get(z).getY() == dragY1 + (y * 36))) {
+					    				
+						    			skipPlaceing.add(allEditor_Objects.get(z).getX());
+						    			skipPlaceing.add(allEditor_Objects.get(z).getY());
+					    				
+					    			}
+		
+					    		}
+					    		
+					    		if(skipPlaceing.size() > 0) {
+					    			
+						    		if(skipPlaceing.get(0) == dragX1 + (x * 36) && skipPlaceing.get(1) == dragY1 + (y * 36)) {
+						    			
+						    			skipPlaceing.remove(1);
+						    			skipPlaceing.remove(0);
+						    			
+						    		}else {
+						    			
+						    			allEditor_Objects.add(new Editor_Object(dragX1 + (x * 36), dragY1 + (y * 36), gh.getObjectUnicornStation(), "Unicorn"));
+						    			
+						    		}
+					    			
+					    		}else {
+					    			
+					    			allEditor_Objects.add(new Editor_Object(dragX1 + (x * 36), dragY1 + (y * 36), gh.getObjectUnicornStation(), "Unicorn"));
+					    			
+					    		}
+					    			
+					    	}else {
+					    			
+					    		skipPlaceing.clear();
+					    		
+					    		for(int z = 0; z < allEditor_Objects.size(); z++) {
+					    			
+						    		if((allEditor_Objects.get(z).getX() == dragX1 + (x * 36)) && (allEditor_Objects.get(z).getY() == dragY2 + (y * 36))) {
+					    				
+						    			skipPlaceing.add(allEditor_Objects.get(z).getX());
+						    			skipPlaceing.add(allEditor_Objects.get(z).getY());
+					    				
+					    			}
+		
+					    		}
+					    		
+					    		if(skipPlaceing.size() > 0) {
+					    			
+						    		if(skipPlaceing.get(0) == dragX1 + (x * 36) && skipPlaceing.get(1) == dragY2 + (y * 36)) {
+						    			
+						    			skipPlaceing.remove(1);
+						    			skipPlaceing.remove(0);
+						    			
+						    		}else {
+						    			
+						    			allEditor_Objects.add(new Editor_Object(dragX1 + (x * 36), dragY2 + (y * 36), gh.getObjectUnicornStation(), "Unicorn"));
+						    			
+						    		}
+					    			
+					    		}else {
+					    			
+					    			allEditor_Objects.add(new Editor_Object(dragX1 + (x * 36), dragY2 + (y * 36), gh.getObjectUnicornStation(), "Unicorn"));
+					    			
+					    		}
+					    			
+					    	}
+					    		
+					    }
+				    		
+				    }
+			    		
+			    }else {
+			    		
+				    for(int y = 0; y <= Y; y++) {
+				    		
+					   	for(int x = 0; x <= X; x++) {
+					   		
+					    	if(dragY2 > dragY1) {
+					    			
+					    		skipPlaceing.clear();
+					    		
+					    		for(int z = 0; z < allEditor_Objects.size(); z++) {
+					    			
+						    		if((allEditor_Objects.get(z).getX() == dragX2 + (x * 36)) && (allEditor_Objects.get(z).getY() == dragY1 + (y * 36))) {
+					    				
+						    			skipPlaceing.add(allEditor_Objects.get(z).getX());
+						    			skipPlaceing.add(allEditor_Objects.get(z).getY());
+					    				
+					    			}
+		
+					    		}
+					    		
+					    		if(skipPlaceing.size() > 0) {
+					    			
+						    		if(skipPlaceing.get(0) == dragX2 + (x * 36) && skipPlaceing.get(1) == dragY1 + (y * 36)) {
+						    			
+						    			skipPlaceing.remove(1);
+						    			skipPlaceing.remove(0);
+						    			
+						    		}else {
+						    			
+						    			allEditor_Objects.add(new Editor_Object(dragX2 + (x * 36), dragY1 + (y * 36), gh.getObjectUnicornStation(), "Unicorn"));
+						    			
+						    		}
+					    			
+					    		}else {
+					    			
+					    			allEditor_Objects.add(new Editor_Object(dragX2 + (x * 36), dragY1 + (y * 36), gh.getObjectUnicornStation(), "Unicorn"));
+					    			
+					    		}
+					    			
+					    	}else {
+					    			
+					    		skipPlaceing.clear();
+					    		
+					    		for(int z = 0; z < allEditor_Objects.size(); z++) {
+					    			
+						    		if((allEditor_Objects.get(z).getX() == dragX2 + (x * 36)) && (allEditor_Objects.get(z).getY() == dragY2 + (y * 36))) {
+					    				
+						    			skipPlaceing.add(allEditor_Objects.get(z).getX());
+						    			skipPlaceing.add(allEditor_Objects.get(z).getY());
+					    				
+					    			}
+		
+					    		}
+					    		
+					    		if(skipPlaceing.size() > 0) {
+					    			
+						    		if(skipPlaceing.get(0) == dragX2 + (x * 36) && skipPlaceing.get(1) == dragY2 + (y * 36)) {
+						    			
+						    			skipPlaceing.remove(1);
+						    			skipPlaceing.remove(0);
+						    			
+						    		}else {
+						    			
+							    		allEditor_Objects.add(new Editor_Object(dragX2 + (x * 36), dragY2 + (y * 36), gh.getObjectUnicornStation(), "Unicorn"));
+						    			
+						    		}
+					    			
+					    		}else {
+					    			
+						    		allEditor_Objects.add(new Editor_Object(dragX2 + (x * 36), dragY2 + (y * 36), gh.getObjectUnicornStation(), "Unicorn"));
+					    			
+					    		}
+					    			
+					    	}
+					    		
+					    }
+				    		
+				    }
+			    		
+			    }
+				
+			}else if(selectedEditor_Object.equals("Empty")) {
+				
+				if(dragX2 > dragX1) {
+		    		
+				    for(int y = 0; y <= Y; y++) {
+				    		
+					   	for(int x = 0; x <= X; x++) {
+					    		
+					    	if(dragY2 > dragY1) {
+					    		
+					    		for(int z = 0; z < allEditor_Objects.size(); z++) {
+					    			
+						    		if((allEditor_Objects.get(z).getX() == dragX1 + (x * 36)) && (allEditor_Objects.get(z).getY() == dragY1 + (y * 36))) {
+					    				
+						    			allEditor_Objects.remove(z);
+					    				
+					    			}
+		
+					    		}
+					    			
+					    	}else {
+					    		
+					    		for(int z = 0; z < allEditor_Objects.size(); z++) {
+					    			
+						    		if((allEditor_Objects.get(z).getX() == dragX1 + (x * 36)) && (allEditor_Objects.get(z).getY() == dragY2 + (y * 36))) {
+					    				
+						    			allEditor_Objects.remove(z);
+					    				
+					    			}
+		
+					    		}
+					    			
+					    	}
+					    		
+					    }
+				    		
+				    }
+			    		
+			    }else {
+			    		
+				    for(int y = 0; y <= Y; y++) {
+				    		
+					   	for(int x = 0; x <= X; x++) {
+					   		
+					    	if(dragY2 > dragY1) {
+					    		
+					    		for(int z = 0; z < allEditor_Objects.size(); z++) {
+					    			
+						    		if((allEditor_Objects.get(z).getX() == dragX2 + (x * 36)) && (allEditor_Objects.get(z).getY() == dragY1 + (y * 36))) {
+					    				
+						    			allEditor_Objects.remove(z);
+					    				
+					    			}
+		
+					    		}
+					    			
+					    	}else {
+					    		
+					    		for(int z = 0; z < allEditor_Objects.size(); z++) {
+					    			
+						    		if((allEditor_Objects.get(z).getX() == dragX2 + (x * 36)) && (allEditor_Objects.get(z).getY() == dragY2 + (y * 36))) {
+					    				
+						    			allEditor_Objects.remove(z);
+					    				
+					    			}
+		
+					    		}
+					    			
+					    	}
+					    		
+					    }
+				    		
+				    }
+			    		
+			    }
+				
+			}
+			
+	    	clearCanvas();
+    		drawCanvas();
+			
+		});
+		
 	}
 	
 	public void drawCanvas() {
@@ -380,6 +1005,11 @@ public class Editor_Controller implements Initializable{
 				selectedEditor_Object = "Unicorn";
 				return;
 				
+			}else {
+				
+				selectedEditor_Object = null;
+				return;
+				
 			}
 			
 		}
@@ -458,7 +1088,7 @@ public class Editor_Controller implements Initializable{
 		    		int X = Integer.parseInt(line.substring(line.indexOf("(") + 1, line.indexOf(",")));
 		    		int Y = Integer.parseInt(line.substring(line.indexOf(",") + 1, line.indexOf(")")));
 		    		
-		    		allEditor_Objects.add(new Editor_Object(X, Y, gh.getObjectPizzaStation(), "Object"));
+		    		allEditor_Objects.add(new Editor_Object(X, Y, gh.getObjectPizzaStation(), "Pizza"));
 		    		
 		    	}
 		    	
