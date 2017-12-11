@@ -35,6 +35,7 @@ public class Train {
 	public void render(GraphicsContext gc) {
 		
 		gc.clearRect(lastPosition.get(0), lastPosition.get(1), 36, 36);
+		gc.clearRect(x, y, 36, 36);
 		gc.drawImage(image, x, y);
 
 	}

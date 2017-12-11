@@ -1,6 +1,5 @@
 package controller;
 
-import java.awt.Font;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -95,7 +94,7 @@ public class Editor_Controller implements Initializable{
 		ol_objects = FXCollections.observableArrayList();
 		
 		ol_objects.add(new Editor_Object(gh.getWall(), "Wall"));
-		ol_objects.add(new Editor_Object(gh.getTrainRightStation(), "Train"));
+		ol_objects.add(new Editor_Object(gh.getTrain1RightStation(), "Train"));
 		ol_objects.add(new Editor_Object(gh.getGate(), "Gate"));
 		ol_objects.add(new Editor_Object(gh.getObjectPizzaStation(), "Pizza"));
 		ol_objects.add(new Editor_Object(gh.getObjectUnicornStation(), "Unicorn"));
@@ -1037,7 +1036,7 @@ public class Editor_Controller implements Initializable{
 		    		int X = Integer.parseInt(line.substring(line.indexOf("(") + 1, line.indexOf(",")));
 		    		int Y = Integer.parseInt(line.substring(line.indexOf(",") + 1, line.indexOf(")")));
 		    		
-		    		allEditor_Objects.add(new Editor_Object(X, Y, gh.getTrainRightStation(), "Train"));
+		    		allEditor_Objects.add(new Editor_Object(X, Y, gh.getTrain1RightStation(), "Train"));
 		    		
 		    	}
 		    	
@@ -1256,7 +1255,7 @@ public class Editor_Controller implements Initializable{
     			
     			trainPlaced = true;
     			
-    			allEditor_Objects.add(new Editor_Object(X, Y, gh.getTrainRightStation(), "Train"));
+    			allEditor_Objects.add(new Editor_Object(X, Y, gh.getTrain1RightStation(), "Train"));
     			
     		}
     		

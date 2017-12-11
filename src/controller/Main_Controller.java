@@ -112,19 +112,19 @@ public class Main_Controller implements Initializable{
 							
 							if(allTrains.get(x).getOrientation() == 0) {
 								
-								allTrains.get(x).setImage(gh.getTrainUp());
+								allTrains.get(x).setImage(gh.getTrainPickedUp());
 								
 							}else if(allTrains.get(x).getOrientation() == 1) {
 								
-								allTrains.get(x).setImage(gh.getTrainLeft());
+								allTrains.get(x).setImage(gh.getTrainPickedLeft());
 								
 							}else if(allTrains.get(x).getOrientation() == 2) {
 								
-								allTrains.get(x).setImage(gh.getTrainDown());
+								allTrains.get(x).setImage(gh.getTrainPickedDown());
 								
 							}else if(allTrains.get(x).getOrientation() == 3) {
 								
-								allTrains.get(x).setImage(gh.getTrainRight());
+								allTrains.get(x).setImage(gh.getTrainPickedRight());
 								
 							}
 							
@@ -423,7 +423,7 @@ public class Main_Controller implements Initializable{
 		    		int X = Integer.parseInt(line.substring(line.indexOf("(") + 1, line.indexOf(",")));
 		    		int Y = Integer.parseInt(line.substring(line.indexOf(",") + 1, line.indexOf(")")));
 		    		
-		    		allTrains.add(new Train(X, Y, gh.getTrainRight()));
+		    		allTrains.add(new Train(X, Y, gh.getTrainPickedRight()));
 		    		
 		    		allTrains.get(0).getLastPosition().add(X);
 		    		allTrains.get(0).getLastPosition().add(Y);
