@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.shape.*?>
@@ -39,4 +40,7 @@
       </Label>
       <TextField fx:id="tf_password" alignment="BASELINE_CENTER" layoutX="286.0" layoutY="746.0" visible="false" />
    </children>
+   <cursor>
+      <Cursor fx:constant="NONE" />
+   </cursor>
 </AnchorPane>
