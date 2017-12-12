@@ -1,2 +1,2 @@
 sounds=off
-skin=1
+skin=2

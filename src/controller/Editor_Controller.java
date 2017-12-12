@@ -30,6 +30,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
@@ -56,6 +57,8 @@ public class Editor_Controller implements Initializable{
 	private Button b_back;
 	@FXML
 	private ListView<Editor_Object> lw_objects;
+	@FXML
+	private Label l_lastLevel;
 	
 	private ObservableList<Editor_Object> ol_objects;
 	
@@ -149,6 +152,15 @@ public class Editor_Controller implements Initializable{
 			}
 
 		}
+		
+		String AbsolutePath = new File(".").getAbsolutePath();
+		AbsolutePath = (AbsolutePath.substring(0, AbsolutePath.length() - 1));
+		AbsolutePath = AbsolutePath + "/levels";
+		
+		File file = new File(AbsolutePath);
+		int numberOfLevel = file.listFiles().length;
+		
+		l_lastLevel.setText("Number of levels: " + numberOfLevel);
 		
 		drawCanvas();
 		
@@ -1397,6 +1409,9 @@ public class Editor_Controller implements Initializable{
 				    					
 				    					connectEditor_Tunnels = true;
 				    					
+				    					clearCanvas();
+				    					drawCanvas();
+				    					
 				    					return;
 				    					
 				    				}else {
@@ -1407,6 +1422,9 @@ public class Editor_Controller implements Initializable{
 				    					
 				    					allEditor_Tunnels.get(allEditor_Tunnels.size() - 2).setEnd(allEditor_Tunnels.get(allEditor_Tunnels.size() - 1));
 				    					allEditor_Tunnels.get(allEditor_Tunnels.size() - 1).setEnd(allEditor_Tunnels.get(allEditor_Tunnels.size() - 2));
+				    					
+				    					clearCanvas();
+				    					drawCanvas();
 				    					
 				    					return;
 				    				}
@@ -1420,6 +1438,9 @@ public class Editor_Controller implements Initializable{
 	    					allEditor_Tunnels.add(new Editor_Tunnel(X, Y, gh.getTunnel(), "Tunnel"));
 	    					
 	    					connectEditor_Tunnels = true;
+	    					
+	    					clearCanvas();
+	    					drawCanvas();
 	    					
 	    					return;
 	    					
@@ -1447,6 +1468,9 @@ public class Editor_Controller implements Initializable{
 		    					
 		    					connectEditor_Tunnels = true;
 		    					
+		    					clearCanvas();
+		    					drawCanvas();
+		    					
 		    					return;
 		    					
 		    				}else {
@@ -1457,6 +1481,9 @@ public class Editor_Controller implements Initializable{
 		    					
 		    					allEditor_Tunnels.get(allEditor_Tunnels.size() - 2).setEnd(allEditor_Tunnels.get(allEditor_Tunnels.size() - 1));
 		    					allEditor_Tunnels.get(allEditor_Tunnels.size() - 1).setEnd(allEditor_Tunnels.get(allEditor_Tunnels.size() - 2));
+		    					
+		    					clearCanvas();
+		    					drawCanvas();
 		    					
 		    					return;
 		    					
@@ -1471,6 +1498,9 @@ public class Editor_Controller implements Initializable{
     				allEditor_Tunnels.add(new Editor_Tunnel(X, Y, gh.getTunnel(), "Tunnel"));
     				
     				connectEditor_Tunnels = true;
+    				
+    				clearCanvas();
+    				drawCanvas();
     				
     				return;
     			}

@@ -25,9 +25,9 @@
       </MenuBar>
       <Line endX="620.0" layoutX="380.0" layoutY="30.0" startX="-100.0" strokeWidth="3.0" />
       <Label layoutX="300.0" layoutY="7.0" text="Level number:" />
-      <Label layoutX="584.0" layoutY="7.0" text="Password:" />
+      <Label layoutX="499.0" layoutY="7.0" text="Password:" />
       <TextField fx:id="tf_level" focusTraversable="false" layoutX="378.0" layoutY="6.0" maxHeight="20.0" maxWidth="90.0" minHeight="20.0" minWidth="90.0" prefHeight="20.0" prefWidth="90.0" />
-      <TextField fx:id="tf_password" focusTraversable="false" layoutX="640.0" layoutY="6.0" maxHeight="20.0" maxWidth="90.0" minHeight="20.0" minWidth="90.0" prefHeight="20.0" prefWidth="90.0" />
+      <TextField fx:id="tf_password" focusTraversable="false" layoutX="555.0" layoutY="6.0" maxHeight="20.0" maxWidth="90.0" minHeight="20.0" minWidth="90.0" prefHeight="20.0" prefWidth="90.0" />
       <AnchorPane layoutX="282.0" layoutY="32.0" prefHeight="720.0" prefWidth="720.0" style="-fx-background-color: BLACK;">
          <children>
             <Canvas fx:id="c_canvas" focusTraversable="true" height="720.0" onMouseMoved="#onMouseMoved" width="720.0" />
@@ -39,5 +39,6 @@
          </font>
       </Button>
       <ListView fx:id="lw_objects" focusTraversable="false" layoutY="29.0" prefHeight="720.0" prefWidth="278.0" />
+      <Label fx:id="l_lastLevel" layoutX="671.0" layoutY="8.0" text="Label" />
    </children>
 </AnchorPane>
