@@ -612,6 +612,42 @@ public class Main_Controller implements Initializable{
 		    	
 		    }
 		    
+		    if(alive == false) {
+		    		
+		    	score = score - currentLevelScore - 1000;
+		    	currentLevelScore = 0;
+		    		
+		    	l_score.setText(Integer.toString(score));
+		    		
+		    	for(int y = 0; y < allWagons.size(); y++) {
+		    			
+		    		allWagons.get(y).getFutureMoves().clear();
+		    			
+		    	}
+		    		
+		    	allWagons.clear();
+		    	allObjects.clear();
+		    	allWalls.clear();
+		    	allWagons.clear();
+		    	allTrains.clear();
+		    	allGates.clear();
+		    		
+		    	gc.clearRect(0, 0, 720, 720);
+		    		
+		    	try {
+		    			
+		    		loadLevel();
+		    			
+		    	} catch (IOException s) {
+		    			
+		    		s.printStackTrace();
+		    		
+		    	}
+		    		
+		    	
+		    	
+		    }
+		    
 		});
 		
 	}
@@ -966,36 +1002,6 @@ public class Main_Controller implements Initializable{
 		
 		sh.stopSound();
 		sh.playDead();
-		
-		score = score - currentLevelScore - 1000;
-		currentLevelScore = 0;
-		
-		l_score.setText(Integer.toString(score));
-		
-		for(int y = 0; y < allWagons.size(); y++) {
-			
-			allWagons.get(y).getFutureMoves().clear();
-			
-		}
-		
-		allWagons.clear();
-		allObjects.clear();
-		allWalls.clear();
-		allWagons.clear();
-		allTrains.clear();
-		allGates.clear();
-		
-		gc.clearRect(0, 0, 720, 720);
-		
-		try {
-			
-			loadLevel();
-			
-		} catch (IOException e) {
-			
-			e.printStackTrace();
-			
-		}
 		
 	}
 	
