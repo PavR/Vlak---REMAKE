@@ -12,13 +12,13 @@ public class Graphics_Handler {
 
 	private Image wall, train1Up, train1Left, train1Down, train1Right, gate, objectPizza, wagonPizzaRight, wagonPizzaUp, wagonPizzaDown,
 				  tunnel, objectPizzaStation, train1RightStation, objectUnicorn, wagonUnicornRight, wagonUnicornUp, wagonUnicornDown, objectUnicornStation, empty,
-				  train2Up, train2Left, train2Down, train2Right, train2RightStation, trainPickedUp, trainPickedLeft, trainPickedDown, trainPickedRight, trainPickedUpStation;
+				  train2Up, train2Left, train2Down, train2Right, train2RightStation, trainPickedUp, trainPickedLeft, trainPickedDown, trainPickedRight, trainPickedUpStation,
+				  highlight;
 	
 	private int pickedTrain = 1;
 	
 	public Graphics_Handler() {
 		
-		System.out.println("LOAD RESOURCES");
 		String AbsolutePath = new File(".").getAbsolutePath();
     	
     	AbsolutePath = (AbsolutePath.substring(0, AbsolutePath.length() - 1));
@@ -58,6 +58,8 @@ public class Graphics_Handler {
 		File file10d = new File(AbsolutePath + "/" + "razerTrainRight.gif");
 		File file10e = new File(AbsolutePath + "/" + "razerTrainRightStation.png");
 		
+		File file11 = new File(AbsolutePath + "/" + "highlight.png");
+		
 		wall = new Image(file1.toURI().toString());
 		
 		train1Up = new Image(file2a.toURI().toString());
@@ -91,6 +93,8 @@ public class Graphics_Handler {
 		train2Left = new Image(file10c.toURI().toString());
 		train2Right = new Image(file10d.toURI().toString());
 		train2RightStation = new Image(file10e.toURI().toString());
+		
+		highlight = new Image(file11.toURI().toString());
 		
 		AbsolutePath = new File(".").getAbsolutePath();
     	
@@ -347,6 +351,12 @@ public class Graphics_Handler {
 	public int getPickedTrain() {
 		
 		return pickedTrain;
+		
+	}
+
+	public Image getHighlight() {
+		
+		return highlight;
 		
 	}
 	

@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 
 import code_game.Gate;
 import code_game.Level;
+import code_game.Main;
 import code_game.Object;
 import code_game.Train;
 import code_game.Tunnel;
@@ -19,12 +20,16 @@ import handler.Graphics_Handler;
 import handler.Sound_Handler;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import javafx.stage.Stage;
 
 public class Main_Controller implements Initializable{
 
@@ -58,7 +63,7 @@ public class Main_Controller implements Initializable{
 	private int level;
 	private String password;
 	
-	private int score;
+	private static int score;
 	private int currentLevelScore;
 	
 	private boolean passwordActive = false;
@@ -89,6 +94,8 @@ public class Main_Controller implements Initializable{
 			e.printStackTrace();
 			
 		}
+		
+		score = 0;
 		
 	}
 	
@@ -180,57 +187,63 @@ public class Main_Controller implements Initializable{
 			if(shouldRender == false) {
 				
 				for(int x = 0; x < allTrains.size(); x++) {
-					System.out.println("RENDER TRAIN");
+					
 					allTrains.get(x).render(gc);
 					
 				}
 				
 				for(int x = 0; x < allObjects.size(); x++) {
-					System.out.println("RENDER OBJECT");
+					
 					allObjects.get(x).render(gc);
 					
 				}
 				
 				for(int x = 0; x < allWagons.size(); x++) {
-					System.out.println("RENDER WAGON");
+					
 					allWagons.get(x).render(gc);
+					
+				}
+				
+				for(int x = 0; x < allWalls.size(); x++) {
+					
+					allWalls.get(x).render(gc);
 					
 				}
 				
 			}else {
 				
 				for(int x = 0; x < allWalls.size(); x++) {
-					System.out.println("RENDER WALL");
+					
 					allWalls.get(x).render(gc);
 					
 				}
 				
 				for(int x = 0; x < allGates.size(); x++) {
-					System.out.println("RENDER GATE");
+					
 					allGates.get(x).render(gc);
 					
 				}
 				
 				for(int x = 0; x < allTunnels.size(); x++) {
-					System.out.println("RENDER TUNNEL");
+					
 					allTunnels.get(x).render(gc);
 					
 				}
 				
 				for(int x = 0; x < allTrains.size(); x++) {
-					System.out.println("RENDER TRAIN");
+					
 					allTrains.get(x).render(gc);
 					
 				}
 				
 				for(int x = 0; x < allObjects.size(); x++) {
-					System.out.println("RENDER OBJECT");
+					
 					allObjects.get(x).render(gc);
 					
 				}
 				
 				for(int x = 0; x < allWagons.size(); x++) {
-					System.out.println("RENDER WAGON");
+					
 					allWagons.get(x).render(gc);
 					
 				}
@@ -244,7 +257,6 @@ public class Main_Controller implements Initializable{
 	}
 
 	public void autoMovement() {
-		System.out.println("AUTOMOVEMENT");
 		
 		allTrains.get(0).getLastPosition().clear();
 		
@@ -299,7 +311,7 @@ public class Main_Controller implements Initializable{
 	}
 	
 	public void loadAllLevels() throws IOException {
-		System.out.println("LOAD ALL LEVELS");
+		
 		String AbsolutePath = new File(".").getAbsolutePath();
 		AbsolutePath = (AbsolutePath.substring(0, AbsolutePath.length() - 1));
 		AbsolutePath = AbsolutePath + "levels";
@@ -354,7 +366,6 @@ public class Main_Controller implements Initializable{
 	}
 	
 	public void loadLevel() throws IOException {
-		System.out.println("LOAD LEVEL");
 		
 		gc.clearRect(0, 0, 720, 720);
 		
@@ -384,115 +395,137 @@ public class Main_Controller implements Initializable{
 		lastKeyPressed = KeyCode.A;
 		won = false;
 		
-		File file = allLevels.get(currentLevel - 1).getFile();
-		
-		BufferedReader br = new BufferedReader(new FileReader(file));
-		
 		try {
 			
-		    StringBuilder sb = new StringBuilder();
-		    String line = br.readLine();
-		    
-		    while (line != null) {
-		    	
-		    	if(line.startsWith("L")) {
-		    		
-		    		level = Integer.parseInt(line.substring(2, line.length() - 1));
-		    		l_level.setText(Integer.toString(level));
-		    		
-		    	}
-		    	
-		    	if(line.startsWith("P")) {
-		    		
-		    		password = line.substring(2, line.length() - 1);
-		    		tf_password.setText(password);
-		    		
-		    	}
-		    	
-		    	if(line.startsWith("0")) {
-		    		
-		    		int X = Integer.parseInt(line.substring(line.indexOf("(") + 1, line.indexOf(",")));
-		    		int Y = Integer.parseInt(line.substring(line.indexOf(",") + 1, line.indexOf(")")));
-		    		
-		    		allWalls.add(new Wall(X, Y, gh.getWall()));
-		    		
-		    	}
-		    	
-		    	if(line.startsWith("1")) {
-		    		
-		    		int X = Integer.parseInt(line.substring(line.indexOf("(") + 1, line.indexOf(",")));
-		    		int Y = Integer.parseInt(line.substring(line.indexOf(",") + 1, line.indexOf(")")));
-		    		
-		    		allTrains.add(new Train(X, Y, gh.getTrainPickedRight()));
-		    		
-		    		allTrains.get(0).getLastPosition().add(X);
-		    		allTrains.get(0).getLastPosition().add(Y);
-		    		
-		    	}
-		    	
-		    	if(line.startsWith("2")) {
-		    		
-		    		int X = Integer.parseInt(line.substring(line.indexOf("(") + 1, line.indexOf(",")));
-		    		int Y = Integer.parseInt(line.substring(line.indexOf(",") + 1, line.indexOf(")")));
-		    		
-		    		allObjects.add(new Object(X, Y, gh.getObjectPizza(), gh.getWagonPizzaRight(), gh.getWagonPizzaUp(), gh.getWagonPizzaDown()));
-		    		
-		    	}
-		    	
-		    	if(line.startsWith("3")) {
-		    		
-		    		int X = Integer.parseInt(line.substring(line.indexOf("(") + 1, line.indexOf(",")));
-		    		int Y = Integer.parseInt(line.substring(line.indexOf(",") + 1, line.indexOf(")")));
-		    		
-		    		allGates.add(new Gate(X, Y, gh.getGate()));
-		    		
-		    	}
-		    	
-		    	if(line.startsWith("4")) {
-		    		
-		    		int X = Integer.parseInt(line.substring(line.indexOf("(") + 1, line.indexOf(",")));
-		    		int Y = Integer.parseInt(line.substring(line.indexOf(",") + 1, line.indexOf(")")));
-		    		
-		    		allTunnels.add(new Tunnel(X, Y, gh.getTunnel()));
-		    		
-		    	}
-		    	
-		    	if(line.startsWith("5")) {
-		    		
-		    		int X = Integer.parseInt(line.substring(line.indexOf("(") + 1, line.indexOf(",")));
-		    		int Y = Integer.parseInt(line.substring(line.indexOf(",") + 1, line.indexOf(")")));
-		    		
-		    		allObjects.add(new Object(X, Y, gh.getObjectUnicorn(), gh.getWagonUnicornRight(), gh.getWagonUnicornUp(), gh.getWagonUnicornDown()));
-		    		
-		    	}
-		    	
-		    	sb.append(line);
-		        sb.append(System.lineSeparator());
-		        line = br.readLine();
-		        
-		    }
-		    
-		} finally {
+			File file = allLevels.get(currentLevel - 1).getFile();
 			
-		    br.close();
-		    
-		    if(allTunnels.size() > 0) {
-		    	
-			    for(int x = 0; x < allTunnels.size(); x = x + 2) {
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			
+			try {
+				
+			    StringBuilder sb = new StringBuilder();
+			    String line = br.readLine();
+			    
+			    while (line != null) {
 			    	
-			    	allTunnels.get(x).setEnd(allTunnels.get(x + 1));
-			    	allTunnels.get(x + 1).setEnd(allTunnels.get(x));
+			    	if(line.startsWith("L")) {
+			    		
+			    		level = Integer.parseInt(line.substring(2, line.length() - 1));
+			    		l_level.setText(Integer.toString(level));
+			    		
+			    	}
+			    	
+			    	if(line.startsWith("P")) {
+			    		
+			    		password = line.substring(2, line.length() - 1);
+			    		tf_password.setText(password);
+			    		
+			    	}
+			    	
+			    	if(line.startsWith("0")) {
+			    		
+			    		int X = Integer.parseInt(line.substring(line.indexOf("(") + 1, line.indexOf(",")));
+			    		int Y = Integer.parseInt(line.substring(line.indexOf(",") + 1, line.indexOf(")")));
+			    		
+			    		allWalls.add(new Wall(X, Y, gh.getWall()));
+			    		
+			    	}
+			    	
+			    	if(line.startsWith("1")) {
+			    		
+			    		int X = Integer.parseInt(line.substring(line.indexOf("(") + 1, line.indexOf(",")));
+			    		int Y = Integer.parseInt(line.substring(line.indexOf(",") + 1, line.indexOf(")")));
+			    		
+			    		allTrains.add(new Train(X, Y, gh.getTrainPickedRight()));
+			    		
+			    		allTrains.get(0).getLastPosition().add(X);
+			    		allTrains.get(0).getLastPosition().add(Y);
+			    		
+			    	}
+			    	
+			    	if(line.startsWith("2")) {
+			    		
+			    		int X = Integer.parseInt(line.substring(line.indexOf("(") + 1, line.indexOf(",")));
+			    		int Y = Integer.parseInt(line.substring(line.indexOf(",") + 1, line.indexOf(")")));
+			    		
+			    		allObjects.add(new Object(X, Y, gh.getObjectPizza(), gh.getWagonPizzaRight(), gh.getWagonPizzaUp(), gh.getWagonPizzaDown()));
+			    		
+			    	}
+			    	
+			    	if(line.startsWith("3")) {
+			    		
+			    		int X = Integer.parseInt(line.substring(line.indexOf("(") + 1, line.indexOf(",")));
+			    		int Y = Integer.parseInt(line.substring(line.indexOf(",") + 1, line.indexOf(")")));
+			    		
+			    		allGates.add(new Gate(X, Y, gh.getGate()));
+			    		
+			    	}
+			    	
+			    	if(line.startsWith("4")) {
+			    		
+			    		int X = Integer.parseInt(line.substring(line.indexOf("(") + 1, line.indexOf(",")));
+			    		int Y = Integer.parseInt(line.substring(line.indexOf(",") + 1, line.indexOf(")")));
+			    		
+			    		allTunnels.add(new Tunnel(X, Y, gh.getTunnel()));
+			    		
+			    	}
+			    	
+			    	if(line.startsWith("5")) {
+			    		
+			    		int X = Integer.parseInt(line.substring(line.indexOf("(") + 1, line.indexOf(",")));
+			    		int Y = Integer.parseInt(line.substring(line.indexOf(",") + 1, line.indexOf(")")));
+			    		
+			    		allObjects.add(new Object(X, Y, gh.getObjectUnicorn(), gh.getWagonUnicornRight(), gh.getWagonUnicornUp(), gh.getWagonUnicornDown()));
+			    		
+			    	}
+			    	
+			    	sb.append(line);
+			        sb.append(System.lineSeparator());
+			        line = br.readLine();
+			        
+			    }
+			    
+			} finally {
+				
+			    br.close();
+			    
+			    if(allTunnels.size() > 0) {
+			    	
+				    for(int x = 0; x < allTunnels.size(); x = x + 2) {
+				    	
+				    	allTunnels.get(x).setEnd(allTunnels.get(x + 1));
+				    	allTunnels.get(x + 1).setEnd(allTunnels.get(x));
+				    	
+				    }
 			    	
 			    }
-		    	
-		    }
-		    
+			    
+			}
+			
+		}catch(IndexOutOfBoundsException e) {
+			
+			sh.stopSound();
+			
+			Parent root = FXMLLoader.load(getClass().getResource("/fxml/Leaderboard.fxml"));
+			Scene scene = new Scene(root, Main.WIDTH, Main.HEIGHT);
+			
+			Stage primaryStage = new Stage();
+			
+			primaryStage.setTitle("Vlak - REMAKE");
+			primaryStage.setResizable(false);
+			primaryStage.sizeToScene();
+			primaryStage.setScene(scene);
+			primaryStage.show();
+			
+			Stage previousStage = (Stage)l_score.getScene().getWindow();
+			previousStage.close();
+			
 		}
 		
 	}
 	
 	public void checkCollisionWithWalls() {
-		System.out.println("CHECK COLLISION WITH WALLS");
+		
 		if(alive) {
 			
 			for(int x = 0; x < allWalls.size(); x++) {
@@ -510,7 +543,7 @@ public class Main_Controller implements Initializable{
 	}
 	
 	public void setCanvasKeyboardInput() {
-		System.out.println("SET CANVAS KEYBOAR INPUT");
+		
 		c_canvas.setOnKeyPressed(e -> {
 			
 		    if (e.getCode() == KeyCode.LEFT) {
@@ -653,7 +686,7 @@ public class Main_Controller implements Initializable{
 	}
 	
 	public void setPasswordKeyboardInput() {
-		System.out.println("SET PASSWORD KEYBOARD INPUT");
+		
 		tf_password.setOnKeyPressed(e -> {
 			
 			if(e.getCode() == KeyCode.ESCAPE) {
@@ -718,7 +751,7 @@ public class Main_Controller implements Initializable{
 	}
 	
 	public void setAnimationTimer() {
-		System.out.println("SET ANIMATION TIMER");
+		
 		AnimationTimer timer = new AnimationTimer() {
 
 			public void handle(long arg0) {
@@ -735,7 +768,6 @@ public class Main_Controller implements Initializable{
 	}	
 	
 	private void checkCollisionWithObjects() {
-		System.out.println("CHECK COLLISION WITH OBJECTS");
 		
 		if(alive) {
 			
@@ -879,7 +911,6 @@ public class Main_Controller implements Initializable{
 	}
 	
 	private void autoMoveWagons() {
-		System.out.println("AUTO MOVE WAGONS");
 		
 		for(int x = 0; x < allWagons.size(); x++) {
 			
@@ -923,7 +954,7 @@ public class Main_Controller implements Initializable{
 	}
 	
 	private void checkCollisionWithGate() {
-		System.out.println("CHECK COLLISION WITH GATE");
+		
 		if(allObjects.size() == 0) {
 			
 			if(!won) {
@@ -975,7 +1006,7 @@ public class Main_Controller implements Initializable{
 	}
 	
 	private void checkCollisionWithWagons() {
-		System.out.println("CHECK COLLISION WITH WAGONS");
+		
 		if(alive) {
 			
 			for(int x = 0; x < allWagons.size(); x++) {
@@ -994,7 +1025,6 @@ public class Main_Controller implements Initializable{
 	
 	public void dead() {
 		
-		System.out.println("DEAD");
 		allTrains.get(0).setSpeed(0);
 		alive = false;
 		
@@ -1006,7 +1036,6 @@ public class Main_Controller implements Initializable{
 	}
 	
 	public void checkCollisionWithTunnels() {
-		System.out.println("CHECK COLLISION WITH TUNNELS");
 		
 		if(allTunnels.size() > 0) {
 			
@@ -1075,6 +1104,12 @@ public class Main_Controller implements Initializable{
 			}
 			
 		}
+		
+	}
+
+	public static int getScore() {
+		
+		return score;
 		
 	}
 	

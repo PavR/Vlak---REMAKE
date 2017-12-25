@@ -66,6 +66,7 @@ public class Editor_Controller implements Initializable{
 	
 	private ArrayList<Editor_Object> allEditor_Objects = new ArrayList<Editor_Object>();
 	private ArrayList<Editor_Tunnel> allEditor_Tunnels = new ArrayList<Editor_Tunnel>();
+	private ArrayList<Editor_Object> allHighlights = new ArrayList<Editor_Object>();
 	
 	private Editor_SelectedTile st;
 	
@@ -81,8 +82,11 @@ public class Editor_Controller implements Initializable{
 	private Graphics_Handler gh;
 	
 	private int dragX1, dragX2, dragY1, dragY2;
+	private int tempDragX1, tempDragX2, tempDragY1, tempDragY2;
 	
 	private ArrayList<Integer> skipPlaceing = new ArrayList<Integer>();
+	
+	private boolean started = true;
 	
 	public void initialize(URL arg0, ResourceBundle arg1) {
 
@@ -257,11 +261,232 @@ public class Editor_Controller implements Initializable{
 	    	dragY1 = (int)((e.getSceneY() - 30) / 36);
 	    	
 	    	dragX1 = dragX1 * 36;
-	    	dragY1 = dragY1 * 36;
+	    	dragY1 = dragY1 * 36;   	
+	    	
+	    	started = true;
+	    	
+		});
+		
+		c_canvas.setOnMouseDragged(e -> {
+			
+			allHighlights.clear();
+			
+			if(started) {
+				
+				tempDragX1 = (int)((e.getSceneX() - 280) / 36);
+				tempDragY1 = (int)((e.getSceneY() - 30) / 36);
+		    	
+		    	tempDragX1 = tempDragX1 * 36;
+		    	tempDragY1 = tempDragY1 * 36;
+		    	
+		    	started = false;
+				
+			}
+	    	
+	    	tempDragX2 = (int)((e.getSceneX() - 280) / 36);
+			tempDragY2 = (int)((e.getSceneY() - 30) / 36);
+	    	
+			tempDragX2 = tempDragX2 * 36;
+	    	tempDragY2 = tempDragY2 * 36;
+	    	
+	    	int X, Y;
+	    	
+	    	if(tempDragX1 > tempDragX2) {
+	    		
+	    		X = tempDragX1 - tempDragX2;
+	    		
+	    	}else {
+	    		
+	    		X = tempDragX2 - tempDragX1;
+	    		
+	    	}
+	    	
+	    	if(tempDragY1 > tempDragY2) {
+	    		
+	    		Y = tempDragY1 - tempDragY2;
+	    		
+	    	}else {
+	    		
+	    		Y = tempDragY2 - tempDragY1;
+	    		
+	    	}
+	    	
+	    	X = X / 36;
+	    	Y = Y / 36;
+	    	
+		    if(tempDragX2 > tempDragX1) {
+	    		
+			    for(int y = 0; y <= Y; y++) {
+			    		
+				   	for(int x = 0; x <= X; x++) {
+				    		
+				    	if(tempDragY2 > tempDragY1) {
+
+				    		skipPlaceing.clear();
+				    		
+				    		for(int z = 0; z < allHighlights.size(); z++) {
+				    			
+					    		if((allHighlights.get(z).getX() == tempDragX1 + (x * 36)) && (allHighlights.get(z).getY() == tempDragY1 + (y * 36))) {
+				    				
+					    			skipPlaceing.add(allHighlights.get(z).getX());
+					    			skipPlaceing.add(allHighlights.get(z).getY());
+				    				
+				    			}
+	
+				    		}
+				    		
+				    		if(skipPlaceing.size() > 0) {
+				    			
+					    		if(skipPlaceing.get(0) == tempDragX1 + (x * 36) && skipPlaceing.get(1) == tempDragY1 + (y * 36)) {
+					    			
+					    			skipPlaceing.remove(1);
+					    			skipPlaceing.remove(0);
+					    			
+					    		}else {
+					    			
+					    			allHighlights.add(new Editor_Object(tempDragX1 + (x * 36), tempDragY1 + (y * 36), gh.getHighlight(), "Highlight"));
+					    			
+					    		}
+				    			
+				    		}else {
+				    			
+				    			allHighlights.add(new Editor_Object(tempDragX1 + (x * 36), tempDragY1 + (y * 36), gh.getHighlight(), "Highlight"));
+				    			
+				    		}
+				    			
+				    	}else {
+				    			
+				    		skipPlaceing.clear();
+				    		
+				    		for(int z = 0; z < allHighlights.size(); z++) {
+				    			
+					    		if((allHighlights.get(z).getX() == tempDragX1 + (x * 36)) && (allHighlights.get(z).getY() == tempDragY2 + (y * 36))) {
+				    				
+					    			skipPlaceing.add(allHighlights.get(z).getX());
+					    			skipPlaceing.add(allHighlights.get(z).getY());
+				    				
+				    			}
+	
+				    		}
+				    		
+				    		if(skipPlaceing.size() > 0) {
+				    			
+					    		if(skipPlaceing.get(0) == tempDragX1 + (x * 36) && skipPlaceing.get(1) == tempDragY2 + (y * 36)) {
+					    			
+					    			skipPlaceing.remove(1);
+					    			skipPlaceing.remove(0);
+					    			
+					    		}else {
+					    			
+						    		allHighlights.add(new Editor_Object(tempDragX1 + (x * 36), tempDragY2 + (y * 36), gh.getHighlight(), "Highlight"));
+					    			
+					    		}
+				    			
+				    		}else {
+				    			
+					    		allHighlights.add(new Editor_Object(tempDragX1 + (x * 36), tempDragY2 + (y * 36), gh.getHighlight(), "Highlight"));
+				    			
+				    		}
+				    			
+				    	}
+				    		
+				    }
+			    		
+			    }
+		    		
+		    }else {
+		    		
+			    for(int y = 0; y <= Y; y++) {
+			    		
+				   	for(int x = 0; x <= X; x++) {
+				   		
+				    	if(tempDragY2 > tempDragY1) {
+				    			
+				    		skipPlaceing.clear();
+				    		
+				    		for(int z = 0; z < allHighlights.size(); z++) {
+				    			
+					    		if((allHighlights.get(z).getX() == tempDragX2 + (x * 36)) && (allHighlights.get(z).getY() == tempDragY1 + (y * 36))) {
+				    				
+					    			skipPlaceing.add(allHighlights.get(z).getX());
+					    			skipPlaceing.add(allHighlights.get(z).getY());
+				    				
+				    			}
+	
+				    		}
+				    		
+				    		if(skipPlaceing.size() > 0) {
+				    			
+					    		if(skipPlaceing.get(0) == tempDragX2 + (x * 36) && skipPlaceing.get(1) == tempDragY1 + (y * 36)) {
+					    			
+					    			skipPlaceing.remove(1);
+					    			skipPlaceing.remove(0);
+					    			
+					    		}else {
+					    			
+					    			allHighlights.add(new Editor_Object(tempDragX2 + (x * 36), tempDragY1 + (y * 36), gh.getHighlight(), "Highlight"));
+					    			
+					    		}
+				    			
+				    		}else {
+				    			
+				    			allHighlights.add(new Editor_Object(tempDragX2 + (x * 36), tempDragY1 + (y * 36), gh.getHighlight(), "Highlight"));
+				    			
+				    		}
+				    			
+				    	}else {
+				    			
+				    		skipPlaceing.clear();
+				    		
+				    		for(int z = 0; z < allHighlights.size(); z++) {
+				    			
+					    		if((allHighlights.get(z).getX() == tempDragX2 + (x * 36)) && (allHighlights.get(z).getY() == tempDragY2 + (y * 36))) {
+				    				
+					    			skipPlaceing.add(allHighlights.get(z).getX());
+					    			skipPlaceing.add(allHighlights.get(z).getY());
+				    				
+				    			}
+	
+				    		}
+				    		
+				    		if(skipPlaceing.size() > 0) {
+				    			
+					    		if(skipPlaceing.get(0) == tempDragX2 + (x * 36) && skipPlaceing.get(1) == tempDragY2 + (y * 36)) {
+					    			
+					    			skipPlaceing.remove(1);
+					    			skipPlaceing.remove(0);
+					    			
+					    		}else {
+					    			
+					    			allHighlights.add(new Editor_Object(tempDragX2 + (x * 36), tempDragY2 + (y * 36), gh.getHighlight(), "Highlight"));
+					    			
+					    		}
+				    			
+				    		}else {
+				    			
+				    			allHighlights.add(new Editor_Object(tempDragX2 + (x * 36), tempDragY2 + (y * 36), gh.getHighlight(), "Highlight"));
+				    			
+				    		}
+				    			
+				    	}
+				    		
+				    }
+			    		
+			    }
+		    		
+		    }
+		    
+	    	clearCanvas();
+    		drawCanvas();
 			
 		});
 		
 		c_canvas.setOnMouseReleased(e -> {
+			
+			allHighlights.clear();
+			
+			clearCanvas();
+    		drawCanvas();
 			
 			dragX2 = (int)((e.getSceneX() - 280) / 36);
 	    	dragY2 = (int)((e.getSceneY() - 30) / 36);
@@ -950,6 +1175,12 @@ public class Editor_Controller implements Initializable{
 		for(int x = 0; x < allEditor_Tunnels.size(); x++) {
 			
 			gc.drawImage(allEditor_Tunnels.get(x).getImage(), allEditor_Tunnels.get(x).getX(), allEditor_Tunnels.get(x).getY());
+			
+		}
+		
+		for(int x = 0; x < allHighlights.size(); x++) {
+			
+			gc.drawImage(allHighlights.get(x).getImage(), allHighlights.get(x).getX(), allHighlights.get(x).getY());
 			
 		}
 		
