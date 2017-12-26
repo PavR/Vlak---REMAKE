@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 
 import code_game.Main;
 import code_game.ScoreRecord;
+import handler.Graphics_Handler;
 import handler.Sound_Handler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,14 +18,18 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 public class Menu_Controller implements Initializable{
 
 	@FXML
 	private Button b_play;
+	@FXML
+	private ImageView iv_menu;
 	
 	private Sound_Handler sh;
+	private Graphics_Handler gh;
 	
 	private static boolean leaderboard = true;
 	
@@ -34,8 +39,11 @@ public class Menu_Controller implements Initializable{
 	int score;
 	
 	public void initialize(URL arg0, ResourceBundle arg1) {
-			
+		
 		sh = new Sound_Handler();
+		gh = new Graphics_Handler();
+		
+		iv_menu.setImage(gh.getMenu());
 
 		sh.playMenu();
 		
@@ -158,26 +166,6 @@ public class Menu_Controller implements Initializable{
 		
 		Parent root = FXMLLoader.load(getClass().getResource("/fxml/Editor.fxml"));
 		Scene scene = new Scene(root, 1000, 750);
-		
-		Stage primaryStage = new Stage();
-		
-		primaryStage.setTitle("Vlak - REMAKE");
-		primaryStage.setResizable(false);
-		primaryStage.sizeToScene();
-		primaryStage.setScene(scene);
-		primaryStage.show();
-		
-		Stage previousStage = (Stage)b_play.getScene().getWindow();
-		previousStage.close();
-		
-	}
-	
-	public void b_achievements_onAction() throws IOException {
-		
-		sh.stopSound();
-		
-		Parent root = FXMLLoader.load(getClass().getResource("/fxml/Achievements.fxml"));
-		Scene scene = new Scene(root, Main.WIDTH, Main.HEIGHT);
 		
 		Stage primaryStage = new Stage();
 		

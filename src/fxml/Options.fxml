@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
@@ -11,20 +12,47 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Options_Controller">
    <children>
-      <Pane prefHeight="800.0" prefWidth="720.0" style="-fx-background-color: BLACK;">
-         <children>
-            <Label layoutX="30.0" layoutY="32.0" text="SOUNDS" textFill="WHITE" />
-            <CheckBox fx:id="cb_sounds" layoutX="43.0" layoutY="57.0" mnemonicParsing="false" onAction="#cb_sounds_onAction" />
-            <Button fx:id="b_back" layoutX="17.0" layoutY="761.0" mnemonicParsing="false" onAction="#b_back_onAction" text="BACK" />
-            <ImageView fx:id="iv_skin" fitHeight="36.0" fitWidth="36.0" layoutX="103.0" layoutY="223.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../res/blueTrainRightStation.png" />
-               </image>
-            </ImageView>
-            <Button fx:id="b_left" layoutX="38.0" layoutY="228.0" mnemonicParsing="false" onAction="#b_left_onAction" text="&lt;" />
-            <Button fx:id="b_right" layoutX="176.0" layoutY="228.0" mnemonicParsing="false" onAction="#b_right_onAction" text="&gt;" />
-            <Label fx:id="l_number" layoutX="107.0" layoutY="272.0" text="Label" textFill="WHITE" />
-         </children>
-      </Pane>
+      <ImageView fitHeight="800.0" fitWidth="720.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../res/options.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="70.0" layoutY="183.0" text="SOUNDS" textFill="WHITE">
+         <font>
+            <Font name="Berlin Sans FB Demi Bold" size="20.0" />
+         </font>
+      </Label>
+      <CheckBox fx:id="cb_sounds" layoutX="182.0" layoutY="190.0" mnemonicParsing="false" onAction="#cb_sounds_onAction">
+         <font>
+            <Font name="Berlin Sans FB Demi Bold" size="12.0" />
+         </font></CheckBox>
+      <Button fx:id="b_back" layoutX="45.0" layoutY="730.0" mnemonicParsing="false" onAction="#b_back_onAction" prefHeight="23.0" prefWidth="48.0" text="BACK">
+           <font>
+            <Font name="Berlin Sans FB Demi Bold" size="12.0" />
+         </font>
+         </Button>
+      <ImageView fx:id="iv_skin" fitHeight="36.0" fitWidth="36.0" layoutX="231.0" layoutY="279.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../res/blueTrainRightStation.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="b_left" layoutX="180.0" layoutY="285.0" mnemonicParsing="false" onAction="#b_left_onAction" text="&lt;">
+         <font>
+            <Font name="Berlin Sans FB Demi Bold" size="12.0" />
+         </font></Button>
+      <Button fx:id="b_right" layoutX="294.0" layoutY="285.0" mnemonicParsing="false" onAction="#b_right_onAction" text="&gt;">
+         <font>
+            <Font name="Berlin Sans FB Demi Bold" size="12.0" />
+         </font></Button>
+      <Label fx:id="l_number" layoutX="235.0" layoutY="329.0" text="Label" textFill="WHITE">
+         <font>
+            <Font name="Berlin Sans FB Demi Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="70.0" layoutY="282.0" text="SKIN" textFill="WHITE">
+         <font>
+            <Font name="Berlin Sans FB Demi Bold" size="20.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

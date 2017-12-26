@@ -13,7 +13,7 @@ public class Graphics_Handler {
 	private Image wall, train1Up, train1Left, train1Down, train1Right, gate, objectPizza, wagonPizzaRight, wagonPizzaUp, wagonPizzaDown,
 				  tunnel, objectPizzaStation, train1RightStation, objectUnicorn, wagonUnicornRight, wagonUnicornUp, wagonUnicornDown, objectUnicornStation, empty,
 				  train2Up, train2Left, train2Down, train2Right, train2RightStation, trainPickedUp, trainPickedLeft, trainPickedDown, trainPickedRight, trainPickedUpStation,
-				  highlight;
+				  highlight, menu;
 	
 	private int pickedTrain = 1;
 	
@@ -60,6 +60,8 @@ public class Graphics_Handler {
 		
 		File file11 = new File(AbsolutePath + "/" + "highlight.png");
 		
+		File file12 = new File(AbsolutePath + "/" + "menu.png");
+		
 		wall = new Image(file1.toURI().toString());
 		
 		train1Up = new Image(file2a.toURI().toString());
@@ -95,6 +97,8 @@ public class Graphics_Handler {
 		train2RightStation = new Image(file10e.toURI().toString());
 		
 		highlight = new Image(file11.toURI().toString());
+		
+		menu = new Image(file12.toURI().toString());
 		
 		AbsolutePath = new File(".").getAbsolutePath();
     	
@@ -357,6 +361,12 @@ public class Graphics_Handler {
 	public Image getHighlight() {
 		
 		return highlight;
+		
+	}
+
+	public Image getMenu() {
+		
+		return menu;
 		
 	}
 	
